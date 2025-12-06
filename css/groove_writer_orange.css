@@ -1236,60 +1236,53 @@
 	}
 
 
-
-/* **Dave: Mobile layout tweaks** */
+/** Dave – mobile portrait tweaks **/
 @media (max-width: 768px) {
 
-	/* Let the app shrink on phones */
-	#GrooveWriter {
-		min-width: 0;
-	}
+  /* Make left nav a bit slimmer so the main area is wider */
+  #LeftHandNav {
+    width: 54px;
+  }
+  #TopNav,
+  #midiPlayer,
+  #RightHandContent {
+    margin-left: 54px;
+    width: calc(100% - 56px);
+  }
 
-	/* Make the left-hand nav a bit narrower */
-	#LeftHandNav {
-		width: 52px;
-	}
+  /* Tighten top bar so more height goes to the groove */
+  #logoTextUpperLeft img {
+    height: 24px;
+  }
+  #TopNav {
+    height: 40px;
+  }
+  #midiPlayer {
+    height: 40px;
+    top: 41px;
+  }
+  #RightHandContent {
+    top: 81px;
+    height: calc(100% - 81px);
+  }
 
-	/* Match the rest of the layout to the new nav width */
-	#TopNav {
-		margin-left: 52px;
-		width: calc(100% - 52px);
-	}
+  /* Save some space – the word METRONOME isn’t essential on mobile */
+  #metronomeLabel {
+    display: none;
+  }
 
-	#midiPlayer {
-		left: 52px;
-		width: calc(100% - 52px);
-	}
+  /* Let the notation use full width in the content area */
+  #RightHandContent .svgTarget svg {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
 
-	#RightHandContent {
-		left: 52px;
-		width: calc(100% - 52px);
-		height: calc(100% - 98px);
-	}
-
-	/* Make the left buttons more compact */
-	.left-button-content {
-		font-size: 10px;
-		height: 40px;
-	}
-
-	/* Hide labels like "NOTES", "TRIPLETS" to keep nav clean */
-	.buttonText {
-		display: none;
-	}
-
-	.buttonFraction {
-		font-size: 16px;
-	}
-
-	/* Slightly smaller logo up top */
-	#logoTextUpperLeft img {
-		height: 24px;
-	}
-
-	/* Tighten up the notation header */
-	#NotationLabel {
-		font-size: 16px;
-		padding-left: 0;
-	}
+  /* Slightly smaller side labels so they don’t wrap weirdly */
+  .left-button-content {
+    font-size: 11px;
+  }
+  #timeSigLabel {
+    font-size: 18px;
+  }
 }
