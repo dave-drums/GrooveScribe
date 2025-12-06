@@ -4,7 +4,7 @@
     <description>
         GrooveScribe is a tool for drummers to create, hear, practice and share grooves. 
     </description>
-    <author email="grooveScribe@Montulli.org" href="http://mikeslessons.com/gscribe">
+    <author email="grooveScribe@Montulli.org">
         Mike Johnston & Lou Montulli
     </author>
     <content src="index.html" />
