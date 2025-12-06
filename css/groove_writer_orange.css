@@ -1234,3 +1234,62 @@
 			width: 100% !important;
 		}
 	}
+
+
+
+/* **Dave: Mobile layout tweaks** */
+@media (max-width: 768px) {
+
+	/* Let the app shrink on phones */
+	#GrooveWriter {
+		min-width: 0;
+	}
+
+	/* Make the left-hand nav a bit narrower */
+	#LeftHandNav {
+		width: 52px;
+	}
+
+	/* Match the rest of the layout to the new nav width */
+	#TopNav {
+		margin-left: 52px;
+		width: calc(100% - 52px);
+	}
+
+	#midiPlayer {
+		left: 52px;
+		width: calc(100% - 52px);
+	}
+
+	#RightHandContent {
+		left: 52px;
+		width: calc(100% - 52px);
+		height: calc(100% - 98px);
+	}
+
+	/* Make the left buttons more compact */
+	.left-button-content {
+		font-size: 10px;
+		height: 40px;
+	}
+
+	/* Hide labels like "NOTES", "TRIPLETS" to keep nav clean */
+	.buttonText {
+		display: none;
+	}
+
+	.buttonFraction {
+		font-size: 16px;
+	}
+
+	/* Slightly smaller logo up top */
+	#logoTextUpperLeft img {
+		height: 24px;
+	}
+
+	/* Tighten up the notation header */
+	#NotationLabel {
+		font-size: 16px;
+		padding-left: 0;
+	}
+}
