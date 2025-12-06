@@ -4,15 +4,12 @@
     <meta charset="utf-8" />
     <title>Embedded Groove</title>
 
-    <!-- Make it behave nicely on mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <script src="./js/groove_display.js"></script>
 
     <style>
-      /* Remove default margins so height is accurate */
-      html,
-      body {
+      html, body {
         margin: 0;
         padding: 0;
         overflow: hidden;
@@ -21,12 +18,10 @@
   </head>
   <body>
     <script>
-      // Render the groove
       GrooveDisplay.AddGrooveDisplayToPage(location.search, true, true);
     </script>
 
     <script>
-      // Send the groove height to the parent page
       function sendGrooveHeight() {
         var container = document.body;
         var height =
@@ -34,8 +29,7 @@
           container.getBoundingClientRect().height ||
           0;
 
-        // A little extra padding so nothing is clipped
-        height = Math.ceil(height) + 40;
+        height = Math.ceil(height) + 40; // padding for buttons etc.
 
         window.parent.postMessage(
           {
@@ -46,12 +40,10 @@
         );
       }
 
-      // After everything finishes drawing
       window.addEventListener("load", function () {
         setTimeout(sendGrooveHeight, 200);
       });
 
-      // Re-send on resize/orientation changes
       window.addEventListener("resize", function () {
         setTimeout(sendGrooveHeight, 100);
       });
