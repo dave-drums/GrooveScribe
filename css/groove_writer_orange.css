@@ -1239,7 +1239,7 @@
 /** Dave – mobile portrait tweaks **/
 @media (max-width: 768px) {
 
-  /* Make left nav a bit slimmer so the main area is wider */
+  /* Slimmer left nav so content area is wider */
   #LeftHandNav {
     width: 54px;
   }
@@ -1257,13 +1257,17 @@
   #TopNav {
     height: 40px;
   }
+
+  /* Player directly under the top bar */
   #midiPlayer {
     height: 40px;
-    top: 41px;
+    top: 40px; /* was 41px */
   }
+
+  /* Push content down so Permutations / Grooves / Help sit correctly */
   #RightHandContent {
-    top: 81px;
-    height: calc(100% - 81px);
+    top: 88px; /* was 81px */
+    height: calc(100% - 88px);
   }
 
   /* Save some space – the word METRONOME isn’t essential on mobile */
@@ -1282,7 +1286,31 @@
   .left-button-content {
     font-size: 11px;
   }
+
   #timeSigLabel {
     font-size: 18px;
   }
 }
+
+ /* Bottom action buttons: shrink for mobile */
+  #bottomButtonRow {
+    padding: 10px 0; /* was 20px */
+  }
+
+  .pageBottomButton {
+    margin: 0 10px; /* was 20px */
+  }
+
+  .bottomButtonIcon {
+    transform: scale(0.7); /* shrink icons */
+  }
+
+  .bottomButtonLabel {
+    font-size: 10px; /* smaller text */
+    margin-top: 1px; /* tighter spacing */
+  }
+
+  /* Reduce overall height footprint */
+  #bottomButtonRow {
+    height: 48px; /* optional; helps compress the bar */
+  }
