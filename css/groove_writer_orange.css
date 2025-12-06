@@ -1292,25 +1292,24 @@
   }
 }
 
- /* Bottom action buttons: shrink for mobile */
+   /* Bottom action buttons – tighter mobile layout */
   #bottomButtonRow {
-    padding: 10px 0; /* was 20px */
+    padding: 6px 0;               /* smaller vertical padding */
+    height: 44px;                 /* compact, still tappable */
   }
 
   .pageBottomButton {
-    margin: 0 10px; /* was 20px */
+    margin: 0 6px;                /* tighten spacing between buttons */
   }
 
   .bottomButtonIcon {
-    transform: scale(0.7); /* shrink icons */
+    transform: scale(0.55);       /* shrink icons */
+    margin-bottom: -2px;          /* visually centre them */
   }
 
   .bottomButtonLabel {
-    font-size: 10px; /* smaller text */
-    margin-top: 1px; /* tighter spacing */
+    font-size: 9px;               /* smaller text */
+    line-height: 10px;
+    margin-top: 0;                /* remove extra spacing */
   }
 
-  /* Reduce overall height footprint */
-  #bottomButtonRow {
-    height: 48px; /* optional; helps compress the bar */
-  }
