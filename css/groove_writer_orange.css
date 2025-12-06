@@ -1236,6 +1236,10 @@
 	}
 
 
+
+
+
+
 /** Dave – mobile portrait tweaks **/
 @media (max-width: 768px) {
 
@@ -1258,16 +1262,16 @@
     height: 40px;
   }
 
-  /* Player directly under the top bar */
+  /* Player directly under the top bar – give it enough height for sliders */
   #midiPlayer {
-    height: 40px;
-    top: 40px; /* was 41px */
+    height: 52px;       /* was 40px – fixes BPM/SWING clipping */
+    top: 40px;
   }
 
   /* Push content down so Permutations / Grooves / Help sit correctly */
   #RightHandContent {
-    top: 88px; /* was 81px */
-    height: calc(100% - 88px);
+    top: 92px;          /* 40 + 52 = 92 */
+    height: calc(100% - 92px);
   }
 
   /* Save some space – the word METRONOME isn’t essential on mobile */
@@ -1290,26 +1294,25 @@
   #timeSigLabel {
     font-size: 18px;
   }
-}
 
-   /* Bottom action buttons – tighter mobile layout */
+  /* Bottom action buttons – tighter mobile layout */
   #bottomButtonRow {
-    padding: 6px 0;               /* smaller vertical padding */
-    height: 44px;                 /* compact, still tappable */
+    padding: 6px 0;        /* smaller vertical padding */
+    height: 44px;          /* compact, still tappable */
   }
 
   .pageBottomButton {
-    margin: 0 6px;                /* tighten spacing between buttons */
+    margin: 0 6px;         /* tighten spacing between buttons */
   }
 
   .bottomButtonIcon {
-    transform: scale(0.55);       /* shrink icons */
-    margin-bottom: -2px;          /* visually centre them */
+    transform: scale(0.55);
+    margin-bottom: -2px;   /* visually centre them */
   }
 
   .bottomButtonLabel {
-    font-size: 9px;               /* smaller text */
+    font-size: 9px;
     line-height: 10px;
-    margin-top: 0;                /* remove extra spacing */
+    margin-top: 0;
   }
-
+}
