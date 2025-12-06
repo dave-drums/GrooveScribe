@@ -1043,7 +1043,7 @@ function GrooveUtils() {
 				fullURL += 'GrooveEmbed.html';
 		} else if(url_destination == "fullGrooveScribe") {
 			// asking for the full GrooveScribe link
-			fullURL = 'https://www.mikeslessons.com/gscribe';
+			fullURL = 'https://groove.davedrums.com.au/';
 		}
 
 		fullURL += '?';
