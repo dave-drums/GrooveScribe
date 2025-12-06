@@ -1,5 +1,6 @@
 Groove Scribe Project
 Copyright 2015 Lou Montulli, Mike Johnston
+Modified by Dave D’Amore – 2025
 Groove Scribe has been released under the GPL V2 license as defined below.
 See also <http://www.gnu.org/licenses/>.
 
