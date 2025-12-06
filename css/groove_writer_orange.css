@@ -188,12 +188,12 @@
 		height: 48px;  /* Override from above */
 	}
 	#timeSigLabel {
-		color: #62C04C;
+		color: #06b3fd;
 		font-size: 20px;
 		margin-bottom: -5px;
 	}
 	#timeSubLabel {
-		color: #62C04C;
+		color: #06b3fd;
 		font-size: 12px;
 	}
 	.left-button.disabled, .left-button.disabled:hover {
