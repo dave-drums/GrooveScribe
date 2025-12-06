@@ -231,7 +231,7 @@ if (typeof(GrooveDisplay) === "undefined") {
 				var svgReturn = myGrooveUtils.renderABCtoSVG(abcNotation);
 
 				if (linkToEditor)
-					svgTarget.innerHTML = '<a style="text-decoration: none" href="http://mikeslessons.com/gscribe/' + GrooveDefinition + '">' + svgReturn.svg + '</a>';
+					svgTarget.innerHTML = '<a style="text-decoration: none" href="http://groove.davedrums.com.au/' + GrooveDefinition + '">' + svgReturn.svg + '</a>';
 				else
 					svgTarget.innerHTML = svgReturn.svg;
 			};
