@@ -1235,3 +1235,56 @@
 		}
 	}
 
+
+
+
+
+
+
+
+/** Dave – simple mobile tweaks (safe) **/
+@media (max-width: 768px) {
+
+  /* Don't touch layout positioning – only scale content a bit */
+
+  /* Make the notation use full width */
+  #RightHandContent .svgTarget svg {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+
+  /* Smaller labels in the left menu so they don’t wrap */
+  .left-button-content {
+    font-size: 11px;
+  }
+
+  #timeSigLabel {
+    font-size: 18px;
+  }
+
+  /* Hide METRONOME: word to save horizontal space */
+  #metronomeLabel {
+    display: none;
+  }
+
+  /* Bottom action buttons – slightly smaller */
+  #bottomButtonRow {
+    padding: 10px 0;
+  }
+
+  .pageBottomButton {
+    margin: 0 10px;
+  }
+
+  .bottomButtonIcon {
+    transform: scale(0.7);
+  }
+
+  .bottomButtonLabel {
+    font-size: 10px;
+    line-height: 11px;
+    margin-top: 0;
+  }
+}
+
