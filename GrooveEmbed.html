@@ -23,7 +23,7 @@
       GrooveDisplay.AddGrooveDisplayToPage(location.search, true, true);
     </script>
 
-    <!-- Auto-height messaging (no polling, no resize loop) -->
+    <!-- Auto-height messaging with MutationObserver (no polling, no resize loop) -->
     <script>
       function sendGrooveHeight() {
         var h =
@@ -32,7 +32,7 @@
           0;
 
         // Small buffer so the bottom of the player never clips
-        h = Math.ceil(h) + 24;
+        h = Math.ceil(h) + 32;
 
         window.parent.postMessage(
           {
@@ -43,30 +43,34 @@
         );
       }
 
-      function hookPlayerToggle() {
-        // Wait for GrooveDisplay to build the MIDI UI
-        setTimeout(function () {
-          // Expand / collapse icon in the player
-          var toggles = document.querySelectorAll(".fa-expand, .fa-compress");
-
-          toggles.forEach(function (el) {
-            el.addEventListener("click", function () {
-              // Give the animation/layout time, then recalc once
-              setTimeout(sendGrooveHeight, 250);
-            });
-          });
-        }, 400);
-      }
-
-      // Initial sizing once everything has rendered
       window.addEventListener("load", function () {
-        setTimeout(sendGrooveHeight, 250);
-        hookPlayerToggle();
+        // Initial size once everything has rendered
+        sendGrooveHeight();
+
+        // Observe any DOM changes (e.g. player expand/collapse)
+        var target = document.body;
+        var pending = false;
+
+        var observer = new MutationObserver(function (mutations) {
+          // Debounce multiple rapid mutations into one height update
+          if (pending) return;
+          pending = true;
+          setTimeout(function () {
+            pending = false;
+            sendGrooveHeight();
+          }, 150);
+        });
+
+        observer.observe(target, {
+          childList: true,
+          subtree: true,
+          attributes: true
+        });
       });
 
-      // NOTE: no resize listener here on purpose.
-      // Changing iframe height in the parent triggers a resize event
-      // in the iframe; listening to it causes the infinite growth loop.
+      // Note: no resize or interval handlers here on purpose.
+      // Height only updates when the DOM actually changes (e.g. player UI toggled),
+      // so there’s no feedback loop or slow creeping growth.
     </script>
   </body>
 </html>
