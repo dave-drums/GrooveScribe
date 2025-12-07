@@ -16,31 +16,53 @@
       }
 /* Remove SWING row */
 .swingRow {
-  display: none !important;
+    display: none !important;
 }
 
-/* Centre BPM text + slider vertically */
+/* Centre row vertically */
 #tempoAndProgress1 .tempoRow {
-  display: flex !important;
-  align-items: center !important;
-  height: 40px !important;       /* Slightly bigger row for clean centering */
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    height: 40px !important;
 }
 
-/* Remove the built-in vertical offset of the slider */
+/* Remove slider vertical offset */
 #tempoAndProgress1 .tempoRow input[type="range"] {
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  position: relative;
-  top: 1px;                      /* micro-adjustment to match BPM label */
+    margin: 0 !important;
+    height: 22px !important; /* ensures thumb and track area are tall */
+    -webkit-appearance: none !important;
 }
-      /* OPTIONAL: Make the slider track thicker */
+
+/* THICKER TRACK — Chrome / Edge */
 #tempoAndProgress1 .tempoRow input[type="range"]::-webkit-slider-runnable-track {
-  height: 6px !important;
+    height: 8px !important;
+    background: #b6b8c1 !important; /* same GS grey */
+    border-radius: 999px !important;
 }
+
+/* THICKER TRACK — Firefox */
 #tempoAndProgress1 .tempoRow input[type="range"]::-moz-range-track {
-  height: 6px !important;
+    height: 8px !important;
+    background: #b6b8c1 !important;
+    border-radius: 999px !important;
+}
+
+/* Thumb (so the thicker track doesn't get squashed visually) */
+#tempoAndProgress1 .tempoRow input[type="range"]::-webkit-slider-thumb {
+    width: 18px !important;
+    height: 18px !important;
+    border-radius: 50% !important;
+    background: #ffffff !important;
+    border: 1px solid #999 !important;
+    -webkit-appearance: none !important;
+}
+
+#tempoAndProgress1 .tempoRow input[type="range"]::-moz-range-thumb {
+    width: 18px !important;
+    height: 18px !important;
+    border-radius: 50% !important;
+    background: #ffffff !important;
+    border: 1px solid #999 !important;
 }
     </style>
   </head>
