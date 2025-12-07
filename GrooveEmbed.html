@@ -9,10 +9,13 @@
     <script src="./js/groove_display.js"></script>
 
     <style>
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
-        overflow: hidden;
+        /* Allow scrolling if content is taller than the iframe */
+        overflow-y: auto;
+        overflow-x: hidden;
       }
     </style>
   </head>
@@ -22,57 +25,34 @@
     </script>
 
     <script>
-      (function () {
-        // Extra space at the bottom for the expanded GrooveScribe toolbar
-        var TOOLBAR_PADDING = 120; // tweak if still tight
+      function sendGrooveHeight() {
+        var container = document.body;
+        var height =
+          container.scrollHeight ||
+          container.getBoundingClientRect().height ||
+          0;
 
-        function getDocHeight() {
-          var d = document;
-          return Math.max(
-            d.body.scrollHeight,
-            d.documentElement.scrollHeight,
-            d.body.offsetHeight,
-            d.documentElement.offsetHeight,
-            d.body.clientHeight,
-            d.documentElement.clientHeight
-          );
-        }
+        // Small padding for safety (buttons etc.)
+        height = Math.ceil(height) + 40;
 
-        function sendGrooveHeight() {
-          var height = getDocHeight() + TOOLBAR_PADDING;
+        window.parent.postMessage(
+          {
+            type: "grooveHeight",
+            height: height
+          },
+          "*"
+        );
+      }
 
-          height = Math.ceil(height);
+      // Initial send after GrooveScribe renders
+      window.addEventListener("load", function () {
+        setTimeout(sendGrooveHeight, 200);
+      });
 
-          window.parent.postMessage(
-            {
-              type: "grooveHeight",
-              height: height
-            },
-            "*"
-          );
-        }
-
-        // Initial send (slight delay to let GrooveScribe render)
-        window.addEventListener("load", function () {
-          setTimeout(sendGrooveHeight, 200);
-        });
-
-        // Re-send on window resize (orientation change etc.)
-        window.addEventListener("resize", function () {
-          setTimeout(sendGrooveHeight, 100);
-        });
-
-        // Periodically check for internal layout changes
-        // (e.g. play bar expanded / collapsed)
-        var lastHeight = 0;
-        setInterval(function () {
-          var current = getDocHeight();
-          if (Math.abs(current - lastHeight) > 10) {
-            lastHeight = current;
-            sendGrooveHeight();
-          }
-        }, 500);
-      })();
+      // Orientation change / resize
+      window.addEventListener("resize", function () {
+        setTimeout(sendGrooveHeight, 100);
+      });
     </script>
   </body>
 </html>
