@@ -9,13 +9,10 @@
     <script src="./js/groove_display.js"></script>
 
     <style>
-      html,
-      body {
+      html, body {
         margin: 0;
         padding: 0;
-        /* Allow scrolling if content is taller than the iframe */
-        overflow-y: auto;
-        overflow-x: hidden;
+        overflow: hidden;
       }
     </style>
   </head>
@@ -32,24 +29,21 @@
           container.getBoundingClientRect().height ||
           0;
 
-        // Small padding for safety (buttons etc.)
-        height = Math.ceil(height) + 40;
+        height = Math.ceil(height) + 40; // padding for buttons etc.
 
         window.parent.postMessage(
           {
             type: "grooveHeight",
-            height: height
+            height: height,
           },
           "*"
         );
       }
 
-      // Initial send after GrooveScribe renders
       window.addEventListener("load", function () {
         setTimeout(sendGrooveHeight, 200);
       });
 
-      // Orientation change / resize
       window.addEventListener("resize", function () {
         setTimeout(sendGrooveHeight, 100);
       });
