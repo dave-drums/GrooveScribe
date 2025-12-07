@@ -23,7 +23,7 @@
       GrooveDisplay.AddGrooveDisplayToPage(location.search, true, true);
     </script>
 
-    <!-- Auto-height messaging with MutationObserver (no polling, no resize loop) -->
+    <!-- One-shot height measurement with generous buffer -->
     <script>
       function sendGrooveHeight() {
         var h =
@@ -31,8 +31,9 @@
           document.body.scrollHeight ||
           0;
 
-        // Small buffer so the bottom of the player never clips
-        h = Math.ceil(h) + 32;
+        // GENEROUS buffer so expanded player never clips
+        // If you still see clipping, bump 120 up a bit.
+        h = Math.ceil(h) + 120;
 
         window.parent.postMessage(
           {
@@ -43,34 +44,12 @@
         );
       }
 
+      // Measure once after everything has rendered
       window.addEventListener("load", function () {
-        // Initial size once everything has rendered
-        sendGrooveHeight();
-
-        // Observe any DOM changes (e.g. player expand/collapse)
-        var target = document.body;
-        var pending = false;
-
-        var observer = new MutationObserver(function (mutations) {
-          // Debounce multiple rapid mutations into one height update
-          if (pending) return;
-          pending = true;
-          setTimeout(function () {
-            pending = false;
-            sendGrooveHeight();
-          }, 150);
-        });
-
-        observer.observe(target, {
-          childList: true,
-          subtree: true,
-          attributes: true
-        });
+        setTimeout(sendGrooveHeight, 400);
       });
 
-      // Note: no resize or interval handlers here on purpose.
-      // Height only updates when the DOM actually changes (e.g. player UI toggled),
-      // so there’s no feedback loop or slow creeping growth.
+      // No resize, no interval, no observers – avoids feedback loops
     </script>
   </body>
 </html>
