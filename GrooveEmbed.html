@@ -14,19 +14,28 @@
         padding: 0;
         overflow: hidden;
       }
-      /* 1. Hide the SWING row in the embedded player */
+ /* Remove SWING row */
   .swingRow {
     display: none !important;
   }
 
-  /* 2. Vertically centre BPM text + slider */
+  /* Centre BPM label + slider vertically */
   .tempoRow {
-    align-items: center;      /* flex container, centre children vertically */
+    display: flex !important;
+    align-items: center !important;
+    height: 36px !important; /* thicker bar height */
   }
-       /* Optional: slightly slimmer control bar */
-  #playerControl1 {
-    padding-top: 4px;
-    padding-bottom: 4px;
+
+  /* Centre the slider and remove the leftover vertical offset */
+  .tempoRow input[type="range"] {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Optional: centre BPM label text perfectly */
+  .tempoRow .tempoLabel {
+    display: flex;
+    align-items: center;
   }
     </style>
   </head>
