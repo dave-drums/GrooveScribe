@@ -9,52 +9,68 @@
     <script src="./js/groove_display.js"></script>
 
     <style>
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
         overflow: hidden;
       }
     </style>
   </head>
-
   <body>
-    <!-- Render the Groove -->
     <script>
-      GrooveDisplay.AddGrooveDisplayToPage(location.search, true, true, false);
+      // Render the embedded groove
+      GrooveDisplay.AddGrooveDisplayToPage(location.search, true, true);
     </script>
 
-    <!-- Auto-height logic -->
     <script>
       function sendGrooveHeight() {
-        var h =
-          document.documentElement.scrollHeight ||
-          document.body.scrollHeight ||
+        var container = document.body;
+
+        var height =
+          container.scrollHeight ||
+          (container.getBoundingClientRect
+            ? container.getBoundingClientRect().height
+            : 0) ||
           0;
 
-        // Add padding to prevent cutoff
-        h = Math.ceil(h) + 20;
+        // Extra padding so the bottom of the player never gets clipped
+        height = Math.ceil(height) + 60;
 
         window.parent.postMessage(
           {
             type: "grooveHeight",
-            height: h
+            height: height
           },
           "*"
         );
       }
 
-      // Initial + delayed stabilisation
+      function attachPlayerResizeTriggers() {
+        // Wait a bit for GrooveDisplay to build the DOM
+        setTimeout(function () {
+          // The expand / collapse icon in the MIDI player uses Font Awesome
+          var toggles = document.querySelectorAll(".fa-expand, .fa-compress");
+
+          toggles.forEach(function (el) {
+            el.addEventListener("click", function () {
+              // Give the animation/layout a moment, then recalc
+              setTimeout(sendGrooveHeight, 200);
+            });
+          });
+        }, 400);
+      }
+
       window.addEventListener("load", function () {
-        sendGrooveHeight();
-        setTimeout(sendGrooveHeight, 300);
-        setTimeout(sendGrooveHeight, 700);
+        // Initial sizing once everything has rendered
+        setTimeout(sendGrooveHeight, 200);
+        attachPlayerResizeTriggers();
       });
 
-      // Resizes from viewport/orientation changes
-      window.addEventListener("resize", sendGrooveHeight);
-
-      // Poll occasionally to catch player expansion
-      setInterval(sendGrooveHeight, 700);
+      // Handle orientation changes / responsive resizes
+      window.addEventListener("resize", function () {
+        setTimeout(sendGrooveHeight, 150);
+      });
     </script>
   </body>
 </html>
