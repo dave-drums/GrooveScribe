@@ -14,28 +14,29 @@
         padding: 0;
         overflow: hidden;
       }
- /* Remove SWING row */
+ /* Hide SWING row */
   .swingRow {
     display: none !important;
   }
 
-  /* Centre BPM label + slider vertically */
-  .tempoRow {
-    display: flex !important;
-    align-items: center !important;
-    height: 36px !important; /* thicker bar height */
+  /* Keep original horizontal layout, just centre things vertically */
+  #tempoAndProgress1 .tempoRow {
+    align-items: center !important;   /* row is already display:flex in GS */
   }
 
-  /* Centre the slider and remove the leftover vertical offset */
-  .tempoRow input[type="range"] {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
+  /* Make the BPM bar (track) thicker in the embed */
+  #tempoAndProgress1 .tempoRow input[type="range"] {
+    height: 16px;                     /* thumb area */
   }
 
-  /* Optional: centre BPM label text perfectly */
-  .tempoRow .tempoLabel {
-    display: flex;
-    align-items: center;
+  #tempoAndProgress1 .tempoRow input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 999px;
+  }
+
+  #tempoAndProgress1 .tempoRow input[type="range"]::-moz-range-track {
+    height: 6px;
+    border-radius: 999px;
   }
     </style>
   </head>
