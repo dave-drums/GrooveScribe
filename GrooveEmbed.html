@@ -18,59 +18,55 @@
     </style>
   </head>
   <body>
+    <!-- Render the embedded groove -->
     <script>
-      // Render the embedded groove
       GrooveDisplay.AddGrooveDisplayToPage(location.search, true, true);
     </script>
 
+    <!-- Auto-height messaging (no polling, no resize loop) -->
     <script>
       function sendGrooveHeight() {
-        var container = document.body;
-
-        var height =
-          container.scrollHeight ||
-          (container.getBoundingClientRect
-            ? container.getBoundingClientRect().height
-            : 0) ||
+        var h =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight ||
           0;
 
-        // Extra padding so the bottom of the player never gets clipped
-        height = Math.ceil(height) + 60;
+        // Small buffer so the bottom of the player never clips
+        h = Math.ceil(h) + 24;
 
         window.parent.postMessage(
           {
             type: "grooveHeight",
-            height: height
+            height: h
           },
           "*"
         );
       }
 
-      function attachPlayerResizeTriggers() {
-        // Wait a bit for GrooveDisplay to build the DOM
+      function hookPlayerToggle() {
+        // Wait for GrooveDisplay to build the MIDI UI
         setTimeout(function () {
-          // The expand / collapse icon in the MIDI player uses Font Awesome
+          // Expand / collapse icon in the player
           var toggles = document.querySelectorAll(".fa-expand, .fa-compress");
 
           toggles.forEach(function (el) {
             el.addEventListener("click", function () {
-              // Give the animation/layout a moment, then recalc
-              setTimeout(sendGrooveHeight, 200);
+              // Give the animation/layout time, then recalc once
+              setTimeout(sendGrooveHeight, 250);
             });
           });
         }, 400);
       }
 
+      // Initial sizing once everything has rendered
       window.addEventListener("load", function () {
-        // Initial sizing once everything has rendered
-        setTimeout(sendGrooveHeight, 200);
-        attachPlayerResizeTriggers();
+        setTimeout(sendGrooveHeight, 250);
+        hookPlayerToggle();
       });
 
-      // Handle orientation changes / responsive resizes
-      window.addEventListener("resize", function () {
-        setTimeout(sendGrooveHeight, 150);
-      });
+      // NOTE: no resize listener here on purpose.
+      // Changing iframe height in the parent triggers a resize event
+      // in the iframe; listening to it causes the infinite growth loop.
     </script>
   </body>
 </html>
