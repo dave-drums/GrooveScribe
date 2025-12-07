@@ -9,8 +9,7 @@
     <script src="./js/groove_display.js"></script>
 
     <style>
-      html,
-      body {
+      html, body {
         margin: 0;
         padding: 0;
         overflow: hidden;
@@ -18,38 +17,36 @@
     </style>
   </head>
   <body>
-    <!-- Render the embedded groove -->
     <script>
       GrooveDisplay.AddGrooveDisplayToPage(location.search, true, true);
     </script>
 
-    <!-- One-shot height measurement with generous buffer -->
     <script>
       function sendGrooveHeight() {
-        var h =
-          document.documentElement.scrollHeight ||
-          document.body.scrollHeight ||
+        var container = document.body;
+        var height =
+          container.scrollHeight ||
+          container.getBoundingClientRect().height ||
           0;
 
-        // GENEROUS buffer so expanded player never clips
-        // If you still see clipping, bump 120 up a bit.
-        h = Math.ceil(h) + 120;
+        height = Math.ceil(height) + 40; // padding for buttons etc.
 
         window.parent.postMessage(
           {
             type: "grooveHeight",
-            height: h
+            height: height,
           },
           "*"
         );
       }
 
-      // Measure once after everything has rendered
       window.addEventListener("load", function () {
-        setTimeout(sendGrooveHeight, 400);
+        setTimeout(sendGrooveHeight, 200);
       });
 
-      // No resize, no interval, no observers – avoids feedback loops
+      window.addEventListener("resize", function () {
+        setTimeout(sendGrooveHeight, 100);
+      });
     </script>
   </body>
 </html>
