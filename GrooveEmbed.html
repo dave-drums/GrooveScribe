@@ -35,6 +35,13 @@
   position: relative;
   top: 1px;                      /* micro-adjustment to match BPM label */
 }
+      /* OPTIONAL: Make the slider track thicker */
+#tempoAndProgress1 .tempoRow input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px !important;
+}
+#tempoAndProgress1 .tempoRow input[type="range"]::-moz-range-track {
+  height: 6px !important;
+}
     </style>
   </head>
   <body>
