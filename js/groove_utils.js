@@ -3327,13 +3327,21 @@ function GrooveUtils() {
 		newHTML +=	'<span class="tempoAndProgress" id="tempoAndProgress' + root.grooveUtilsUniqueIndex + '">' +
 			'			<div class="tempoRow">' +
 			'				<span class="tempoLabel">BPM</span>' +
-			'				<input type="text" for="tempo" class="tempoTextField" pattern="\\d+" id="tempoTextField' + root.grooveUtilsUniqueIndex + '" value="80"></input>' +
-			'				<input type=range min=30 max=300 value=90 class="tempoInput' + (root.is_touch_device() ? ' touch' : '') + '" id="tempoInput' + root.grooveUtilsUniqueIndex + '" list="tempoSettings">' +
+			  (expandable
+			'     <button type="button" class="tempoBtn tempoMinus" id="tempoMinus' + root.grooveUtilsUniqueIndex + '">−</button>' +
+			'     <input type="text" for="tempo" class="tempoTextField" pattern="\\d+" id="tempoTextField' + root.grooveUtilsUniqueIndex + '" value="80"></input>' +
+			'     <button type="button" class="tempoBtn tempoPlus" id="tempoPlus' + root.grooveUtilsUniqueIndex + '">+</button>'
+		)
+		: (
+			'     <input type="text" for="tempo" class="tempoTextField" pattern="\\d+" id="tempoTextField' + root.grooveUtilsUniqueIndex + '" value="80"></input>' +
+			'     <input type=range min=30 max=300 value=90 class="tempoInput' + (root.is_touch_device() ? ' touch' : '') + '" id="tempoInput' + root.grooveUtilsUniqueIndex + '" list="tempoSettings">'
+		)
+		) +
 			'			</div>' +
 			'			<div class="swingRow">' +
 			'				<span class="swingLabel">SWING</span>' +
-			'				<span for="swingAmount" class="swingOutput" id="swingOutput' + root.grooveUtilsUniqueIndex + '">0% swing</span>' +
-			'				<input type=range min=0 max=50 value=0 class="swingInput' + (root.is_touch_device() ? ' touch' : '') + '" id="swingInput' + root.grooveUtilsUniqueIndex + '" list="swingSettings" step=5 >' +
+			'     <span for="swingAmount" class="swingOutput" id="swingOutput' + root.grooveUtilsUniqueIndex + '">0% swing</span>' +
+			'     <input type=range min=0 max=50 value=0 class="swingInput' + (root.is_touch_device() ? ' touch' : '') + '" id="swingInput' + root.grooveUtilsUniqueIndex + '" list="swingSettings" step=5>' +
 			'			</div>' +
 			'       </span>';
 
