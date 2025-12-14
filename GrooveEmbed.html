@@ -89,19 +89,15 @@
       .gs-embed [id^="tempoAndProgress"] .tempoRow input[type="range"]{
         display:none !important;
       }
-
-      @media (max-width: 600px){
-        .gs-embed [id^="tempoAndProgress"] .bpmBtn{
-          width: 38px;
-          height: 38px;
-          font-size:13px;
-        }
-        .gs-embed [id^="tempoAndProgress"] .tempoTextField,
-        .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"]{
-          height:38px !important;
-          width:78px !important;
-        }
-      }
+@media (max-width: 600px){
+  .gs-embed [id^="tempoAndProgress"] .tempoTextField,
+  .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"]{
+    height:36px !important;
+    width:60px !important;
+    padding:0 6px !important;
+    font-size:15px !important;
+  }
+}
 
       /* Hide GrooveScribe logo button (inline SVG in your build) */
       .gs-embed .midiGSLogo,
@@ -152,10 +148,10 @@
           var btnWrap = document.createElement("span");
           btnWrap.className = "bpmBtns";
 
-          // Order: -1, -5, BPM ### (existing field), +5, +1
+          // Order: -5, BPM ### (existing field), +5
           btnWrap.innerHTML =
             '<span class="bpmBtn" data-d="-5">–5</span>' +
-            '<span class="bpmBtn" data-d="5">+5</span>' +
+            '<span class="bpmBtn" data-d="5">+5</span>';
 
           // Insert buttons right after the BPM field (keeps layout: -1 -5 [BPM] +5 +1)
           // If the BPM field is inside the row, insert buttons immediately after it.
