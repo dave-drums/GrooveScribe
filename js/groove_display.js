@@ -232,12 +232,19 @@ if (typeof(GrooveDisplay) === "undefined") {
 				var abcNotation = myGrooveUtils.createABCFromGrooveData(GrooveData, renderWidth);
 				// console.log(abcNotation);
 				var svgReturn = myGrooveUtils.renderABCtoSVG(abcNotation);
-
-				if (linkToEditor)
-					svgTarget.innerHTML = '<a style="text-decoration: none" href="http://groove.davedrums.com.au/' + GrooveDefinition + '">' + svgReturn.svg + '</a>';
-				else
+				
+				if (linkToEditor) {
+					var editorUrl = window.location.origin + '/' + GrooveDefinition; // keeps your current domain + https
+					svgTarget.innerHTML =
+						'<a style="text-decoration:none;display:inline-block" ' +
+						'href="' + editorUrl + '" target="_top" rel="noopener" ' +
+						'onclick="try{window.top.location.href=this.href;}catch(e){window.location.href=this.href;} return false;">' +
+						svgReturn.svg +
+						'</a>';
+				} else {
 					svgTarget.innerHTML = svgReturn.svg;
-			};
+				}
+				};
 
 			layoutFunction();
 
