@@ -111,22 +111,28 @@
 
           tempoRow.appendChild(btnWrap);
           
-          btnWrap.addEventListener("click", function(e){
-            var btn = e.target.closest(".bpmBtn");
-            if(!btn) return;
-            
-            var delta = parseInt(btn.dataset.d, 10);
-            
-            // Update the visible BPM field
-            var cur = parseInt(tempoField.value, 10) || 80;
-            var next = clamp(cur + delta, 30, 300);
-            
-            tempoField.value = next;
-            
-            // GrooveScribe listens to BOTH input and change in different modes
-            tempoField.dispatchEvent(new Event("input", { bubbles: true }));
-            tempoField.dispatchEvent(new Event("change", { bubbles: true }));
-          });
+btnWrap.addEventListener("click", function(e){
+  var btn = e.target.closest(".bpmBtn");
+  if(!btn) return;
+
+  var delta = parseInt(btn.dataset.d, 10) || 0;
+
+  // Figure out which instance we’re controlling (tempoTextField1 → tempoInput1)
+  var m = (tempoField.id || "").match(/tempoTextField(\d+)/);
+  var idx = m ? m[1] : "1";
+
+  var slider = document.getElementById("tempoInput" + idx);
+  if(!slider) return;
+
+  var cur = parseInt(slider.value, 10) || 80;
+  var next = clamp(cur + delta, 30, 300);
+
+  slider.value = next;
+
+  // This is the key: triggers GrooveScribe’s tempo update pipeline
+  slider.dispatchEvent(new Event("input", { bubbles: true }));
+});
+
 
 
         var tries = 0;
