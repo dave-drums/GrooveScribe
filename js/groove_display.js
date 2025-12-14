@@ -113,46 +113,6 @@ if (typeof(GrooveDisplay) === "undefined") {
 		root.loadjscssfile("../css/groove_display.css", "css");
 
 		root.GrooveDisplayUniqueCounter = 1;
-		
-		// =====================================================
-		// Embed-only: add +/- buttons to nudge tempo by 5 BPM
-		// Does NOT affect the main editor
-		// =====================================================
-		function addEmbedTempoNudgeButtons(grooveUtils){
-			var idx = grooveUtils.grooveUtilsUniqueIndex;
-			var tempoField = document.getElementById('tempoTextField' + idx);
-			if (!tempoField) return;
-			var tempoRow = tempoField.closest('.tempoRow');
-			if (!tempoRow) return;
-			
-			// Prevent double insertion
-			if (tempoRow.querySelector('.tempoNudge')) return;
-			function nudge(delta){
-				var t = grooveUtils.getTempo();
-				t = parseInt(t || '0', 10) + delta;
-				grooveUtils.setTempo(t);
-			}
-			var minusBtn = document.createElement('button');
-			minusBtn.type = 'button';
-			minusBtn.className = 'tempoBtn tempoNudge tempoMinus';
-			minusBtn.textContent = '–';
-			minusBtn.addEventListener('click', function(){
-				nudge(-5);
-			});
-			
-			var plusBtn = document.createElement('button');
-			plusBtn.type = 'button';
-			plusBtn.className = 'tempoBtn tempoNudge tempoPlus';
-			plusBtn.textContent = '+';
-			plusBtn.addEventListener('click', function(){
-				nudge(5);
-			});
-			
-			// Insert buttons around the BPM text field
-			tempoRow.insertBefore(minusBtn, tempoField);
-			tempoRow.insertBefore(plusBtn, tempoField.nextSibling);
-		}
-		// = END Embed-only: add +/- buttons to nudge tempo by 5 BPM =
 
 		// time signature looks like this  "4/4", "5/4", "6/8", etc
 		// Two numbers separated by a slash
