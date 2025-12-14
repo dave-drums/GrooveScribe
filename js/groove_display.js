@@ -237,8 +237,8 @@ if (typeof(GrooveDisplay) === "undefined") {
 					var editorUrl = window.location.origin + '/' + GrooveDefinition; // keeps your current domain + https
 					svgTarget.innerHTML =
 						'<a style="text-decoration:none;display:inline-block" ' +
-						'href="' + editorUrl + '" target="_top" rel="noopener" ' +
-						'onclick="try{window.top.location.href=this.href;}catch(e){window.location.href=this.href;} return false;">' +
+						'href="' + editorUrl + '" target="_blank" rel="noopener noreferrer" ' +
+						'onclick="window.open(this.href, \'_blank\', \'noopener\'); return false;">' +
 						svgReturn.svg +
 						'</a>';
 				} else {
