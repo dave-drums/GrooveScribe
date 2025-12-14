@@ -359,7 +359,7 @@ input[type=range]:active::-webkit-slider-thumb {
 }
 
 /* ======================================
-   Compact toolbar on mobile
+   Mobile fixes – stop toolbar clipping
    ====================================== */
 @media (max-width: 768px) {
 
@@ -378,19 +378,10 @@ input[type=range]:active::-webkit-slider-thumb {
     font-size: 22px;
   }
 
-  /* Timer (0:00) – reduce width + text size */
-  .midiTime,
-  .midiTimeText{
-    font-size: 14px;
-    min-width: 44px;
-    text-align: right;
-    margin-right: 4px;
+  /* IMPORTANT: remove forced min width that causes overflow on phones */
+  .playerControl.large{
+    min-width: 0;
   }
 
-  /* Tighten overall row padding */
-  .playerControlsRow{
-    padding-left: 2px;
-    padding-right: 2px;
-  }
+  /* Timer (0:00) – THIS is your*
 
-}
