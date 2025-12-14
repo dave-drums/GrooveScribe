@@ -43,33 +43,35 @@
         align-items:center !important;
         height:40px !important;
         padding:0 !important;
+        gap:8px !important; /* keeps –5 and +5 evenly spaced around BPM text */
       }
 
-      /* BPM input box */
+      /* BPM input: looks like plain text "BPM 105" but remains editable */
       .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"],
       .gs-embed [id^="tempoAndProgress"] .tempoTextField{
         background:transparent !important;
         color:inherit !important;
-        border:1px solid rgba(0,0,0,.25) !important;
-        border-radius:999px !important;
-        height:30px !important;
-        width:30px !important;
-        padding:0 6px !important;
-        text-align:center !important;
-        font-weight:600 !important;
-        font-size:14px !important;
+        border:0 !important;
+        border-radius:0 !important;
+        height:auto !important;
+        width:auto !important;
+        min-width:3ch !important;     /* enough for 3 digits */
+        padding:0 !important;
+        margin:0 !important;
+        text-align:left !important;   /* matches label flow */
+        font-weight:inherit !important;
+        font-size:15px !important;    /* match BPM label */
         outline:none !important;
-        box-sizing:border-box !important;
+        box-shadow:none !important;
+        appearance:textfield !important;
       }
-
-      /* Ensure the BPM label stays normal (not tiny/superscript) */
+/* Ensure the BPM label stays normal (not tiny/superscript) */
       .gs-embed [id^="tempoAndProgress"] .tempoLabel{
         font-size:15px !important;
         vertical-align:baseline !important;
-        margin:0 !important;
+        margin:0 2px 0 0 !important; /* "BPM " spacing */
       }
-
-      /* BPM buttons: outlined circles, play-button grey */
+/* BPM buttons: outlined circles, play-button grey */
       .gs-embed .bpmBtn{
         width:30px;
         height:30px;
@@ -86,9 +88,9 @@
         cursor:pointer;
         user-select:none;
         box-sizing:border-box;
-        margin:0 4px;
+        margin:0 !important; /* spacing handled by tempoRow gap */
       }
-      .gs-embed .bpmBtn:hover{ background:rgba(140,140,140,.08); }
+.gs-embed .bpmBtn:hover{ background:rgba(140,140,140,.08); }
       .gs-embed .bpmBtn:active{ background:rgba(140,140,140,.15); transform:translateY(1px); }
 
       @media (max-width:600px){
@@ -99,12 +101,10 @@
         }
         .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"],
         .gs-embed [id^="tempoAndProgress"] .tempoTextField{
-          height:34px !important;
-          width:40px !important;
-          padding:0 6px !important;
-          font-size:15px !important;
+          font-size:16px !important;  /* slightly larger on mobile */
+          min-width:3ch !important;
         }
-      }
+}
     </style>
   </head>
 
