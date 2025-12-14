@@ -359,17 +359,56 @@ input[type=range]:active::-webkit-slider-thumb {
 }
 
 /* ======================================
-   Mobile fixes – stop toolbar clipping
+   Mobile toolbar: prevent clipping/overlap
    ====================================== */
 @media (max-width: 768px) {
 
-  /* Play / repeat / expand buttons */
+  /* Allow the toolbar to shrink on phones */
+  .playerControl.large{
+    min-width: 0;
+  }
+
+  /* Let flex items actually shrink */
+  .tempoAndProgress,
+  .tempoRow,
+  .tempoInput{
+    min-width: 0;
+  }
+
+  /* Timer (0:00) – correct class */
+  .MIDIPlayTime{
+    width: 50px;
+    font-size: 18px;
+    line-height: 38px;
+    padding-top: 0;
+    margin-left: 4px;
+  }
+
+  /* BPM cluster tightening */
+  .tempoLabel{
+    width: 42px;
+    font-size: 13px;
+  }
+
+  .tempoTextField{
+    width: 26px;
+    font-size: 14px;
+    margin: 2px 4px 0 4px;
+  }
+
+  .tempoOutput{
+    width: 26px;
+    font-size: 13px;
+    padding-left: 4px;
+  }
+
+  /* Controls */
   .midiPlayImage,
   .midiRepeatImage,
   .midiExpandImage{
-    width: 38px;
-    height: 38px;
-    line-height: 38px;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
     font-size: 18px;
     margin: 4px;
   }
@@ -378,10 +417,9 @@ input[type=range]:active::-webkit-slider-thumb {
     font-size: 22px;
   }
 
-  /* IMPORTANT: remove forced min width that causes overflow on phones */
-  .playerControl.large{
-    min-width: 0;
+  /* Reduce side padding */
+  .playerControlsRow{
+    padding-left: 2px;
+    padding-right: 2px;
   }
-
-  /* Timer (0:00) – THIS is your*
-
+}
