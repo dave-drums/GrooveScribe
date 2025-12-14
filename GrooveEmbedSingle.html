@@ -20,7 +20,7 @@
         display: none !important;
       }
 
-      /* Centre BPM text + controls */
+      /* Centre BPM text + slider vertically */
       #tempoAndProgress1 .tempoRow {
         display: flex !important;
         align-items: center !important;
@@ -29,38 +29,38 @@
         padding-bottom: 0 !important;
       }
 
-      /* Hide BPM slider */
-      #tempoAndProgress1 .tempoRow input[type="range"] {
-        display: none !important;
-      }
-
       /* BPM button group */
-      #tempoAndProgress1 .bpmBtns {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        margin-left: 10px;
+      #tempoAndProgress1 .bpmBtns{
+        display:flex;
+        align-items:center;
+        gap:6px;
+        margin-left:10px;
       }
 
-      #tempoAndProgress1 .bpmBtn {
-        border: 1px solid rgba(0,0,0,.2);
-        background: #fff;
-        border-radius: 10px;
-        padding: 4px 8px;
-        font-size: 13px;
-        line-height: 1;
-        cursor: pointer;
-        user-select: none;
+      #tempoAndProgress1 .bpmBtn{
+        border:1px solid rgba(0,0,0,.2);
+        background:#fff;
+        border-radius:10px;
+        padding:4px 8px;
+        font-size:13px;
+        line-height:1;
+        cursor:pointer;
+        user-select:none;
       }
 
-      #tempoAndProgress1 .bpmBtn:active {
-        transform: translateY(1px);
+      #tempoAndProgress1 .bpmBtn:active{
+        transform:translateY(1px);
+      }
+
+      /* Hide BPM slider */
+      #tempoAndProgress1 .tempoRow input[type="range"]{
+        display:none !important;
       }
 
       @media (max-width: 600px){
         #tempoAndProgress1 .bpmBtn{
-          padding: 6px 10px;
-          font-size: 14px;
+          padding:6px 10px;
+          font-size:14px;
         }
       }
     </style>
@@ -81,73 +81,67 @@
     </script>
 
     <script>
-(function () {
-  function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+      (function(){
+        function clamp(n,min,max){ return Math.max(min,Math.min(max,n)); }
 
-  function injectBpmButtons() {
-    var wrap = document.getElementById("tempoAndProgress1");
-    if (!wrap) return;
+        function injectBpmButtons(){
+          var wrap = document.getElementById("tempoAndProgress1");
+          if(!wrap) return;
 
-    var tempoRow = wrap.querySelector(".tempoRow");
-    var tempoField =
-      wrap.querySelector('[id^="tempoTextField"]') ||
-      wrap.querySelector(".tempoTextField") ||
-      wrap.querySelector('input[type="text"]');
+          var tempoRow = wrap.querySelector(".tempoRow");
+          var tempoField =
+            wrap.querySelector('[id^="tempoTextField"]') ||
+            wrap.querySelector(".tempoTextField") ||
+            wrap.querySelector('input[type="text"]');
 
-    if (!tempoRow || !tempoField) return;
+          if(!tempoRow || !tempoField) return;
 
-    // Prevent duplicate injection
-    if (tempoRow.querySelector(".bpmBtns")) return;
+          if(tempoRow.querySelector(".bpmBtns")) return;
 
-    // Make BPM field display-like
-    tempoField.readOnly = true;
-    tempoField.style.cursor = "default";
+          tempoField.readOnly = true;
+          tempoField.style.cursor = "default";
 
-    var btnWrap = document.createElement("span");
-    btnWrap.className = "bpmBtns";
-    btnWrap.innerHTML = `
-      <span class="bpmBtn" data-d="-5">–5</span>
-      <span class="bpmBtn" data-d="-1">–</span>
-      <span class="bpmBtn" data-d="1">+</span>
-      <span class="bpmBtn" data-d="5">+5</span>
-    `;
+          var btnWrap = document.createElement("span");
+          btnWrap.className = "bpmBtns";
+          btnWrap.innerHTML =
+            '<span class="bpmBtn" data-d="-5">–5</span>' +
+            '<span class="bpmBtn" data-d="-1">–</span>' +
+            '<span class="bpmBtn" data-d="1">+</span>' +
+            '<span class="bpmBtn" data-d="5">+5</span>';
 
-    tempoRow.appendChild(btnWrap);
+          tempoRow.appendChild(btnWrap);
 
-    btnWrap.addEventListener("click", function (e) {
-      var btn = e.target.closest(".bpmBtn");
-      if (!btn) return;
+          btnWrap.addEventListener("click", function(e){
+            var btn = e.target.closest(".bpmBtn");
+            if(!btn) return;
 
-      var delta = parseInt(btn.dataset.d, 10) || 0;
-      
-// Find the actual hidden slider inside this player (IDs vary in Single)
-var slider = wrap.querySelector('input[type="range"]');
-if (!slider) return;
+            var delta = parseInt(btn.getAttribute("data-d"), 10) || 0;
 
-var cur = parseInt(slider.value, 10);
-if (Number.isNaN(cur)) cur = parseInt(tempoField.value, 10) || 80;
+            var slider = wrap.querySelector('input[type="range"]');
+            if(!slider) return;
 
-var next = clamp(cur + delta, 30, 300);
+            var cur = parseInt(slider.value, 10);
+            if(Number.isNaN(cur)) cur = parseInt(tempoField.value, 10) || 80;
 
-slider.value = String(next);
-tempoField.value = String(next);
+            var next = clamp(cur + delta, 30, 300);
 
-// Different builds listen to different events, so fire both
-slider.dispatchEvent(new Event("input", { bubbles: true }));
-slider.dispatchEvent(new Event("change", { bubbles: true }));
+            slider.value = String(next);
+            tempoField.value = String(next);
 
-  // Retry until GrooveScribe builds the player DOM
-  var tries = 0;
-  var iv = setInterval(function () {
-    tries++;
-    injectBpmButtons();
-    if (document.querySelector("#tempoAndProgress1 .bpmBtns") || tries > 80) {
-      clearInterval(iv);
-    }
-  }, 50);
-})();
-</script>
+            slider.dispatchEvent(new Event("input", { bubbles: true }));
+            slider.dispatchEvent(new Event("change", { bubbles: true }));
+          });
+        }
 
-    
+        var tries = 0;
+        var iv = setInterval(function(){
+          tries++;
+          injectBpmButtons();
+          if(document.querySelector("#tempoAndProgress1 .bpmBtns") || tries > 80){
+            clearInterval(iv);
+          }
+        }, 50);
+      })();
+    </script>
   </body>
 </html>
