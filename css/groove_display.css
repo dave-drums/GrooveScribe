@@ -357,3 +357,27 @@ input[type=range]:active::-webkit-slider-thumb {
 		display: none !important;
 	}
 }
+
+/* ======================================
+   Bigger controls on mobile (touch)
+   ====================================== */
+@media (max-width: 768px) {
+  .midiPlayImage,
+  .midiRepeatImage,
+  .midiExpandImage{
+    width: 56px;
+    height: 56px;
+    line-height: 56px;
+    font-size: 26px;
+    margin: 6px 6px;
+  }
+
+  .midiExpandImage{
+    font-size: 34px;
+  }
+
+  .playerControlsRow{
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
