@@ -28,6 +28,29 @@
   padding-bottom: 0 !important;
 }
 
+/* BPM button group */
+#tempoAndProgress1 .bpmBtns{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-left:10px;
+}
+
+#tempoAndProgress1 .bpmBtn{
+  border:1px solid rgba(0,0,0,.2);
+  background:#fff;
+  border-radius:10px;
+  padding:4px 8px;
+  font-size:13px;
+  line-height:1;
+  cursor:pointer;
+  user-select:none;
+}
+
+#tempoAndProgress1 .bpmBtn:active{
+  transform:translateY(1px);
+}
+
 /* EMBED ONLY: hide the BPM slider entirely (keep BPM text field visible) */
 #tempoAndProgress1 .tempoRow input[type="range"]{
   display:none !important;
@@ -38,7 +61,57 @@
     <script>
       GrooveDisplay.AddGrooveDisplayToPage(location.search, true, true);
     </script>
-
+    
+    <script>
+      (function(){
+        function clamp(n,min,max){ return Math.max(min,Math.min(max,n)); }
+        function injectBpmButtons(){
+          var wrap = document.getElementById("tempoAndProgress1");
+          if(!wrap) return;
+          
+          var tempoRow = wrap.querySelector(".tempoRow");
+          var tempoField = document.getElementById("tempoTextField1");
+          if(!tempoRow || !tempoField) return;
+          
+          // Prevent duplicate injection
+          if(tempoRow.querySelector(".bpmBtns")) return;
+          
+          // Make BPM field display-like
+          tempoField.readOnly = true;
+          tempoField.style.cursor = "default";
+          
+          var btnWrap = document.createElement("span");
+          btnWrap.className = "bpmBtns";
+          btnWrap.innerHTML = `
+          <span class="bpmBtn" data-d="-5">–5</span>
+          <span class="bpmBtn" data-d="-1">–</span>
+          <span class="bpmBtn" data-d="1">+</span>
+          <span class="bpmBtn" data-d="5">+5</span>
+          `;
+          
+          tempoRow.appendChild(btnWrap);
+          
+          btnWrap.addEventListener("click", function(e){
+            var btn = e.target.closest(".bpmBtn");
+            if(!btn || !window.GrooveUtils) return;
+            
+            var delta = parseInt(btn.dataset.d,10);
+            var cur = GrooveUtils.getTempo();
+            GrooveUtils.setTempo(clamp(cur + delta, 30, 300));
+          });
+        }
+        
+        // GrooveScribe builds UI async — retry briefly
+        var tries = 0;
+        var iv = setInterval(function(){
+          injectBpmButtons();
+          if(document.querySelector(".bpmBtns") || ++tries > 40){
+            clearInterval(iv);
+          }
+        }, 50);
+      })();
+    </script>
+    
     <script>
       function sendGrooveHeight() {
         var container = document.body;
