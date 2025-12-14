@@ -35,6 +35,13 @@
   position: relative;
   top: 1px;                      /* micro-adjustment to match BPM label */
 }
+   /* Hides BPM slider on mobile only */   
+      @media (max-width: 768px){
+  #tempoAndProgress1 .tempoInput{
+    display: none !important;
+  }
+}
+
     </style>
   </head>
   <body>
