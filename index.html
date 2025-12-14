@@ -38,12 +38,19 @@
 				font-family: "Mulish", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
 			}
 			/* Preserve FontAwesome icons */
+			#GrooveWriter #midiPlayer i,
+			#GrooveWriter #midiPlayer .fa,
+			#GrooveWriter #midiPlayer [class^="fa-"],
+			#GrooveWriter #midiPlayer [class*=" fa-"],
 			#GrooveWriter .fa,
 			#GrooveWriter i.fa,
 			#GrooveWriter [class^="fa-"],
 			#GrooveWriter [class*=" fa-"]{
 				font-family: FontAwesome !important;
 			}
+			/* Remove Help button and its dropdown menu in the top nav */
+			#helpAnchor{ display:none !important; }
+			#helpContextMenu{ display:none !important; }
 		</style>
 
 		<!--   Other peoples JS libraries    -->
