@@ -28,12 +28,9 @@
   padding-bottom: 0 !important;
 }
 
-/* Remove the built-in vertical offset of the slider */
-#tempoAndProgress1 .tempoRow input[type="range"] {
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  position: relative;
-  top: 1px;                      /* micro-adjustment to match BPM label */
+/* EMBED ONLY: hide the BPM slider entirely (keep BPM text field visible) */
+#tempoAndProgress1 .tempoRow input[type="range"]{
+  display:none !important;
 }
     </style>
   </head>
