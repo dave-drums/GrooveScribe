@@ -69,7 +69,16 @@
         margin:0 !important;
       }
 
-      /* BPM buttons: outlined circles, play-button grey */
+      
+      /* Wrap for –5/+5 so spacing is controlled as a pair */
+      .gs-embed [id^="tempoAndProgress"] .bpmBtns{
+        display:inline-flex;
+        align-items:center;
+        gap:6px;
+        margin-left:10px;
+      }
+
+/* BPM buttons: outlined circles, play-button grey */
       .gs-embed .bpmBtn{
         width:30px;
         height:30px;
@@ -86,7 +95,7 @@
         cursor:pointer;
         user-select:none;
         box-sizing:border-box;
-        margin:0 4px;
+        margin:0;
       }
       .gs-embed .bpmBtn:hover{ background:rgba(140,140,140,.08); }
       .gs-embed .bpmBtn:active{ background:rgba(140,140,140,.15); transform:translateY(1px); }
@@ -132,18 +141,15 @@
             var tempoField = wrap.querySelector('input[id^="tempoTextField"], .tempoTextField');
             if(!tempoRow || !tempoField) return;
 
-            // If GS re-renders, tempoRow may change; guard per-row instance
-            if(tempoRow.querySelector(".bpmBtns")) return;
+            // guard against duplicates
+            if(tempoRow.dataset.bpmInjected === "1") return;
+            tempoRow.dataset.bpmInjected = "1";
 
-            // Clean up any stray buttons from earlier buggy injections
-            tempoRow.querySelectorAll(".bpmBtn").forEach(function(el){
-              if(!el.closest(".bpmBtns")) el.remove();
-            });
+            // Make sure typing still works
+            tempoField.readOnly = false;
+            tempoField.style.cursor = "text";
 
-            // Create wrapper and buttons
-            var btnWrap = document.createElement("span");
-            btnWrap.className = "bpmBtns";
-
+            // Create buttons
             var minusBtn = document.createElement("span");
             minusBtn.className = "bpmBtn";
             minusBtn.textContent = "–5";
@@ -154,42 +160,37 @@
             plusBtn.textContent = "+5";
             plusBtn.dataset.d = "5";
 
-            btnWrap.appendChild(minusBtn);
-            btnWrap.appendChild(plusBtn);
-
-            // Insert buttons immediately after the BPM input
-            if(tempoField.parentNode === tempoRow){
-              tempoRow.insertBefore(btnWrap, tempoField.nextSibling);
+            // Insert: –5  BPM  [###]  +5
+            var bpmLabel = wrap.querySelector(".tempoLabel");
+            if(bpmLabel && bpmLabel.parentNode === tempoRow){
+              tempoRow.insertBefore(minusBtn, bpmLabel);
             }else{
-              tempoRow.appendChild(btnWrap);
+              tempoRow.insertBefore(minusBtn, tempoField);
             }
+            tempoRow.insertBefore(plusBtn, tempoField.nextSibling);
 
-            // Attach click handler once per row
-            if(tempoRow.dataset.bpmListener !== "1"){
-              tempoRow.dataset.bpmListener = "1";
-              tempoRow.addEventListener("click", function(e){
-                var btn = e.target.closest(".bpmBtn");
-                if(!btn) return;
+            // Click handling (delegate)
+            tempoRow.addEventListener("click", function(e){
+              var btn = e.target.closest(".bpmBtn");
+              if(!btn) return;
 
-                var delta = parseInt(btn.dataset.d, 10) || 0;
+              var delta = parseInt(btn.dataset.d, 10) || 0;
 
-                var slider = wrap.querySelector('input[type="range"]');
-                if(!slider) return;
+              var slider = wrap.querySelector('input[type="range"]');
+              if(!slider) return;
 
-                var cur = parseInt(slider.value, 10);
-                if(Number.isNaN(cur)) cur = parseInt(tempoField.value, 10) || 80;
+              var cur = parseInt(slider.value, 10);
+              if(Number.isNaN(cur)) cur = parseInt(tempoField.value, 10) || 80;
 
-                var next = clamp(cur + delta, 30, 300);
+              var next = clamp(cur + delta, 30, 300);
 
-                slider.value = String(next);
-                tempoField.value = String(next);
+              slider.value = String(next);
+              tempoField.value = String(next);
 
-                slider.dispatchEvent(new Event("input", { bubbles:true }));
-                slider.dispatchEvent(new Event("change", { bubbles:true }));
-              });
-            }
+              slider.dispatchEvent(new Event("input", { bubbles:true }));
+              slider.dispatchEvent(new Event("change", { bubbles:true }));
+            });
           });
-
         }
 
         // GS renders async; retry briefly
