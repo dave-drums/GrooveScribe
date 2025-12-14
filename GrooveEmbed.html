@@ -43,10 +43,7 @@
         align-items:center !important;
         height:40px !important;
         padding:0 !important;
-        justify-content:flex-start !important;
-        flex-wrap:nowrap !important;
-        gap:8px !important;
-}
+      }
 
       /* BPM input box */
       .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"],
@@ -109,16 +106,40 @@
         }
       }
     
-      /* Prevent BPM cluster from stretching (keeps –5 and +5 equally close) */
-      .gs-embed [id^="tempoAndProgress"] .tempoLabel,
-      .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"],
-      .gs-embed [id^="tempoAndProgress"] .tempoTextField,
-      .gs-embed [id^="tempoAndProgress"] .bpmBtn{
-        flex:0 0 auto !important;
-      }
+      /* --- BPM input should look like plain text (no outline/pill) --- */
       .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"],
       .gs-embed [id^="tempoAndProgress"] .tempoTextField{
-        display:inline-block !important;
+        border:0 !important;
+        border-radius:0 !important;
+        background:transparent !important;
+        box-shadow:none !important;
+        padding:0 !important;
+        margin:0 !important;
+        width:auto !important;
+        min-width:0 !important;
+        height:auto !important;
+        line-height:inherit !important;
+        font-weight:inherit !important;
+        text-align:left !important;
+        appearance:none !important;
+        -webkit-appearance:none !important;
+        outline:none !important;
+      }
+      .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"]:focus{
+        outline:none !important;
+        box-shadow:none !important;
+      }
+
+      /* --- Match your 2nd screenshot: keep BPM cluster tight and left-aligned --- */
+      .gs-embed [id^="tempoAndProgress"] .tempoRow{
+        justify-content:flex-start !important;
+        gap:6px !important;
+      }
+      .gs-embed [id^="tempoAndProgress"] .tempoLabel{
+        margin:0 2px 0 0 !important;
+      }
+      .gs-embed [id^="tempoAndProgress"] .bpmBtn{
+        margin:0 !important; /* spacing comes from gap */
       }
 </style>
   </head>
