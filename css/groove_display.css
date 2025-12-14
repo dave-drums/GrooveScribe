@@ -370,12 +370,11 @@ input[type=range]:active::-webkit-slider-thumb {
 
   /* Let flex items actually shrink */
   .tempoAndProgress,
-  .tempoRow,
-  .tempoInput{
+  .tempoRow{
     min-width: 0;
   }
 
-  /* Timer (0:00) – correct class */
+  /* Timer (0:00) */
   .MIDIPlayTime{
     width: 50px;
     font-size: 18px;
@@ -384,7 +383,7 @@ input[type=range]:active::-webkit-slider-thumb {
     margin-left: 4px;
   }
 
-  /* BPM cluster tightening */
+  /* BPM cluster */
   .tempoLabel{
     width: 42px;
     font-size: 13px;
@@ -393,16 +392,10 @@ input[type=range]:active::-webkit-slider-thumb {
   .tempoTextField{
     width: 26px;
     font-size: 14px;
-    margin: 2px 4px 0 4px;
+    margin: 2px 4px;
   }
 
-  .tempoOutput{
-    width: 26px;
-    font-size: 13px;
-    padding-left: 4px;
-  }
-
-  /* Controls */
+  /* Transport controls */
   .midiPlayImage,
   .midiRepeatImage,
   .midiExpandImage{
@@ -424,7 +417,25 @@ input[type=range]:active::-webkit-slider-thumb {
   }
 }
 
-/* Hide BPM slider on mobile */
+/* Hide BPM slider on mobile (embed only) */
 .tempoInput{
   display: none !important;
 }
+
+/* Embed-only tempo buttons */
+.tempoBtn{
+  border: 1px solid rgba(0,0,0,.15);
+  background: rgba(255,255,255,.65);
+  border-radius: 10px;
+  padding: 6px 12px;
+  line-height: 1;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.tempoBtn:active{
+  transform: scale(0.98);
+}
+
+.tempoMinus{ margin-right: 8px; }
+.tempoPlus{ margin-left: 8px; }
