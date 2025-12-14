@@ -47,8 +47,8 @@
         gap:10px;
         margin-left:4px;
       }
-
-.gs-embed [id^="tempoAndProgress"] .bpmBtn{
+      
+      .gs-embed [id^="tempoAndProgress"] .bpmBtn{
         width:32px;
         height:32px;
         border-radius:999px;
@@ -73,8 +73,8 @@
           height:32px;
         }
       }
-
-.gs-embed [id^="tempoAndProgress"] .bpmBtn:hover{
+      
+      .gs-embed [id^="tempoAndProgress"] .bpmBtn:hover{
         background:rgba(140,140,140,.08);
       }
 
@@ -88,24 +88,16 @@
         font-size:16px !important;
         font-weight:700 !important;
         line-height:1 !important;
-      }
-
       /* Align BPM number with "BPM" text baseline */
-      .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"],
-      .gs-embed [id^="tempoAndProgress"] .tempoTextField{
         vertical-align:baseline !important;
         position:relative;
         top:-2px; /* adjust -1px or -2px if needed */
-      }
-
       /* Prevent BPM number side clipping */
-      .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"],
-      .gs-embed [id^="tempoAndProgress"] .tempoTextField{
           padding-top: 1px !important;
         padding-bottom: 1px !important;
         padding-left: 2px !important;
         padding-right: 2px !important;
-        min-width: 3ch !important; /* 
+        min-width: 3ch !important;
       }
 
       
@@ -156,9 +148,23 @@
           // Prevent duplicate injection per instance
           if(tempoRow.querySelector(".bpmBtns")) return;
 
-          // Make BPM field display-like (buttons are the control)
+          // Make BPM field editable (text + buttons both control tempo)
           tempoField.readOnly = false;
           tempoField.style.cursor = "text";
+          
+          // Forward typed BPM changes to the hidden slider (GS source of truth)
+          tempoField.addEventListener("change", function(){
+            var slider = wrap.querySelector('input[type="range"]');
+            if(!slider) return;
+            var v = parseInt(tempoField.value, 10);
+            if(Number.isNaN(v)) return;
+            v = clamp(v, 30, 300);
+            slider.value = String(v);
+            tempoField.value = String(v);
+            
+            slider.dispatchEvent(new Event("input", { bubbles:true }));
+            slider.dispatchEvent(new Event("change", { bubbles:true }));
+          });
 
           var btnWrap = document.createElement("span");
           btnWrap.className = "bpmBtns";
