@@ -45,8 +45,8 @@
       .gs-embed [id^="tempoAndProgress"] .bpmBtns{
         display:inline-flex;
         align-items:center;
-        gap:6px;
-        margin-left:10px;
+        gap:7px;
+        margin-left:7px;
       }
 
 .gs-embed [id^="tempoAndProgress"] .bpmBtn{
@@ -91,6 +91,17 @@
         position:relative;
         top:-1px; /* adjust -1px or -2px if needed */
       }
+
+      /* Prevent BPM number side clipping */
+      .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"],
+      .gs-embed [id^="tempoAndProgress"] .tempoTextField{
+          padding-top: 1px !important;
+        padding-bottom: 1px !important;
+        padding-left: 2px !important;
+        padding-right: 2px !important;
+        min-width: 3ch !important; /* fits 3 digits comfortably */
+      }
+
       
       /* Hide the BPM slider entirely (we drive it programmatically) */
       .gs-embed [id^="tempoAndProgress"] .tempoRow input[type="range"]{
