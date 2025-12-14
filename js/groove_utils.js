@@ -2543,7 +2543,6 @@ function GrooveUtils() {
 					break;
 				case constant_ABC_HH_Open: // open
 					hh_note = constant_OUR_MIDI_HIHAT_OPEN;
-						  hh_velocity = **60**;
 					break;
 				case constant_ABC_HH_Ride: // ride
 					hh_note = constant_OUR_MIDI_HIHAT_RIDE;
