@@ -8,6 +8,9 @@
 
     <script src="./js/groove_display.js"></script>
 
+    <!-- Font (Mulish = modern Muli replacement) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700&display=swap">
+
     <style>
       html, body {
         margin: 0;
@@ -15,7 +18,12 @@
         overflow: hidden;
       }
 
-      /* Remove SWING row */
+      
+      /* Embed-only font */
+      .gs-embed, .gs-embed *{
+        font-family:"Mulish", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+/* Remove SWING row */
       .swingRow {
         display: none !important;
       }
@@ -37,21 +45,33 @@
 
       /* BPM button group */
       .gs-embed [id^="tempoAndProgress"] .bpmBtns{
-        display:flex;
+        display:inline-flex;
         align-items:center;
         gap:6px;
         margin-left:10px;
       }
 
-      .gs-embed [id^="tempoAndProgress"] .bpmBtn{
-        border:1px solid rgba(0,0,0,.2);
-        background:#fff;
-        border-radius:10px;
-        padding:4px 8px;
+.gs-embed [id^="tempoAndProgress"] .bpmBtn{
+        width:30px;
+        height:30px;
+        border-radius:999px;
+        background:transparent;
+        border:1px solid #8c8c8c;
+        color:#8c8c8c;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
         font-size:13px;
+        font-weight:600;
         line-height:1;
         cursor:pointer;
         user-select:none;
+        box-sizing:border-box;
+        margin:0;
+      }
+
+.gs-embed [id^="tempoAndProgress"] .bpmBtn:hover{
+        background:rgba(140,140,140,.08);
       }
 
       .gs-embed [id^="tempoAndProgress"] .bpmBtn:active{
@@ -65,9 +85,11 @@
 
       @media (max-width: 600px){
         .gs-embed [id^="tempoAndProgress"] .bpmBtn{
-          padding:6px 10px;
-          font-size:14px;
+          width:32px;
+          height:32px;
+          font-size:12px;
         }
+      }
       }
 
       /* Hide GrooveScribe logo button (inline SVG in your build) */
@@ -120,8 +142,6 @@
           btnWrap.className = "bpmBtns";
           btnWrap.innerHTML =
             '<span class="bpmBtn" data-d="-5">–5</span>' +
-            '<span class="bpmBtn" data-d="-1">–</span>' +
-            '<span class="bpmBtn" data-d="1">+</span>' +
             '<span class="bpmBtn" data-d="5">+5</span>';
 
           tempoRow.appendChild(btnWrap);
