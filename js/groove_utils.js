@@ -70,7 +70,7 @@ var constant_ABC_OFF = false;
 
 var constant_OUR_MIDI_VELOCITY_NORMAL = 85;
 var constant_OUR_MIDI_VELOCITY_ACCENT = 120;
-var constant_OUR_MIDI_VELOCITY_GHOST = 50;
+var constant_OUR_MIDI_VELOCITY_GHOST = 65;
 var constant_OUR_MIDI_METRONOME_1 = 76;
 var constant_OUR_MIDI_METRONOME_NORMAL = 77;
 var constant_OUR_MIDI_HIHAT_NORMAL = 42;
@@ -2543,6 +2543,7 @@ function GrooveUtils() {
 					break;
 				case constant_ABC_HH_Open: // open
 					hh_note = constant_OUR_MIDI_HIHAT_OPEN;
+						  hh_velocity = **60**;
 					break;
 				case constant_ABC_HH_Ride: // ride
 					hh_note = constant_OUR_MIDI_HIHAT_RIDE;
