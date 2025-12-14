@@ -121,7 +121,7 @@
             var next = clamp(cur + delta, 30, 300);
             
             tempoField.value = next;
-            tempoField.dispatchEvent(new Event("change", { bubbles: true }));
+            tempoField.dispatchEvent(new Event("input", { bubbles: true }));
           });
 
         var tries = 0;
