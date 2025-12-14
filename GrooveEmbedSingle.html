@@ -117,22 +117,17 @@
             
             var delta = parseInt(btn.dataset.d, 10);
             
-            // Derive the correct instance index from the actual field id (eg tempoTextField2)
-            var m = (tempoField.id || "").match(/tempoTextField(\d+)/);
-            var idx = m ? parseInt(m[1], 10) : null;
-
+            // Update the visible BPM field
             var cur = parseInt(tempoField.value, 10) || 80;
             var next = clamp(cur + delta, 30, 300);
-
-            if(window.GrooveUtils && typeof GrooveUtils.setTempo === "function" && idx !== null){
-              GrooveUtils.grooveUtilsUniqueIndex = idx;   // critical line
-              GrooveUtils.setTempo(next);
-            } else {
-              // fallback (should rarely be needed)
-              tempoField.value = next;
-              tempoField.dispatchEvent(new Event("change", { bubbles: true }));
-            }
+            
+            tempoField.value = next;
+            
+            // GrooveScribe listens to BOTH input and change in different modes
+            tempoField.dispatchEvent(new Event("input", { bubbles: true }));
+            tempoField.dispatchEvent(new Event("change", { bubbles: true }));
           });
+
 
         var tries = 0;
         var iv = setInterval(function(){
