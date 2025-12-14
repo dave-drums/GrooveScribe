@@ -14,134 +14,21 @@
         padding: 0;
         overflow: hidden;
       }
-
-      /* Remove SWING row */
-      .swingRow {
-        display: none !important;
-      }
-
-      /* Centre BPM text + slider vertically */
-      #tempoAndProgress1 .tempoRow {
-        display: flex !important;
-        align-items: center !important;
-        height: 40px !important;
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-      }
-
-      /* BPM button group */
-      #tempoAndProgress1 .bpmBtns{
-        display:flex;
-        align-items:center;
-        gap:6px;
-        margin-left:10px;
-      }
-
-      #tempoAndProgress1 .bpmBtn{
-        border:1px solid rgba(0,0,0,.2);
-        background:#fff;
-        border-radius:10px;
-        padding:4px 8px;
-        font-size:13px;
-        line-height:1;
-        cursor:pointer;
-        user-select:none;
-      }
-
-      #tempoAndProgress1 .bpmBtn:active{
-        transform:translateY(1px);
-      }
-
-      /* Hide BPM slider */
-      #tempoAndProgress1 .tempoRow input[type="range"]{
-        display:none !important;
-      }
-
-      @media (max-width: 600px){
-        #tempoAndProgress1 .bpmBtn{
-          padding:6px 10px;
-          font-size:14px;
-        }
-      }
+      /* Remove SWING row if it appears */
+      .swingRow { display: none !important; }
     </style>
   </head>
-
   <body>
     <h1>Example 1</h1>
-    This is an example page. I want to talk about the first groove and what it is useful for.
-    <br>
+    <p>This is an example page. I want to talk about the first groove and what it is useful for.</p>
 
     <script>
       GrooveDisplay.AddGrooveDisplayToPage(
         'Mode=view&TimeSig=4/4&Div=16&Tempo=80&Measures=3&MetronomeFreq=4&H=|----------------|----------------|----------------|&S=|OooOooOooOooOooO|ooOooOooOooOooOo|oOooOooOooOooOoo|&K=|----------------|----------------|----------------|&Stickings=|RLRLRLRLRLRLRLRL|RLRLRLRLRLRLRLRL|RLRLRLRLRLRLRLRL|',
         true,
         true,
-        false
+        true
       );
-    </script>
-
-    <script>
-      (function(){
-        function clamp(n,min,max){ return Math.max(min,Math.min(max,n)); }
-
-        function injectBpmButtons(){
-          var wrap = document.getElementById("tempoAndProgress1");
-          if(!wrap) return;
-
-          var tempoRow = wrap.querySelector(".tempoRow");
-          var tempoField =
-            wrap.querySelector('[id^="tempoTextField"]') ||
-            wrap.querySelector(".tempoTextField") ||
-            wrap.querySelector('input[type="text"]');
-
-          if(!tempoRow || !tempoField) return;
-
-          if(tempoRow.querySelector(".bpmBtns")) return;
-
-          tempoField.readOnly = true;
-          tempoField.style.cursor = "default";
-
-          var btnWrap = document.createElement("span");
-          btnWrap.className = "bpmBtns";
-          btnWrap.innerHTML =
-            '<span class="bpmBtn" data-d="-5">–5</span>' +
-            '<span class="bpmBtn" data-d="-1">–</span>' +
-            '<span class="bpmBtn" data-d="1">+</span>' +
-            '<span class="bpmBtn" data-d="5">+5</span>';
-
-          tempoRow.appendChild(btnWrap);
-
-          btnWrap.addEventListener("click", function(e){
-            var btn = e.target.closest(".bpmBtn");
-            if(!btn) return;
-
-            var delta = parseInt(btn.getAttribute("data-d"), 10) || 0;
-
-            var slider = wrap.querySelector('input[type="range"]');
-            if(!slider) return;
-
-            var cur = parseInt(slider.value, 10);
-            if(Number.isNaN(cur)) cur = parseInt(tempoField.value, 10) || 80;
-
-            var next = clamp(cur + delta, 30, 300);
-
-            slider.value = String(next);
-            tempoField.value = String(next);
-
-            slider.dispatchEvent(new Event("input", { bubbles: true }));
-            slider.dispatchEvent(new Event("change", { bubbles: true }));
-          });
-        }
-
-        var tries = 0;
-        var iv = setInterval(function(){
-          tries++;
-          injectBpmButtons();
-          if(document.querySelector("#tempoAndProgress1 .bpmBtns") || tries > 80){
-            clearInterval(iv);
-          }
-        }, 50);
-      })();
     </script>
   </body>
 </html>
