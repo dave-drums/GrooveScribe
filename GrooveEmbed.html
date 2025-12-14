@@ -17,9 +17,11 @@
         overflow: hidden;
       }
       
-      .gs-embed{
-        font-family: "Mulish", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      }
+.gs-embed,
+.gs-embed *{
+  font-family: "Mulish", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
 
       /* Remove SWING row */
       .swingRow {
@@ -151,18 +153,28 @@
           btnWrap.className = "bpmBtns";
 
           // Order: -5, BPM ### (existing field), +5
-          btnWrap.innerHTML =
-            '<span class="bpmBtn" data-d="-5">–5</span>' +
-            '<span class="bpmBtn" data-d="5">+5</span>';
+btnWrap.innerHTML =
+  '<span class="bpmBtn" data-d="-5">–5</span>' +
+  '<span class="bpmBtn" data-d="5">+5</span>';
 
-          // Insert buttons right after the BPM field (keeps layout: -1 -5 [BPM] +5 +1)
-          // If the BPM field is inside the row, insert buttons immediately after it.
-          if (tempoField.parentNode === tempoRow) {
-            tempoRow.insertBefore(btnWrap, tempoField.nextSibling);
-          } else {
-            // Fallback: append to row
-            tempoRow.appendChild(btnWrap);
-          }
+// Find the BPM label (the "BPM" text) if present
+var bpmLabel = wrap.querySelector(".tempoLabel");
+
+// Insert –5 BEFORE the BPM label (or before the input if label not found)
+if (bpmLabel && bpmLabel.parentNode === tempoRow) {
+  tempoRow.insertBefore(btnWrap.children[0], bpmLabel);
+} else if (tempoField.parentNode === tempoRow) {
+  tempoRow.insertBefore(btnWrap.children[0], tempoField);
+} else {
+  tempoRow.insertBefore(btnWrap.children[0], tempoRow.firstChild);
+}
+
+// Insert +5 AFTER the BPM input
+if (tempoField.parentNode === tempoRow) {
+  tempoRow.insertBefore(btnWrap.children[0], tempoField.nextSibling);
+} else {
+  tempoRow.appendChild(btnWrap.children[0]);
+}
 
           btnWrap.addEventListener("click", function(e){
             var btn = e.target.closest(".bpmBtn");
