@@ -89,56 +89,66 @@
           if(!wrap) return;
 
           var tempoRow = wrap.querySelector(".tempoRow");
+          if(!tempoRow) return;
+
+          // Prevent duplicate injection
+          if(tempoRow.querySelector(".bpmBtns")) return;
+
+          // Try to find the BPM text field (different builds use different IDs/classes)
           var tempoField =
             wrap.querySelector('[id^="tempoTextField"]') ||
             wrap.querySelector(".tempoTextField") ||
             wrap.querySelector('input[type="text"]');
 
-          if(!tempoRow || !tempoField) return;
-          if(tempoRow.querySelector(".bpmBtns")) return;
+          if(!tempoField) return;
 
+          // Make BPM field display-like
           tempoField.readOnly = true;
           tempoField.style.cursor = "default";
 
           var btnWrap = document.createElement("span");
           btnWrap.className = "bpmBtns";
-          btnWrap.innerHTML = `
-            <span class="bpmBtn" data-d="-5">–5</span>
-            <span class="bpmBtn" data-d="-1">–</span>
-            <span class="bpmBtn" data-d="1">+</span>
-            <span class="bpmBtn" data-d="5">+5</span>
-          `;
+          btnWrap.innerHTML = [
+            '<span class="bpmBtn" data-d="-5">–5</span>',
+            '<span class="bpmBtn" data-d="-1">–</span>',
+            '<span class="bpmBtn" data-d="1">+</span>',
+            '<span class="bpmBtn" data-d="5">+5</span>'
+          ].join("");
 
           tempoRow.appendChild(btnWrap);
-          
-btnWrap.addEventListener("click", function(e){
-  var btn = e.target.closest(".bpmBtn");
-  if(!btn) return;
 
-  var delta = parseInt(btn.dataset.d, 10) || 0;
+          btnWrap.addEventListener("click", function(e){
+            var btn = e.target.closest(".bpmBtn");
+            if(!btn) return;
 
-  // Figure out which instance we’re controlling (tempoTextField1 → tempoInput1)
-  var m = (tempoField.id || "").match(/tempoTextField(\d+)/);
-  var idx = m ? m[1] : "1";
+            var delta = parseInt(btn.getAttribute("data-d"), 10) || 0;
 
-  var slider = document.getElementById("tempoInput" + idx);
-  if(!slider) return;
+            // Best: drive the hidden slider (it’s always wired to tempo updates)
+            var slider =
+              wrap.querySelector('input[type="range"]') ||
+              document.getElementById("tempoInput1") ||
+              document.getElementById("tempoSlider1");
 
-  var cur = parseInt(slider.value, 10) || 80;
-  var next = clamp(cur + delta, 30, 300);
+            if(!slider) return;
 
-  slider.value = next;
+            var cur = parseInt(slider.value, 10);
+            if(Number.isNaN(cur)) cur = parseInt(tempoField.value, 10) || 80;
 
-  // This is the key: triggers GrooveScribe’s tempo update pipeline
-  slider.dispatchEvent(new Event("input", { bubbles: true }));
-});
+            var next = clamp(cur + delta, 30, 300);
 
+            slider.value = String(next);
 
+            // Trigger whatever listeners are attached in this build
+            slider.dispatchEvent(new Event("input", { bubbles: true }));
+            slider.dispatchEvent(new Event("change", { bubbles: true }));
+          });
+        }
 
+        // GrooveScribe builds UI async — retry briefly
         var tries = 0;
         var iv = setInterval(function(){
           injectBpmButtons();
-          if(document.querySelector(".bpmBtns") || ++tries > 40){
+          if(document.querySelector("#tempoAndProgress1 .bpmBtns") || ++tries > 80){
             clearInterval(iv);
           }
         }, 50);
