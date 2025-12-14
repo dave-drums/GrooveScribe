@@ -64,9 +64,12 @@
         }
       }
       
-      /* EMBED ONLY: hide GrooveScribe logo button */
-      #tempoAndProgress1 .midiGSLogo{
-        display:none !important;
+/* EMBED ONLY: hide GrooveScribe logo button */
+.midiGSLogo,
+[id^="midiGSLogo"]{
+  display:none !important;
+  pointer-events:none !important;
+}
       }
     </style>
   </head>
