@@ -423,3 +423,8 @@ input[type=range]:active::-webkit-slider-thumb {
     padding-right: 2px;
   }
 }
+
+/* Hide BPM slider on mobile */
+.tempoInput{
+  display: none !important;
+}
