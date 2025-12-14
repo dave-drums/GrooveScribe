@@ -29,9 +29,7 @@
       }
 
       /* ===========================
-         EMBED-ONLY SCALABLE STYLES
-         Targets ALL instances:
-         tempoAndProgress1, 2, 3...
+         EMBEDDED PLAYER STYLES
          =========================== */
 
       /* Centre BPM row vertically */
@@ -78,6 +76,22 @@
         transform:translateY(1px);
       }
 
+      /* Style BPM number (###) only */
+      .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"],
+      .gs-embed [id^="tempoAndProgress"] .tempoTextField{
+        font-size:15px !important;
+        font-weight:700 !important;
+        line-height:1 !important;
+      }
+
+      /* Align BPM number with "BPM" text baseline */
+      .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"],
+      .gs-embed [id^="tempoAndProgress"] .tempoTextField{
+        vertical-align:baseline !important;
+        position:relative;
+        top:-1px; /* adjust -1px or -2px if needed */
+      }
+      
       /* Hide the BPM slider entirely (we drive it programmatically) */
       .gs-embed [id^="tempoAndProgress"] .tempoRow input[type="range"]{
         display:none !important;
@@ -89,7 +103,6 @@
           height:32px;
           font-size:12px;
         }
-      }
       }
 
       /* Hide GrooveScribe logo button (inline SVG in your build) */
@@ -135,8 +148,8 @@
           if(tempoRow.querySelector(".bpmBtns")) return;
 
           // Make BPM field display-like (buttons are the control)
-          tempoField.readOnly = true;
-          tempoField.style.cursor = "default";
+          tempoField.readOnly = false;
+          tempoField.style.cursor = "text";
 
           var btnWrap = document.createElement("span");
           btnWrap.className = "bpmBtns";
