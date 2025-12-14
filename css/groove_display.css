@@ -359,25 +359,27 @@ input[type=range]:active::-webkit-slider-thumb {
 }
 
 /* ======================================
-   Bigger controls on mobile (touch)
+   Compact toolbar on mobile
    ====================================== */
 @media (max-width: 768px) {
+
   .midiPlayImage,
   .midiRepeatImage,
   .midiExpandImage{
-    width: 56px;
-    height: 56px;
-    line-height: 56px;
-    font-size: 26px;
-    margin: 6px 6px;
+    width: 38px;
+    height: 38px;
+    line-height: 38px;
+    font-size: 18px;
+    margin: 4px;
   }
 
   .midiExpandImage{
-    font-size: 34px;
+    font-size: 22px;
   }
 
   .playerControlsRow{
-    padding-left: 6px;
-    padding-right: 6px;
+    padding-left: 2px;
+    padding-right: 2px;
   }
+
 }
