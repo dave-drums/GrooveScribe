@@ -363,6 +363,7 @@ input[type=range]:active::-webkit-slider-thumb {
    ====================================== */
 @media (max-width: 768px) {
 
+  /* Play / repeat / expand buttons */
   .midiPlayImage,
   .midiRepeatImage,
   .midiExpandImage{
@@ -377,6 +378,16 @@ input[type=range]:active::-webkit-slider-thumb {
     font-size: 22px;
   }
 
+  /* Timer (0:00) – reduce width + text size */
+  .midiTime,
+  .midiTimeText{
+    font-size: 14px;
+    min-width: 44px;
+    text-align: right;
+    margin-right: 4px;
+  }
+
+  /* Tighten overall row padding */
   .playerControlsRow{
     padding-left: 2px;
     padding-right: 2px;
