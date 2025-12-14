@@ -110,16 +110,19 @@
           `;
 
           tempoRow.appendChild(btnWrap);
-
+          
           btnWrap.addEventListener("click", function(e){
             var btn = e.target.closest(".bpmBtn");
-            if(!btn || !window.GrooveUtils) return;
-
+            if(!btn) return;
+            
             var delta = parseInt(btn.dataset.d, 10);
-            var cur = GrooveUtils.getTempo();
-            GrooveUtils.setTempo(clamp(cur + delta, 30, 300));
+            
+            var cur = parseInt(tempoField.value, 10) || 80;
+            var next = clamp(cur + delta, 30, 300);
+            
+            tempoField.value = next;
+            tempoField.dispatchEvent(new Event("change", { bubbles: true }));
           });
-        }
 
         var tries = 0;
         var iv = setInterval(function(){
