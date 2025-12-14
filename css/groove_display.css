@@ -417,11 +417,6 @@ input[type=range]:active::-webkit-slider-thumb {
   }
 }
 
-/* Hide BPM slider on mobile (embed only) */
-.tempoInput{
-  display: none !important;
-}
-
 /* Embed-only tempo buttons */
 .tempoBtn{
   border: 1px solid rgba(0,0,0,.15);
