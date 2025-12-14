@@ -119,23 +119,22 @@
       if (!btn) return;
 
       var delta = parseInt(btn.dataset.d, 10) || 0;
+      
+// Find the actual hidden slider inside this player (IDs vary in Single)
+var slider = wrap.querySelector('input[type="range"]');
+if (!slider) return;
 
-      // tempoTextField1 → tempoInput1
-      var m = (tempoField.id || "").match(/tempoTextField(\d+)/);
-      var idx = m ? m[1] : "1";
+var cur = parseInt(slider.value, 10);
+if (Number.isNaN(cur)) cur = parseInt(tempoField.value, 10) || 80;
 
-      var slider = document.getElementById("tempoInput" + idx);
-      if (!slider) return;
+var next = clamp(cur + delta, 30, 300);
 
-      var cur = parseInt(slider.value, 10) || 80;
-      var next = clamp(cur + delta, 30, 300);
+slider.value = String(next);
+tempoField.value = String(next);
 
-      slider.value = String(next);
-
-      // GrooveScribe listens to "input" on the slider
-      slider.dispatchEvent(new Event("input", { bubbles: true }));
-    });
-  }
+// Different builds listen to different events, so fire both
+slider.dispatchEvent(new Event("input", { bubbles: true }));
+slider.dispatchEvent(new Event("change", { bubbles: true }));
 
   // Retry until GrooveScribe builds the player DOM
   var tries = 0;
