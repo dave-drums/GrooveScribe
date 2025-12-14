@@ -3,133 +3,74 @@
   <head>
     <meta charset="utf-8" />
     <title>Embedded Groove</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <script src="./js/groove_display.js"></script>
-    
+
+    <!-- Font (Mulish = modern Muli replacement) -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700&display=swap">
 
     <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-      }
-      
-.gs-embed,
-.gs-embed *{
-  font-family: "Mulish", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-}
-
-
-      /* Remove SWING row */
-      .swingRow {
-        display: none !important;
+      html, body{
+        margin:0;
+        padding:0;
+        overflow:hidden;
       }
 
-      /* ===========================
-         EMBED-ONLY SCALABLE STYLES
-         =========================== */
-
-      /* Centre BPM row vertically */
-      .gs-embed [id^="tempoAndProgress"] .tempoRow {
-        display: flex !important;
-        align-items: center !important;
-        height: 40px !important; /* clean centering */
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
+      /* Embed-only font */
+      .gs-embed, .gs-embed *{
+        font-family:"Mulish", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
 
-      /* BPM button group */
-      .gs-embed [id^="tempoAndProgress"] .bpmBtns{
-        display:flex;
-        align-items:center;
-        gap:6px;
-        margin-left:10px;
-      }
+      /* Hide swing */
+      .swingRow{ display:none !important; }
 
-      .gs-embed [id^="tempoAndProgress"] .bpmBtn{
-        width: 28px;
-        height: 28px;
-        border: 1px solid rgba(0,0,0,0.25);
-        border-radius: 999px;
-        background: transparent;
-        color: #878795;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 15px;
-        font-weight: 600;
-        line-height: 1;
-        cursor: pointer;
-        user-select: none;
-      }
-
-      .gs-embed [id^="tempoAndProgress"] .bpmBtn:active{
-        transform:translateY(1px);
-      }
-
-      /* BPM text field */
-      .gs-embed [id^="tempoAndProgress"] .tempoTextField,
-      .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"]{
-        background:transparent !important;
-        color: #878795;
-        border: 1px solid rgba(0,0,0,0.25) !important;
-        border-radius:8px !important;
-        height:28px !important;
-        width:28px !important;
-        padding: 0 5px;
-        text-align:center !important;
-        font-size:15px !important;
-        font-weight:600 !important;
-        outline:none !important;
-        
-      }
-
-      .gs-embed [id^="tempoAndProgress"] .tempoTextField:focus,
-      .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"]:focus{
-        box-shadow:none !important;
-      }
-
-      /* Hide the BPM slider entirely (we drive it programmatically) */
-      .gs-embed [id^="tempoAndProgress"] .tempoRow input[type="range"]{
-        display:none !important;
-      }
-@media (max-width: 600px){
-  .gs-embed [id^="tempoAndProgress"] .tempoTextField,
-  .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"]{
-    font-size:15px !important;
-  }
-}
-
-      /* Hide GrooveScribe logo button (inline SVG in your build) */
+      /* Hide GrooveScribe logo (inline SVG) */
       .gs-embed .midiGSLogo,
       .gs-embed [id^="midiGSLogo"]{
         display:none !important;
         pointer-events:none !important;
       }
-    
-      /* ===== Tempo buttons: keep tight next to BPM (like original layout) ===== */
 
-      /* Do NOT restyle BPM label or input; just ensure our font applies */
-      .gs-embed [id^="tempoAndProgress"] .tempoLabel,
+      /* Hide tempo slider */
+      .gs-embed [id^="tempoAndProgress"] .tempoRow input[type="range"]{
+        display:none !important;
+      }
+
+      /* Keep tempo row nicely centred */
+      .gs-embed [id^="tempoAndProgress"] .tempoRow{
+        display:flex !important;
+        align-items:center !important;
+        height:40px !important;
+        padding:0 !important;
+      }
+
+      /* BPM input box */
       .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"],
       .gs-embed [id^="tempoAndProgress"] .tempoTextField{
-        font-family: inherit !important;
+        background:transparent !important;
+        color:inherit !important;
+        border:1px solid rgba(0,0,0,.25) !important;
+        border-radius:999px !important;
+        height:30px !important;
+        width:30px !important;
+        padding:0 6px !important;
+        text-align:center !important;
+        font-weight:600 !important;
+        font-size:14px !important;
+        outline:none !important;
+        box-sizing:border-box !important;
       }
 
-      /* Container for –5 / +5 right next to BPM */
-      .gs-embed [id^="tempoAndProgress"] .bpmBtns{
-        display:inline-flex;
-        align-items:center;
-        gap:6px;
-        margin-left:10px;
-        flex:0 0 auto !important;
+      /* Ensure the BPM label stays normal (not tiny/superscript) */
+      .gs-embed [id^="tempoAndProgress"] .tempoLabel{
+        font-size:15px !important;
+        vertical-align:baseline !important;
+        margin:0 !important;
       }
 
-      /* Buttons: outlined circles, play-button grey */
-      .gs-embed [id^="tempoAndProgress"] .bpmBtn{
+      /* BPM buttons: outlined circles, play-button grey */
+      .gs-embed .bpmBtn{
         width:30px;
         height:30px;
         border-radius:999px;
@@ -145,23 +86,26 @@
         cursor:pointer;
         user-select:none;
         box-sizing:border-box;
-        flex:0 0 auto !important;
+        margin:0 4px;
       }
-      .gs-embed [id^="tempoAndProgress"] .bpmBtn:hover{ background:rgba(140,140,140,.08); }
-      .gs-embed [id^="tempoAndProgress"] .bpmBtn:active{ background:rgba(140,140,140,.15); transform:translateY(1px); }
+      .gs-embed .bpmBtn:hover{ background:rgba(140,140,140,.08); }
+      .gs-embed .bpmBtn:active{ background:rgba(140,140,140,.15); transform:translateY(1px); }
 
       @media (max-width:600px){
-        .gs-embed [id^="tempoAndProgress"] .bpmBtn{
+        .gs-embed .bpmBtn{
           width:32px;
           height:32px;
           font-size:12px;
         }
-        .gs-embed [id^="tempoAndProgress"] .bpmBtns{
-          gap:6px;
-          margin-left:8px;
+        .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"],
+        .gs-embed [id^="tempoAndProgress"] .tempoTextField{
+          height:34px !important;
+          width:40px !important;
+          padding:0 6px !important;
+          font-size:15px !important;
         }
       }
-</style>
+    </style>
   </head>
 
   <body class="gs-embed">
@@ -173,134 +117,97 @@
       (function(){
         function clamp(n,min,max){ return Math.max(min,Math.min(max,n)); }
 
-        function hideGsLogoHard(){
-          // Some builds re-apply styles after render; force-hide via inline style too.
+        function hardHideLogo(){
           document.querySelectorAll(".midiGSLogo,[id^='midiGSLogo']").forEach(function(el){
             el.style.display = "none";
             el.style.pointerEvents = "none";
           });
         }
 
-        function injectIntoWrap(wrap){
-          if(!wrap) return;
+        function injectOnce(){
+          hardHideLogo();
 
-          hideGsLogoHard();
-
-          var tempoRow = wrap.querySelector(".tempoRow");
-          var tempoField =
-            wrap.querySelector('[id^="tempoTextField"]') ||
-            wrap.querySelector(".tempoTextField") ||
-            wrap.querySelector('input[type="text"]');
-
-          if(!tempoRow || !tempoField) return;
-
-          // Prevent duplicate injection per instance
-          if(tempoRow.querySelector(".bpmBtns")) return;
-
-          // Keep BPM field editable
-          tempoField.readOnly = false;
-          tempoField.style.cursor = "text";
-
-          var btnWrap = document.createElement("span");
-          btnWrap.className = "bpmBtns";
-
-          // Order: -5, BPM ### (existing field), +5
-btnWrap.innerHTML =
-  '<span class="bpmBtn" data-d="-5">–5</span>' +
-  '<span class="bpmBtn" data-d="5">+5</span>';
-
-// Find the BPM label (the "BPM" text) if present
-var bpmLabel = wrap.querySelector(".tempoLabel");
-
-// Insert –5 BEFORE the BPM label (or before the input if label not found)
-if (bpmLabel && bpmLabel.parentNode === tempoRow) {
-  tempoRow.insertBefore(btnWrap.children[0], bpmLabel);
-} else if (tempoField.parentNode === tempoRow) {
-  tempoRow.insertBefore(btnWrap.children[0], tempoField);
-} else {
-  tempoRow.insertBefore(btnWrap.children[0], tempoRow.firstChild);
-}
-
-// Insert +5 AFTER the BPM input
-if (tempoField.parentNode === tempoRow) {
-  tempoRow.insertBefore(btnWrap.children[0], tempoField.nextSibling);
-} else {
-  tempoRow.appendChild(btnWrap.children[0]);
-}
-
-          btnWrap.addEventListener("click", function(e){
-            var btn = e.target.closest(".bpmBtn");
-            if(!btn) return;
-
-            var delta = parseInt(btn.getAttribute("data-d"), 10) || 0;
-
-            // Drive the hidden slider: this is what GrooveScribe reliably listens to
-            var slider = wrap.querySelector('input[type="range"]');
-            if(!slider) return;
-
-            var cur = parseInt(slider.value, 10);
-            if(Number.isNaN(cur)) cur = parseInt(tempoField.value, 10) || 80;
-
-            var next = clamp(cur + delta, 30, 300);
-
-            slider.value = String(next);
-            tempoField.value = String(next);
-
-            slider.dispatchEvent(new Event("input", { bubbles: true }));
-            slider.dispatchEvent(new Event("change", { bubbles: true }));
-          });
-        }
-
-        function injectAll(){
-          hideGsLogoHard();
           document.querySelectorAll('[id^="tempoAndProgress"]').forEach(function(wrap){
-            injectIntoWrap(wrap);
+            var tempoRow = wrap.querySelector(".tempoRow");
+            var tempoField = wrap.querySelector('input[id^="tempoTextField"], .tempoTextField');
+            if(!tempoRow || !tempoField) return;
+
+            // If GS re-renders, tempoRow may change; guard per-row instance
+            if(tempoRow.querySelector(".bpmBtns")) return;
+
+            // Clean up any stray buttons from earlier buggy injections
+            tempoRow.querySelectorAll(".bpmBtn").forEach(function(el){
+              if(!el.closest(".bpmBtns")) el.remove();
+            });
+
+            // Create wrapper and buttons
+            var btnWrap = document.createElement("span");
+            btnWrap.className = "bpmBtns";
+
+            var minusBtn = document.createElement("span");
+            minusBtn.className = "bpmBtn";
+            minusBtn.textContent = "–5";
+            minusBtn.dataset.d = "-5";
+
+            var plusBtn = document.createElement("span");
+            plusBtn.className = "bpmBtn";
+            plusBtn.textContent = "+5";
+            plusBtn.dataset.d = "5";
+
+            btnWrap.appendChild(minusBtn);
+            btnWrap.appendChild(plusBtn);
+
+            // Insert buttons immediately after the BPM input
+            if(tempoField.parentNode === tempoRow){
+              tempoRow.insertBefore(btnWrap, tempoField.nextSibling);
+            }else{
+              tempoRow.appendChild(btnWrap);
+            }
+
+            // Attach click handler once per row
+            if(tempoRow.dataset.bpmListener !== "1"){
+              tempoRow.dataset.bpmListener = "1";
+              tempoRow.addEventListener("click", function(e){
+                var btn = e.target.closest(".bpmBtn");
+                if(!btn) return;
+
+                var delta = parseInt(btn.dataset.d, 10) || 0;
+
+                var slider = wrap.querySelector('input[type="range"]');
+                if(!slider) return;
+
+                var cur = parseInt(slider.value, 10);
+                if(Number.isNaN(cur)) cur = parseInt(tempoField.value, 10) || 80;
+
+                var next = clamp(cur + delta, 30, 300);
+
+                slider.value = String(next);
+                tempoField.value = String(next);
+
+                slider.dispatchEvent(new Event("input", { bubbles:true }));
+                slider.dispatchEvent(new Event("change", { bubbles:true }));
+              });
+            }
           });
+
         }
 
-        // GrooveScribe builds UI async — retry briefly
+        // GS renders async; retry briefly
         var tries = 0;
         var iv = setInterval(function(){
-          tries++;
-          injectAll();
-
-          // Stop once every instance has buttons (or we time out)
-          var wraps = document.querySelectorAll('[id^="tempoAndProgress"]');
-          var allDone = wraps.length > 0 && Array.prototype.every.call(wraps, function(w){
-            var row = w.querySelector(".tempoRow");
-            return row && row.querySelector(".bpmBtns");
-          });
-
-          if(allDone || tries > 120){
-            clearInterval(iv);
-          }
+          injectOnce();
+          if(++tries > 120) clearInterval(iv);
         }, 50);
       })();
     </script>
 
     <script>
-      function sendGrooveHeight() {
-        var container = document.body;
-        var height =
-          container.scrollHeight ||
-          container.getBoundingClientRect().height ||
-          0;
-
-        height = Math.ceil(height) + 20;
-
-        window.parent.postMessage(
-          { type: "grooveHeight", height: height },
-          "*"
-        );
+      function sendGrooveHeight(){
+        var h = Math.ceil(document.body.scrollHeight) + 20;
+        window.parent.postMessage({ type:"grooveHeight", height:h }, "*");
       }
-
-      window.addEventListener("load", function () {
-        setTimeout(sendGrooveHeight, 200);
-      });
-
-      window.addEventListener("resize", function () {
-        setTimeout(sendGrooveHeight, 100);
-      });
+      window.addEventListener("load", function(){ setTimeout(sendGrooveHeight, 200); });
+      window.addEventListener("resize", function(){ setTimeout(sendGrooveHeight, 100); });
     </script>
   </body>
 </html>
