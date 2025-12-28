@@ -234,7 +234,7 @@ if (typeof(GrooveDisplay) === "undefined") {
 				var svgReturn = myGrooveUtils.renderABCtoSVG(abcNotation);
 				
 				if (linkToEditor) {
-					var editorUrl = 'https://davedrums.com.au/groove' + GrooveDefinition; // keeps your current domain + https
+					var editorUrl = 'https://vault.davedrums.com.au/groove' + GrooveDefinition; // keeps your current domain + https
 					svgTarget.innerHTML =
 						'<a style="text-decoration:none;display:inline-block" ' +
 						'href="' + editorUrl + '" target="_blank" rel="noopener noreferrer" ' +
