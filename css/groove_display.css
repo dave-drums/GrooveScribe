@@ -377,13 +377,6 @@ input[type=range]:active::-webkit-slider-thumb {
 @media (max-width: 768px) {
 
 /* Allow the toolbar to shrink on phones */
-	.playerControl {
-    transform: scale(0.85);
-    transform-origin: top left;
-		min-width: 0;
-  }
-
-/* Allow the toolbar to shrink on phones */
   .playerControl.large {
     min-width: 0;
   }
