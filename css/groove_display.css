@@ -50,6 +50,9 @@
 		border: 2px solid #e9ecef;
 		border-radius: 16px;
 		padding-left: 0px;
+		  display: flex;
+  align-items: center;
+  justify-content: center;
 	}
 	.playerControlsRow {
 		display: flex;
