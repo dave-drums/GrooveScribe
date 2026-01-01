@@ -27,7 +27,7 @@
 		display: inline-block;
 		background-color: #f0f0f0;
 		width: 100%;  /* expand to the surounding element */
-		font-family: 'Lato', sans-serif;
+		font-family: 'Inter', sans-serif;
 		white-space: nowrap;
 		border-radius: 5px;
 		-webkit-border-radius: 5px;
@@ -37,9 +37,12 @@
 		display: block;
 		width: 100%;
 		min-width: 450px;
-		border: 1px solid #d5d5d5;
-		padding-left: 0px;
+		background: white;
+		border: 2px solid #e9ecef;
+		border-radius: 16px;
+		padding: 20px;
 		margin: 0px 0px 0px 0px;
+		box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 	}
 	.playerControl.small {
 		width: 90px;
@@ -75,13 +78,14 @@
 		border-radius: 50%;
 	}
 	.midiPlayImage, .midiRepeatImage {
-		background: #878795;
+		background: #06b3fd;
 		color: #fff;
 		margin: 4px 4px 4px 4px;
+		transition: all 0.2s;
 	}
 	.midiPlayImage:hover, .midiRepeatImage:hover {
 		color: #fff;
-		background: #878795;
+		background: #0599dc;
 	}
 	.midiExpandImage {
 		font-size: 26px;
@@ -154,14 +158,16 @@
 	}
 	.tempoTextField {
 		margin: 2px 6px 0 6px;
-		color: #878795;
-		background-color: #f0f0f0;
-		border: none;
-		width: 30px;
+		color: #1a1a2e;
+		background: #f8f9fa;
+		border: 2px solid #e9ecef;
+		border-radius: 8px;
+		width: 50px;
 		text-align: center;
 		font-size: 16px;
-		padding: 0;
-		height: 18px;
+		font-weight: 600;
+		padding: 6px 12px;
+		height: auto;
 	}
 	.tempoInput, .swingInput {
 		background-color: none;
@@ -179,9 +185,11 @@
 	.tempoLabel, .swingLabel {
 		text-align: right;
 		padding-top: 0px;
-		font-size: 16px;
+		font-size: 12px;
 		width: 60px;
-		color: #878795;
+		color: #999;
+		text-transform: uppercase;
+		font-weight: 600;
 	}
 	.tempoOutput, .swingOutput {
 		display: inline-block;
@@ -220,8 +228,9 @@
 	.MIDIPlayTime {
 		display: inline-block;
 		width: 100px;
-		color: #999;
-		font-size: 30px;
+		color: #666;
+		font-size: 18px;
+		font-weight: 600;
 		margin-left: 6px;
 		padding-top: 4px;
 		text-align: left;
