@@ -374,33 +374,44 @@ input[type=range]:active::-webkit-slider-thumb {
 /* ======================================
    Mobile toolbar: prevent clipping/overlap
    ====================================== */
-@media (max-width: 768px) {
 	
-  /* Tighter spacing between all elements */
+@media (max-width: 768px) {
+  .playerControl.large {
+    min-width: 0;
+    padding: 8px 10px;
+  }
+  
   .playerControlsRow {
-    gap: 4px;
+    gap: 6px;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+  
+  .midiPlayImage {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+    margin: 2px;
   }
   
   .MIDIPlayTime {
-    margin-left: 2px;
-    margin-right: 2px;
+    font-size: 16px;
+    width: 45px;
+    margin-left: 0;
   }
   
   .tempoLabel {
-    margin-left: 4px;
-    margin-right: 2px;
+    font-size: 11px;
+    width: 35px;
   }
   
   .tempoTextField {
+    font-size: 14px;
+    width: 40px;
+    padding: 4px 6px;
     margin: 0 4px;
   }
   
-  /* Allow the toolbar to shrink on phones */
-  .playerControl.large {
-    min-width: 0;
-  }
-  
-  /* Let flex items actually shrink */
   .tempoAndProgress,
   .tempoRow,
   .tempoInput {
