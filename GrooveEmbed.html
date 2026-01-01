@@ -41,35 +41,35 @@
       }
 
       /* BPM button group */
-      .gs-embed [id^="tempoAndProgress"] .bpmBtns{
-        display:inline-flex;
-        align-items:center;
-        gap:10px;
-        margin-left:4px;
-      }
-      
-      .gs-embed [id^="tempoAndProgress"] .bpmBtn{
-        width:32px;
-        height:32px;
-        border-radius:999px;
-        background:transparent;
-        border:2px solid #8c8c8c;
-        color:#8c8c8c;
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
-        font-size:17px;
-        font-weight:900;
-        line-height:1;
-        cursor:pointer;
-        user-select:none;
-        box-sizing:border-box;
-        margin:0;
-      }
-      
-      .gs-embed [id^="tempoAndProgress"] .bpmBtn:hover{
-        background:rgba(140,140,140,.08);
-      }
+.gs-embed [id^="tempoAndProgress"] .bpmBtn{
+  width:32px;
+  height:32px;
+  border-radius:8px;
+  background:white;
+  border:2px solid #e9ecef;
+  color:#1a1a2e;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  font-weight:700;
+  line-height:1;
+  cursor:pointer;
+  user-select:none;
+  box-sizing:border-box;
+  margin:0;
+  transition:all 0.2s;
+}
+
+.gs-embed [id^="tempoAndProgress"] .bpmBtn:hover{
+  border-color:#06b3fd;
+  color:#06b3fd;
+  background:white;
+}
+
+.gs-embed [id^="tempoAndProgress"] .bpmBtn:active{
+  transform:translateY(1px);
+}
 
       .gs-embed [id^="tempoAndProgress"] .bpmBtn:active{
         transform:translateY(1px);
