@@ -75,6 +75,31 @@
         transform:translateY(1px);
       }
 
+
+
+
+
+      
+      /* Mobile fix for custom buttons */
+@media (max-width: 768px) {
+  .gs-embed [id^="tempoAndProgress"] .bpmBtns {
+    display: flex;
+    gap: 6px;
+    margin-left: 6px;
+  }
+  
+  .gs-embed [id^="tempoAndProgress"] .bpmBtn {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+}
+
+
+
+
+      
       /* Style BPM number (###) only */
       .gs-embed [id^="tempoAndProgress"] input[id^="tempoTextField"],
       .gs-embed [id^="tempoAndProgress"] .tempoTextField{
