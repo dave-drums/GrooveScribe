@@ -375,7 +375,6 @@ input[type=range]:active::-webkit-slider-thumb {
    Mobile toolbar: prevent clipping/overlap
    ====================================== */
 @media (max-width: 768px) {
-@media (max-width: 768px) {
 	
   /* Tighter spacing between all elements */
   .playerControlsRow {
