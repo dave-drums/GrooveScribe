@@ -446,37 +446,37 @@ button {
   .playerControl,
   .playerControl.large,
   .playerControl.small {
-    padding: 12px 14px;
+    padding: 10px 12px;
     border-radius: 12px;
   }
   
   .playerControlsRow {
-    gap: 10px;
+    gap: 8px;
   }
   
   .midiPlayImage {
-    width: 44px;
-    height: 44px;
-    font-size: 18px;
-    line-height: 44px;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    line-height: 40px;
   }
   
   .MIDIPlayTime {
-    font-size: 16px;
-    min-width: 50px;
+    font-size: 15px;
+    min-width: 45px;
   }
   
   .midiCountInButton,
   .midiMetronomeMenu {
-    width: 38px;
-    height: 38px;
-    font-size: 14px;
+    width: 36px;
+    height: 36px;
+    font-size: 13px;
     border-radius: 8px;
   }
   
   .midiMetronomeImage {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
   }
   
   .tempoLabel {
@@ -484,51 +484,70 @@ button {
   }
   
   .tempoTextField {
-    font-size: 15px;
-    padding: 6px 8px;
-    width: 50px;
-    max-width: 50px;
+    font-size: 14px;
+    padding: 5px 8px;
+    width: 48px;
+    max-width: 48px;
     border-radius: 8px;
   }
   
   .bpmBtn {
-    width: 32px;
-    height: 32px;
-    font-size: 18px;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
     border-radius: 8px;
   }
   
   .bpmBtns {
-    gap: 10px;
+    gap: 8px;
   }
   
   .tempoRow {
-    gap: 10px;
+    gap: 8px;
   }
 }
 
 /* Extra small screens */
 @media (max-width: 375px) {
+  .playerControl,
+  .playerControl.large,
+  .playerControl.small {
+    padding: 8px 10px;
+  }
+  
   .playerControlsRow {
-    gap: 8px;
+    gap: 6px;
   }
   
   .tempoRow {
-    gap: 8px;
+    gap: 6px;
   }
   
   .bpmBtns {
-    gap: 8px;
+    gap: 6px;
   }
   
   .MIDIPlayTime {
-    min-width: 45px;
-    font-size: 15px;
+    min-width: 40px;
+    font-size: 14px;
   }
   
   .midiCountInButton,
   .midiMetronomeMenu {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
+  }
+  
+  .tempoTextField {
+    width: 45px;
+    max-width: 45px;
+    font-size: 13px;
+    padding: 4px 6px;
+  }
+  
+  .bpmBtn {
+    width: 28px;
+    height: 28px;
+    font-size: 15px;
   }
 }
