@@ -84,7 +84,7 @@
           countInBtn.className = 'midiCountInButton';
           countInBtn.textContent = '+1';
           countInBtn.title = 'Count-in (1 bar before playing)';
-          countInBtn.setAttribute('data-count-in', 'false'); // Default OFF
+          // Default OFF - no active class
 
           // Insert after time display
           if (timeDisplay.nextSibling) {
@@ -95,10 +95,7 @@
 
           // Add click handler
           countInBtn.addEventListener('click', function() {
-            var isActive = countInBtn.getAttribute('data-count-in') === 'true';
-            countInBtn.setAttribute('data-count-in', isActive ? 'false' : 'true');
-            
-            if (isActive) {
+            if (countInBtn.classList.contains('active')) {
               countInBtn.classList.remove('active');
             } else {
               countInBtn.classList.add('active');
