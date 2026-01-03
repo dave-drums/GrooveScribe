@@ -1,6 +1,6 @@
 /**
  * count-in-handler.js
- * Handles count-in functionality for GrooveScribe player
+ * Handles count-in functionality for MULTIPLE GrooveScribe players on same page
  */
 
 (function() {
@@ -8,160 +8,146 @@
 
   window.GrooveCountIn = {
     initialized: false,
-    grooveUtils: null,
+    hookedButtons: [], // Track which buttons we've hooked
 
     init: function() {
-      if (this.initialized) return;
+      if (this.initialized) {
+        console.log('Count-in: Already initialized');
+        return;
+      }
       
       var self = this;
+      
+      // Wait for dependencies
       var checkInterval = setInterval(function() {
         if (typeof GrooveUtils !== 'undefined' && typeof MIDI !== 'undefined') {
           clearInterval(checkInterval);
-          self.setup();
           self.initialized = true;
+          self.hookAllPlayers();
         }
       }, 100);
     },
 
-    setup: function() {
+    hookAllPlayers: function() {
       var self = this;
       
-      var waitForPlayer = setInterval(function() {
-        var playBtn = document.querySelector('.midiPlayImage');
-        if (!playBtn) return;
+      // Wait for all players to be ready
+      var attempts = 0;
+      var checkPlayers = setInterval(function() {
+        attempts++;
         
-        clearInterval(waitForPlayer);
+        // Find all play buttons
+        var allPlayBtns = document.querySelectorAll('.midiPlayImage');
+        // Find all count-in buttons
+        var allCountInBtns = document.querySelectorAll('.midiCountInButton');
         
-        try {
-          self.grooveUtils = new GrooveUtils();
-        } catch (e) {
-          console.error('GrooveUtils error:', e);
+        // If counts match and we have buttons, hook them
+        if (allPlayBtns.length > 0 && allPlayBtns.length === allCountInBtns.length) {
+          clearInterval(checkPlayers);
+          
+          console.log('Count-in: Found ' + allPlayBtns.length + ' players');
+          
+          // Hook each player
+          for (var i = 0; i < allPlayBtns.length; i++) {
+            self.hookPlayer(allPlayBtns[i], allCountInBtns[i], i);
+          }
+          
+          console.log('Count-in: All players hooked');
+        } else if (attempts > 50) {
+          clearInterval(checkPlayers);
+          console.log('Count-in: Timeout (found ' + allPlayBtns.length + ' play btns, ' + allCountInBtns.length + ' count-in btns)');
+        }
+      }, 100);
+    },
+
+    hookPlayer: function(playBtn, countInBtn, index) {
+      var self = this;
+      
+      // Check if already hooked
+      if (self.hookedButtons.indexOf(playBtn) !== -1) {
+        console.log('Count-in: Player ' + index + ' already hooked');
+        return;
+      }
+      
+      // Mark as hooked
+      self.hookedButtons.push(playBtn);
+      
+      // Store original onclick
+      var originalOnclick = playBtn.onclick;
+      
+      if (!originalOnclick) {
+        console.error('Count-in: Player ' + index + ' has no onclick');
+        return;
+      }
+      
+      // Create GrooveUtils instance for this player
+      var grooveUtils;
+      try {
+        grooveUtils = new GrooveUtils();
+      } catch (e) {
+        console.error('Count-in: GrooveUtils error for player ' + index, e);
+        return;
+      }
+      
+      // Replace onclick with wrapper
+      playBtn.onclick = function(event) {
+        var isActive = countInBtn && countInBtn.classList.contains('active');
+        
+        // If not active or already playing, use normal handler
+        if (!isActive || MIDI.Player.playing) {
+          if (originalOnclick) {
+            return originalOnclick.call(this, event);
+          }
           return;
         }
         
-        // Hook play button
-        var originalOnclick = playBtn.onclick;
-        playBtn.onclick = function(event) {
-          var countInBtn = document.querySelector('.midiCountInButton');
-          var hasActiveClass = countInBtn ? countInBtn.classList.contains('active') : false;
-          
-          console.log('Play clicked. Count-in button found:', !!countInBtn, 'Active:', hasActiveClass);
-          
-          // If already playing, use normal behavior
-          if (MIDI.Player.playing) {
-            console.log('Already playing, using normal handler');
-            if (originalOnclick) {
-              return originalOnclick.call(this, event);
-            }
-            return;
-          }
-          
-          // If no count-in needed, use normal behavior
-          if (!hasActiveClass) {
-            console.log('Count-in not active, using normal handler');
-            if (originalOnclick) {
-              return originalOnclick.call(this, event);
-            }
-            return;
-          }
-          
-          // Play count-in
-          console.log('Starting count-in...');
-          event.preventDefault();
-          event.stopPropagation();
-          
-          self.doCountIn(function() {
-            console.log('Count-in callback, starting groove...');
-            // After count-in, start normal playback
-            if (originalOnclick) {
-              originalOnclick.call(playBtn, event);
-            }
-          });
-          
-          return false;
-        };
+        // Play with count-in
+        console.log('Count-in: Player ' + index + ' starting count-in');
+        event.preventDefault();
+        event.stopPropagation();
         
-        console.log('Count-in handler ready');
-      }, 100);
+        self.playCountIn(playBtn, grooveUtils, function() {
+          console.log('Count-in: Player ' + index + ' starting groove');
+          if (originalOnclick) {
+            originalOnclick.call(playBtn, event);
+          }
+        });
+        
+        return false;
+      };
+      
+      console.log('Count-in: Player ' + index + ' hooked');
     },
 
-    getBPM: function() {
-      // Read from visible BPM field
-      var field = document.querySelector('.tempoTextField, input[id*="tempoTextField"]');
-      if (field && field.value) {
-        var val = parseInt(field.value, 10);
-        if (!isNaN(val) && val >= 30 && val <= 300) {
-          console.log('BPM from text field:', val);
-          return val;
-        }
-      }
-      
-      // Read from slider as fallback
-      var slider = document.querySelector('input[type="range"][id*="tempoInput"]');
-      if (slider && slider.value) {
-        var val = parseInt(slider.value, 10);
-        if (!isNaN(val) && val >= 30 && val <= 300) {
-          console.log('BPM from slider:', val);
-          return val;
-        }
-      }
-      
-      // Fallback to GrooveUtils
-      try {
-        if (this.grooveUtils && this.grooveUtils.getTempo) {
-          var val = this.grooveUtils.getTempo();
-          console.log('BPM from GrooveUtils:', val);
-          return val;
-        }
-      } catch (e) {}
-      
-      console.log('BPM fallback to default: 120');
-      return 120;
-    },
-
-    getTimeSig: function() {
-      try {
-        if (this.grooveUtils && this.grooveUtils.myGrooveData) {
-          return {
-            top: this.grooveUtils.myGrooveData.numBeats || 4,
-            bottom: this.grooveUtils.myGrooveData.noteValue || 4
-          };
-        }
-      } catch (e) {}
-      
-      return { top: 4, bottom: 4 };
-    },
-
-    doCountIn: function(callback) {
+    playCountIn: function(playBtn, grooveUtils, callback) {
       var self = this;
       
-      var bpm = self.getBPM();
-      var timeSig = self.getTimeSig();
+      // Get BPM
+      var bpm = self.getBPM(playBtn);
       
-      console.log('=== COUNT-IN START ===');
+      // Get time signature
+      var timeSig = self.getTimeSig(grooveUtils);
+      
       console.log('Count-in: BPM=' + bpm + ', TimeSig=' + timeSig.top + '/' + timeSig.bottom);
       
-      // Build MIDI with correct BPM
-      var midi = self.buildMidi(bpm, timeSig.top, timeSig.bottom);
+      // Build MIDI
+      var midi = self.buildMidi(bpm, timeSig.top, timeSig.bottom, grooveUtils);
       if (!midi) {
-        console.error('Failed to build count-in MIDI');
+        console.error('Count-in: Failed to build MIDI');
         callback();
         return;
       }
       
-      // Calculate duration (60000ms per minute / BPM = ms per beat)
+      // Calculate duration
       var msPerBeat = 60000 / bpm;
-      var duration = msPerBeat * timeSig.top + 200; // Add buffer
+      var duration = msPerBeat * timeSig.top + 200;
       
-      console.log('Count-in duration: ' + duration + 'ms (' + msPerBeat + 'ms per beat)');
+      console.log('Count-in: Duration ' + duration + 'ms');
       
-      // Update play button visual
-      var playBtn = document.querySelector('.midiPlayImage');
-      if (playBtn) {
-        playBtn.className = playBtn.className.replace(/Stopped|Paused/g, '');
-        if (playBtn.className.indexOf('Playing') === -1) {
-          playBtn.className += ' Playing';
-        }
+      // Update button state
+      playBtn.className = playBtn.className.replace(/Stopped|Paused/g, '');
+      if (playBtn.className.indexOf('Playing') === -1) {
+        playBtn.className += ' Playing';
       }
       
       // Play count-in
@@ -169,49 +155,81 @@
       MIDI.Player.stop();
       MIDI.Player.clearAnimation();
       
-      console.log('Loading count-in MIDI...');
-      
       MIDI.Player.loadFile(midi, function() {
-        console.log('Count-in MIDI loaded, starting playback...');
         MIDI.Player.start();
         
         // Stop after duration
         setTimeout(function() {
-          console.log('Count-in timeout reached, stopping...');
           MIDI.Player.stop();
           MIDI.Player.clearAnimation();
           
-          console.log('Count-in finished, calling callback...');
+          console.log('Count-in: Finished, starting groove');
           
-          // Start groove
           setTimeout(callback, 100);
         }, duration);
       });
     },
 
-    buildMidi: function(bpm, timeSigTop, timeSigBottom) {
+    getBPM: function(playBtn) {
+      // Find the tempo field closest to this play button
+      var container = playBtn.closest('.playerControlsRow') || playBtn.closest('.playerControl');
+      if (container) {
+        var field = container.querySelector('.tempoTextField, input[id*="tempoTextField"]');
+        if (field && field.value) {
+          var val = parseInt(field.value, 10);
+          if (!isNaN(val) && val >= 30 && val <= 300) {
+            console.log('Count-in: BPM from field: ' + val);
+            return val;
+          }
+        }
+        
+        var slider = container.querySelector('input[type="range"]');
+        if (slider && slider.value) {
+          var val = parseInt(slider.value, 10);
+          if (!isNaN(val) && val >= 30 && val <= 300) {
+            console.log('Count-in: BPM from slider: ' + val);
+            return val;
+          }
+        }
+      }
+      
+      console.log('Count-in: BPM fallback: 120');
+      return 120;
+    },
+
+    getTimeSig: function(grooveUtils) {
       try {
-        // Try GrooveUtils method first
-        if (this.grooveUtils && this.grooveUtils.MIDI_build_midi_url_count_in_track) {
-          // Save current tempo
-          var originalTempo = this.grooveUtils.getTempo ? this.grooveUtils.getTempo() : null;
+        if (grooveUtils && grooveUtils.myGrooveData) {
+          return {
+            top: grooveUtils.myGrooveData.numBeats || 4,
+            bottom: grooveUtils.myGrooveData.noteValue || 4
+          };
+        }
+      } catch (e) {}
+      
+      return { top: 4, bottom: 4 };
+    },
+
+    buildMidi: function(bpm, timeSigTop, timeSigBottom, grooveUtils) {
+      try {
+        // Try GrooveUtils method
+        if (grooveUtils && grooveUtils.MIDI_build_midi_url_count_in_track) {
+          var oldTempo = grooveUtils.getTempo ? grooveUtils.getTempo() : null;
           
-          // Set count-in tempo
-          if (this.grooveUtils.setTempo) {
-            this.grooveUtils.setTempo(bpm);
+          if (grooveUtils.setTempo) {
+            grooveUtils.setTempo(bpm);
           }
           
-          var url = this.grooveUtils.MIDI_build_midi_url_count_in_track(timeSigTop, timeSigBottom);
+          var url = grooveUtils.MIDI_build_midi_url_count_in_track(timeSigTop, timeSigBottom);
           
-          // Restore original tempo
-          if (originalTempo && this.grooveUtils.setTempo) {
-            this.grooveUtils.setTempo(originalTempo);
+          if (oldTempo && grooveUtils.setTempo) {
+            grooveUtils.setTempo(oldTempo);
           }
           
           if (url) return url;
         }
         
-        // Manual build as fallback
+        // Manual build
         if (typeof Midi === 'undefined') return null;
         
         var file = new Midi.File();
@@ -220,20 +238,15 @@
         
         track.setTempo(bpm);
         track.setInstrument(0, 0x13);
-        
-        // Blank note for spacing
         track.addNoteOff(9, 60, 1);
         
-        // Note delay based on time signature
-        var delay = 128; // Quarter notes
+        var delay = 128;
         if (timeSigBottom == 8) delay = 64;
         else if (timeSigBottom == 16) delay = 32;
         
-        // High click on beat 1
         track.addNoteOn(9, 34, 0, 100);
         track.addNoteOff(9, 34, delay);
         
-        // Normal clicks on remaining beats
         for (var i = 1; i < timeSigTop; i++) {
           track.addNoteOn(9, 33, 0, 100);
           track.addNoteOff(9, 33, delay);
@@ -241,18 +254,11 @@
         
         return 'data:audio/midi;base64,' + btoa(file.toBytes());
       } catch (e) {
-        console.error('Build MIDI error:', e);
+        console.error('Count-in: Build MIDI error', e);
         return null;
       }
     }
   };
 
-  // Auto-init
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() {
-      setTimeout(function() { window.GrooveCountIn.init(); }, 1000);
-    });
-  } else {
-    setTimeout(function() { window.GrooveCountIn.init(); }, 1000);
-  }
+  // Don't auto-init
 })();
