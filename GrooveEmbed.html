@@ -97,8 +97,10 @@
           countInBtn.addEventListener('click', function() {
             if (countInBtn.classList.contains('active')) {
               countInBtn.classList.remove('active');
+              console.log('Count-in button: OFF');
             } else {
               countInBtn.classList.add('active');
+              console.log('Count-in button: ON');
             }
           });
         }
