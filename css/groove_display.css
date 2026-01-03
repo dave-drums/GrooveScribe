@@ -462,8 +462,9 @@ button {
   }
   
   .MIDIPlayTime {
-    font-size: 14px;
+    font-size: 12px;
     min-width: 40px;
+     padding-right: 8px;
   }
   
   .midiCountInButton,
@@ -536,7 +537,8 @@ button {
   
   .MIDIPlayTime {
     min-width: 38px;
-    font-size: 13px;
+    font-size: 12px;
+     padding-right: 8px;
   }
   
   .midiCountInButton,
