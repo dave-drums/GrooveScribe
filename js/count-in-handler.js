@@ -43,10 +43,13 @@
         var originalOnclick = playBtn.onclick;
         playBtn.onclick = function(event) {
           var countInBtn = document.querySelector('.midiCountInButton');
-          var needsCountIn = countInBtn && countInBtn.classList.contains('active');
+          var hasActiveClass = countInBtn ? countInBtn.classList.contains('active') : false;
+          
+          console.log('Play clicked. Count-in button found:', !!countInBtn, 'Active:', hasActiveClass);
           
           // If already playing, use normal behavior
           if (MIDI.Player.playing) {
+            console.log('Already playing, using normal handler');
             if (originalOnclick) {
               return originalOnclick.call(this, event);
             }
@@ -54,7 +57,8 @@
           }
           
           // If no count-in needed, use normal behavior
-          if (!needsCountIn) {
+          if (!hasActiveClass) {
+            console.log('Count-in not active, using normal handler');
             if (originalOnclick) {
               return originalOnclick.call(this, event);
             }
@@ -62,12 +66,19 @@
           }
           
           // Play count-in
+          console.log('Starting count-in...');
+          event.preventDefault();
+          event.stopPropagation();
+          
           self.doCountIn(function() {
+            console.log('Count-in callback, starting groove...');
             // After count-in, start normal playback
             if (originalOnclick) {
               originalOnclick.call(playBtn, event);
             }
           });
+          
+          return false;
         };
         
         console.log('Count-in handler ready');
@@ -80,6 +91,7 @@
       if (field && field.value) {
         var val = parseInt(field.value, 10);
         if (!isNaN(val) && val >= 30 && val <= 300) {
+          console.log('BPM from text field:', val);
           return val;
         }
       }
@@ -89,6 +101,7 @@
       if (slider && slider.value) {
         var val = parseInt(slider.value, 10);
         if (!isNaN(val) && val >= 30 && val <= 300) {
+          console.log('BPM from slider:', val);
           return val;
         }
       }
@@ -96,10 +109,13 @@
       // Fallback to GrooveUtils
       try {
         if (this.grooveUtils && this.grooveUtils.getTempo) {
-          return this.grooveUtils.getTempo();
+          var val = this.grooveUtils.getTempo();
+          console.log('BPM from GrooveUtils:', val);
+          return val;
         }
       } catch (e) {}
       
+      console.log('BPM fallback to default: 120');
       return 120;
     },
 
@@ -122,6 +138,7 @@
       var bpm = self.getBPM();
       var timeSig = self.getTimeSig();
       
+      console.log('=== COUNT-IN START ===');
       console.log('Count-in: BPM=' + bpm + ', TimeSig=' + timeSig.top + '/' + timeSig.bottom);
       
       // Build MIDI with correct BPM
@@ -136,7 +153,7 @@
       var msPerBeat = 60000 / bpm;
       var duration = msPerBeat * timeSig.top + 200; // Add buffer
       
-      console.log('Count-in duration: ' + duration + 'ms');
+      console.log('Count-in duration: ' + duration + 'ms (' + msPerBeat + 'ms per beat)');
       
       // Update play button visual
       var playBtn = document.querySelector('.midiPlayImage');
@@ -152,15 +169,19 @@
       MIDI.Player.stop();
       MIDI.Player.clearAnimation();
       
+      console.log('Loading count-in MIDI...');
+      
       MIDI.Player.loadFile(midi, function() {
+        console.log('Count-in MIDI loaded, starting playback...');
         MIDI.Player.start();
         
         // Stop after duration
         setTimeout(function() {
+          console.log('Count-in timeout reached, stopping...');
           MIDI.Player.stop();
           MIDI.Player.clearAnimation();
           
-          console.log('Count-in finished, starting groove');
+          console.log('Count-in finished, calling callback...');
           
           // Start groove
           setTimeout(callback, 100);
