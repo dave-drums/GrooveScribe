@@ -41,22 +41,43 @@
         // Find all count-in buttons
         var allCountInBtns = document.querySelectorAll('.midiCountInButton');
         
-        // If counts match and we have buttons, hook them
-        if (allPlayBtns.length > 0 && allPlayBtns.length === allCountInBtns.length) {
-          clearInterval(checkPlayers);
-          
-          console.log('Count-in: Found ' + allPlayBtns.length + ' players');
-          
-          // Hook each player
-          for (var i = 0; i < allPlayBtns.length; i++) {
-            self.hookPlayer(allPlayBtns[i], allCountInBtns[i], i);
+        // Check if we have buttons and they match
+        if (allPlayBtns.length === 0 || allPlayBtns.length !== allCountInBtns.length) {
+          if (attempts > 50) {
+            clearInterval(checkPlayers);
+            console.log('Count-in: Timeout (found ' + allPlayBtns.length + ' play btns, ' + allCountInBtns.length + ' count-in btns)');
           }
-          
-          console.log('Count-in: All players hooked');
-        } else if (attempts > 50) {
-          clearInterval(checkPlayers);
-          console.log('Count-in: Timeout (found ' + allPlayBtns.length + ' play btns, ' + allCountInBtns.length + ' count-in btns)');
+          return;
         }
+        
+        // Check if ALL play buttons have onclick handlers
+        var allHaveOnclick = true;
+        for (var i = 0; i < allPlayBtns.length; i++) {
+          if (!allPlayBtns[i].onclick) {
+            allHaveOnclick = false;
+            break;
+          }
+        }
+        
+        if (!allHaveOnclick) {
+          if (attempts > 50) {
+            clearInterval(checkPlayers);
+            console.log('Count-in: Timeout waiting for onclick handlers');
+          }
+          return;
+        }
+        
+        // All buttons exist and have onclick - hook them!
+        clearInterval(checkPlayers);
+        
+        console.log('Count-in: Found ' + allPlayBtns.length + ' players');
+        
+        // Hook each player
+        for (var i = 0; i < allPlayBtns.length; i++) {
+          self.hookPlayer(allPlayBtns[i], allCountInBtns[i], i);
+        }
+        
+        console.log('Count-in: All players hooked');
       }, 100);
     },
 
@@ -69,16 +90,16 @@
         return;
       }
       
-      // Mark as hooked
-      self.hookedButtons.push(playBtn);
-      
       // Store original onclick
       var originalOnclick = playBtn.onclick;
       
       if (!originalOnclick) {
-        console.error('Count-in: Player ' + index + ' has no onclick');
+        console.error('Count-in: Player ' + index + ' has no onclick (this should not happen!)');
         return;
       }
+      
+      // Mark as hooked
+      self.hookedButtons.push(playBtn);
       
       // Create GrooveUtils instance for this player
       var grooveUtils;
@@ -93,8 +114,11 @@
       playBtn.onclick = function(event) {
         var isActive = countInBtn && countInBtn.classList.contains('active');
         
+        console.log('Count-in: Player ' + index + ' clicked, active=' + isActive + ', playing=' + MIDI.Player.playing);
+        
         // If not active or already playing, use normal handler
         if (!isActive || MIDI.Player.playing) {
+          console.log('Count-in: Player ' + index + ' using normal handler');
           if (originalOnclick) {
             return originalOnclick.call(this, event);
           }
@@ -107,7 +131,7 @@
         event.stopPropagation();
         
         self.playCountIn(playBtn, grooveUtils, function() {
-          console.log('Count-in: Player ' + index + ' starting groove');
+          console.log('Count-in: Player ' + index + ' callback - starting groove');
           if (originalOnclick) {
             originalOnclick.call(playBtn, event);
           }
@@ -116,7 +140,7 @@
         return false;
       };
       
-      console.log('Count-in: Player ' + index + ' hooked');
+      console.log('Count-in: Player ' + index + ' hooked successfully');
     },
 
     playCountIn: function(playBtn, grooveUtils, callback) {
