@@ -1,0 +1,533 @@
+/* =====================================================
+   GROOVESCRIBE PLAYER - REDESIGNED
+   Modern, clean player matching Practice Vault aesthetic
+   ===================================================== */
+
+/* Base styles */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.warnings {
+  font-family: monospace;
+  display: none;
+}
+
+.Printable {
+  display: block;
+}
+
+.nonPrintable {
+  display: block;
+}
+
+/* =====================================================
+   SVG NOTATION CONTAINER
+   ===================================================== */
+.svgTarget {
+  width: 100%;
+}
+
+.svgTarget svg {
+  width: 100%;
+  height: calc(100%);
+}
+
+/* =====================================================
+   PLAYER CONTAINER - ALWAYS LARGE MODE
+   ===================================================== */
+.playerControl {
+  display: block;
+  width: 100%;
+  background: white;
+  border: 2px solid #e9ecef;
+  border-radius: 16px;
+  padding: 16px 24px;
+  margin: 16px 0 0 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  box-sizing: border-box;
+}
+
+/* Force large mode always */
+.playerControl.large,
+.playerControl.small {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  background: white;
+  border: 2px solid #e9ecef;
+  border-radius: 16px;
+  padding: 16px 24px;
+  margin: 16px 0 0 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+/* =====================================================
+   PLAYER CONTROLS ROW
+   ===================================================== */
+.playerControlsRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0;
+  flex-wrap: nowrap;
+}
+
+.playerControlsRow.large,
+.playerControlsRow.small {
+  padding: 0;
+}
+
+/* =====================================================
+   PLAY BUTTON
+   ===================================================== */
+.midiPlayImage {
+  width: 52px;
+  height: 52px;
+  cursor: pointer;
+  flex: none;
+  margin: 0;
+  border: none;
+  background: #06b3fd;
+  color: #fff;
+  font-size: 22px;
+  font-family: FontAwesome;
+  text-align: center;
+  line-height: 52px;
+  vertical-align: middle;
+  border-radius: 50%;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.midiPlayImage:hover {
+  background: #0599dc;
+}
+
+.midiPlayImage.Stopped::before,
+.midiPlayImage.Paused::before {
+  letter-spacing: -3px;
+  font-family: 'FontAwesome';
+  content: "\f04b";
+}
+
+.midiPlayImage.Playing::before {
+  font-family: 'FontAwesome';
+  content: "\f04c";
+}
+
+/* =====================================================
+   TIME DISPLAY
+   ===================================================== */
+.MIDIPlayTime {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #666;
+  min-width: 70px;
+  line-height: 1;
+  flex: none;
+  margin: 0;
+  padding: 0;
+}
+
+.MIDIPlayTime.small {
+  display: inline-block;
+  font-size: 20px;
+}
+
+/* =====================================================
+   COUNT-IN BUTTON (+1)
+   ===================================================== */
+.midiCountInButton {
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  flex: none;
+  margin: 0;
+  border: 2px solid #e9ecef;
+  background: transparent;
+  color: #1a1a2e;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  text-align: center;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.midiCountInButton:hover {
+  border-color: #06b3fd;
+}
+
+.midiCountInButton.active {
+  background: #06b3fd;
+  border-color: #06b3fd;
+  color: white;
+}
+
+/* =====================================================
+   METRONOME BUTTON
+   ===================================================== */
+.midiMetronomeMenu {
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  flex: none;
+  margin: 0;
+  border: 2px solid #e9ecef;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.midiMetronomeMenu:hover {
+  border-color: #06b3fd;
+}
+
+.midiMetronomeMenu.selected {
+  background: #06b3fd;
+  border-color: #06b3fd;
+}
+
+.midiMetronomeImage {
+  margin: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.midiMetronomeImage path {
+  fill: #1a1a2e;
+  transition: fill 0.2s;
+}
+
+.midiMetronomeMenu:hover .midiMetronomeImage path {
+  fill: #06b3fd;
+}
+
+.midiMetronomeMenu.selected .midiMetronomeImage path {
+  fill: white;
+}
+
+.midiMetronomeMenu.small {
+  display: flex;
+}
+
+/* =====================================================
+   HIDE REPEAT, EXPAND, AND GS LOGO BUTTONS
+   ===================================================== */
+.midiRepeatImage,
+.midiExpandImage,
+.midiGSLogo {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* =====================================================
+   TEMPO AND PROGRESS CONTAINER
+   ===================================================== */
+.tempoAndProgress {
+  padding: 0;
+  width: auto;
+  height: auto;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.tempoAndProgress.small,
+.midiGSLogo.small {
+  display: flex;
+}
+
+/* =====================================================
+   TEMPO ROW (BPM CONTROLS)
+   ===================================================== */
+.tempoRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: auto;
+  flex-wrap: nowrap;
+  margin: 0;
+  padding: 0;
+}
+
+/* Hide swing row completely */
+.swingRow {
+  display: none !important;
+}
+
+/* =====================================================
+   BPM LABEL
+   ===================================================== */
+.tempoLabel {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #999;
+  text-transform: uppercase;
+  text-align: right;
+  padding: 0;
+  margin: 0;
+  flex: none;
+}
+
+/* =====================================================
+   BPM NUMBER DISPLAY
+   ===================================================== */
+.tempoTextField {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a2e;
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  padding: 10px 18px;
+  margin: 0;
+  text-align: center;
+  width: auto;
+  min-width: 65px;
+  height: auto;
+  line-height: 1;
+  flex: none;
+  box-sizing: border-box;
+  cursor: text;
+}
+
+.tempoTextField:focus {
+  outline: none;
+  border-color: #06b3fd;
+}
+
+/* =====================================================
+   BPM SLIDER (HIDDEN - SOURCE OF TRUTH)
+   ===================================================== */
+.tempoInput,
+.swingInput {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* =====================================================
+   BPM +/- BUTTONS (Injected by GrooveEmbed.html)
+   ===================================================== */
+.bpmBtns {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex: none;
+}
+
+.bpmBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: white;
+  border: 2px solid #e9ecef;
+  color: #1a1a2e;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  transition: all 0.2s;
+  flex: none;
+}
+
+.bpmBtn:hover {
+  border-color: #06b3fd;
+  color: #06b3fd;
+}
+
+.bpmBtn:active {
+  transform: translateY(1px);
+}
+
+/* Hide tempo/swing labels and outputs we don't use */
+.swingLabel,
+.tempoOutput,
+.swingOutput,
+.swingSettings,
+.tempoSettings {
+  display: none !important;
+}
+
+/* =====================================================
+   PROGRESS BAR (Keep but hide for now)
+   ===================================================== */
+.MIDIProgressRow {
+  display: none;
+}
+
+.MIDIProgress {
+  display: none;
+}
+
+/* =====================================================
+   ABC SOURCE (DEBUG)
+   ===================================================== */
+#ABCSource {
+  font-family: monospace;
+  font-size: 14px;
+}
+
+/* =====================================================
+   GENERAL BUTTON STYLES
+   ===================================================== */
+button {
+  cursor: pointer;
+}
+
+/* =====================================================
+   ABC SVG HIGHLIGHTING
+   ===================================================== */
+.abcr {
+  fill: transparent;
+  fill-opacity: 0.25;
+}
+
+.abcr.highlighted {
+  fill: #990000 !important;
+  fill-opacity: 0.25;
+}
+
+/* =====================================================
+   PRINT STYLES
+   ===================================================== */
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+  }
+  
+  div.newpage {
+    page-break-before: always;
+  }
+  
+  div.nobrk {
+    page-break-inside: avoid;
+  }
+  
+  .nonPrintable {
+    display: none !important;
+  }
+}
+
+/* =====================================================
+   MOBILE RESPONSIVE
+   ===================================================== */
+@media (max-width: 640px) {
+  .playerControl,
+  .playerControl.large,
+  .playerControl.small {
+    padding: 12px 14px;
+    border-radius: 12px;
+  }
+  
+  .playerControlsRow {
+    gap: 10px;
+  }
+  
+  .midiPlayImage {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+    line-height: 44px;
+  }
+  
+  .MIDIPlayTime {
+    font-size: 16px;
+    min-width: 50px;
+  }
+  
+  .midiCountInButton,
+  .midiMetronomeMenu {
+    width: 38px;
+    height: 38px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+  
+  .midiMetronomeImage {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .tempoLabel {
+    font-size: 10px;
+  }
+  
+  .tempoTextField {
+    font-size: 15px;
+    padding: 6px 10px;
+    min-width: 42px;
+    border-radius: 8px;
+  }
+  
+  .bpmBtn {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    border-radius: 8px;
+  }
+  
+  .bpmBtns {
+    gap: 10px;
+  }
+  
+  .tempoRow {
+    gap: 10px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 375px) {
+  .playerControlsRow {
+    gap: 8px;
+  }
+  
+  .tempoRow {
+    gap: 8px;
+  }
+  
+  .bpmBtns {
+    gap: 8px;
+  }
+  
+  .MIDIPlayTime {
+    min-width: 45px;
+    font-size: 15px;
+  }
+  
+  .midiCountInButton,
+  .midiMetronomeMenu {
+    width: 36px;
+    height: 36px;
+  }
+}
