@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Embedded Groove</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- GrooveScribe core scripts -->
+    <script src="./js/groove_display.js"></script>
+
+    <!-- Inter font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+
+    <!-- NEW: Count-in handler -->
+    <script src="./js/count-in-handler.js"></script>
+
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      /* Apply Inter font globally */
+      .gs-embed,
+      .gs-embed * {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+      }
+
+      /* Force hide swing row */
+      .swingRow {
+        display: none !important;
+      }
+
+      /* Force hide expand button, repeat button, GS logo */
+      .midiExpandImage,
+      .midiRepeatImage,
+      .midiGSLogo,
+      [id^="midiExpandImage"],
+      [id^="midiRepeatImage"],
+      [id^="midiGSLogo"] {
+        display: none !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }
+    </style>
+  </head>
+
+  <body class="gs-embed">
+    <!-- Initialize GrooveScribe player -->
+    <script>
+      GrooveDisplay.AddGrooveDisplayToPage(location.search, true, true);
+    </script>
+
+    <!-- Inject BPM buttons and Count-in button -->
+    <script>
+      (function() {
+        'use strict';
+        
+        function clamp(n, min, max) {
+          return Math.max(min, Math.min(max, n));
+        }
+
+        function hideGsLogoHard() {
+          document.querySelectorAll('.midiGSLogo, [id^="midiGSLogo"], .midiExpandImage, [id^="midiExpandImage"], .midiRepeatImage, [id^="midiRepeatImage"]').forEach(function(el) {
+            el.style.display = 'none';
+            el.style.visibility = 'hidden';
+            el.style.pointerEvents = 'none';
+          });
+        }
+
+        function injectCountInButton(playerRow) {
+          if (!playerRow) return;
+          if (playerRow.querySelector('.midiCountInButton')) return; // Already injected
+
+          // Find the play button and time display
+          var playBtn = playerRow.querySelector('.midiPlayImage');
+          var timeDisplay = playerRow.querySelector('.MIDIPlayTime');
+          
+          if (!playBtn || !timeDisplay) return;
+
+          // Create count-in button
+          var countInBtn = document.createElement('span');
+          countInBtn.className = 'midiCountInButton';
+          countInBtn.textContent = '+1';
+          countInBtn.title = 'Count-in (1 bar before playing)';
+          countInBtn.setAttribute('data-count-in', 'false'); // Default OFF
+
+          // Insert after time display
+          if (timeDisplay.nextSibling) {
+            playerRow.insertBefore(countInBtn, timeDisplay.nextSibling);
+          } else {
+            playerRow.appendChild(countInBtn);
+          }
+
+          // Add click handler
+          countInBtn.addEventListener('click', function() {
+            var isActive = countInBtn.getAttribute('data-count-in') === 'true';
+            countInBtn.setAttribute('data-count-in', isActive ? 'false' : 'true');
+            
+            if (isActive) {
+              countInBtn.classList.remove('active');
+            } else {
+              countInBtn.classList.add('active');
+            }
+          });
+        }
+
+        function injectBpmButtons(wrap) {
+          if (!wrap) return;
+
+          hideGsLogoHard();
+
+          var tempoRow = wrap.querySelector('.tempoRow');
+          var tempoField = wrap.querySelector('[id^="tempoTextField"]') || 
+                          wrap.querySelector('.tempoTextField') || 
+                          wrap.querySelector('input[type="text"]');
+
+          if (!tempoRow || !tempoField) return;
+
+          // Prevent duplicate injection
+          if (tempoRow.querySelector('.bpmBtns')) return;
+
+          // Make BPM field editable
+          tempoField.readOnly = false;
+          tempoField.style.cursor = 'text';
+          
+          // Handle typed BPM changes
+          tempoField.addEventListener('change', function() {
+            var slider = wrap.querySelector('input[type="range"]');
+            if (!slider) return;
+            
+            var v = parseInt(tempoField.value, 10);
+            if (Number.isNaN(v)) return;
+            
+            v = clamp(v, 30, 300);
+            slider.value = String(v);
+            tempoField.value = String(v);
+            
+            slider.dispatchEvent(new Event('input', { bubbles: true }));
+            slider.dispatchEvent(new Event('change', { bubbles: true }));
+          });
+
+          // Create +/- buttons
+          var btnWrap = document.createElement('span');
+          btnWrap.className = 'bpmBtns';
+          btnWrap.innerHTML = 
+            '<span class="bpmBtn" data-d="-5">−</span>' +
+            '<span class="bpmBtn" data-d="5">+</span>';
+
+          tempoRow.appendChild(btnWrap);
+
+          // Handle button clicks
+          btnWrap.addEventListener('click', function(e) {
+            var btn = e.target.closest('.bpmBtn');
+            if (!btn) return;
+
+            var delta = parseInt(btn.getAttribute('data-d'), 10) || 0;
+            var slider = wrap.querySelector('input[type="range"]');
+            if (!slider) return;
+
+            var cur = parseInt(slider.value, 10);
+            if (Number.isNaN(cur)) cur = parseInt(tempoField.value, 10) || 80;
+
+            var next = clamp(cur + delta, 30, 300);
+
+            slider.value = String(next);
+            tempoField.value = String(next);
+
+            slider.dispatchEvent(new Event('input', { bubbles: true }));
+            slider.dispatchEvent(new Event('change', { bubbles: true }));
+          });
+        }
+
+        function injectAll() {
+          hideGsLogoHard();
+          
+          // Inject count-in button in player controls row
+          document.querySelectorAll('.playerControlsRow').forEach(function(row) {
+            injectCountInButton(row);
+          });
+          
+          // Inject BPM buttons
+          document.querySelectorAll('[id^="tempoAndProgress"]').forEach(function(wrap) {
+            injectBpmButtons(wrap);
+          });
+        }
+
+        // Retry until GrooveScribe builds UI
+        var tries = 0;
+        var maxTries = 120;
+        var interval = setInterval(function() {
+          tries++;
+          injectAll();
+
+          // Check if all injections are complete
+          var playerRows = document.querySelectorAll('.playerControlsRow');
+          var tempoWraps = document.querySelectorAll('[id^="tempoAndProgress"]');
+          
+          var countInDone = playerRows.length > 0 && 
+                           Array.prototype.every.call(playerRows, function(row) {
+                             return row.querySelector('.midiCountInButton');
+                           });
+                           
+          var bpmDone = tempoWraps.length > 0 && 
+                       Array.prototype.every.call(tempoWraps, function(wrap) {
+                         var row = wrap.querySelector('.tempoRow');
+                         return row && row.querySelector('.bpmBtns');
+                       });
+
+          if ((countInDone && bpmDone) || tries > maxTries) {
+            clearInterval(interval);
+            
+            // Initialize count-in handler after everything is injected
+            if (window.GrooveCountIn) {
+              window.GrooveCountIn.init();
+            }
+          }
+        }, 50);
+      })();
+    </script>
+
+    <!-- Report height to parent iframe -->
+    <script>
+      function sendGrooveHeight() {
+        var container = document.body;
+        var height = container.scrollHeight || 
+                    container.getBoundingClientRect().height || 
+                    0;
+
+        height = Math.ceil(height) + 20;
+
+        window.parent.postMessage(
+          { type: 'grooveHeight', height: height },
+          '*'
+        );
+      }
+
+      window.addEventListener('load', function() {
+        setTimeout(sendGrooveHeight, 200);
+      });
+
+      window.addEventListener('resize', function() {
+        setTimeout(sendGrooveHeight, 100);
+      });
+    </script>
+  </body>
+</html>
