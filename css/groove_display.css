@@ -299,11 +299,11 @@ body {
   background: #f8f9fa;
   border: 2px solid #e9ecef;
   border-radius: 10px;
-  padding: 10px 18px;
+  padding: 8px 12px;
   margin: 0;
   text-align: center;
-  width: auto;
-  min-width: 65px;
+  width: 60px;
+  max-width: 60px;
   height: auto;
   line-height: 1;
   flex: none;
@@ -485,8 +485,9 @@ button {
   
   .tempoTextField {
     font-size: 15px;
-    padding: 6px 10px;
-    min-width: 42px;
+    padding: 6px 8px;
+    width: 50px;
+    max-width: 50px;
     border-radius: 8px;
   }
   
