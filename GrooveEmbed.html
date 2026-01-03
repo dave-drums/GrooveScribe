@@ -210,10 +210,13 @@
           if ((countInDone && bpmDone) || tries > maxTries) {
             clearInterval(interval);
             
-            // Initialize count-in handler after everything is injected
-            if (window.GrooveCountIn) {
-              window.GrooveCountIn.init();
-            }
+            // Wait a bit longer for GrooveScribe to attach onclick handlers
+            // Then initialize count-in handler
+            setTimeout(function() {
+              if (window.GrooveCountIn) {
+                window.GrooveCountIn.init();
+              }
+            }, 500);
           }
         }, 50);
       })();
