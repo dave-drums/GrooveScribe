@@ -478,7 +478,7 @@ button {
   
   /* MOBILE TIMER SIZE - 13px font, 38px fixed width */
   .MIDIPlayTime {
-    font-size: 12px;
+    font-size: 10px;
     min-width: 38px;
     width: 38px;
   }
@@ -554,7 +554,7 @@ button {
   .MIDIPlayTime {
     min-width: 36px;
     width: 36px;
-    font-size: 10px;
+    font-size: 8px;
   }
   
   .midiCountInButton,
