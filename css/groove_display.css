@@ -80,6 +80,15 @@ body {
   padding: 0;
 }
 
+/* Left section - play + timer (fixed width to prevent shifting) */
+.playTimerGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: none;
+  min-width: 130px; /* Prevents shift when timer changes */
+}
+
 /* =====================================================
    PLAY BUTTON
    ===================================================== */
@@ -454,6 +463,12 @@ button {
     gap: 6px;
   }
   
+  /* Play + Timer group (mobile) */
+  .playTimerGroup {
+    min-width: 95px;
+    gap: 8px;
+  }
+  
   .midiPlayImage {
     width: 36px;
     height: 36px;
@@ -461,10 +476,11 @@ button {
     line-height: 36px;
   }
   
+  /* MOBILE TIMER SIZE - 13px font, 38px fixed width */
   .MIDIPlayTime {
     font-size: 12px;
-    min-width: 40px;
-     padding-right: 8px;
+    min-width: 38px;
+    width: 38px;
   }
   
   .midiCountInButton,
@@ -484,11 +500,12 @@ button {
     font-size: 9px;
   }
   
+  /* MOBILE BPM NUMBER SIZE - 12px font, 38px fixed width */
   .tempoTextField {
-    font-size: 13px;
+    font-size: 12px;
     padding: 4px 6px;
-    width: 42px;
-    max-width: 42px;
+    width: 38px;
+    max-width: 38px;
     border-radius: 6px;
   }
   
@@ -520,12 +537,10 @@ button {
     gap: 5px;
   }
   
-  .tempoRow {
-    gap: 5px;
-  }
-  
-  .bpmBtns {
-    gap: 5px;
+  /* Play + Timer group (extra small) */
+  .playTimerGroup {
+    min-width: 88px;
+    gap: 6px;
   }
   
   .midiPlayImage {
@@ -535,10 +550,11 @@ button {
     line-height: 34px;
   }
   
+  /* EXTRA SMALL TIMER - 12px font, 36px fixed width */
   .MIDIPlayTime {
-    min-width: 38px;
-    font-size: 12px;
-     padding-right: 8px;
+    min-width: 36px;
+    width: 36px;
+    font-size: 10px;
   }
   
   .midiCountInButton,
@@ -553,10 +569,11 @@ button {
     height: 13px;
   }
   
+  /* EXTRA SMALL BPM - 11px font, 36px fixed width */
   .tempoTextField {
-    width: 40px;
-    max-width: 40px;
-    font-size: 12px;
+    width: 36px;
+    max-width: 36px;
+    font-size: 11px;
     padding: 3px 5px;
   }
   
@@ -568,5 +585,13 @@ button {
   
   .tempoLabel {
     font-size: 8px;
+  }
+  
+  .tempoRow {
+    gap: 5px;
+  }
+  
+  .bpmBtns {
+    gap: 5px;
   }
 }
