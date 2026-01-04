@@ -124,112 +124,52 @@
     
     console.log('[COUNT-IN] BPM=' + bpm + ', TimeSig=' + timeSig.top + '/' + timeSig.bottom);
     
-    // Build count-in MIDI manually with the correct BPM
-    var countInURL = buildCountInMidi(bpm, timeSig.top, timeSig.bottom);
+    // Use MP3 metronome sounds (guaranteed to work)
+    playMetronomeMP3(bpm, timeSig.top, callback);
+  }
+
+  function playMetronomeMP3(bpm, beats, callback) {
+    var beatDuration = (60 / bpm) * 1000; // ms per beat
+    var currentBeat = 0;
     
-    if (!countInURL) {
-      console.log('[COUNT-IN] Failed to build MIDI');
-      callback();
-      return;
-    }
+    // Preload sounds
+    var sound1 = new Audio('/soundfont/NewDrumSamples/MP3/metronome1Count.mp3');
+    var soundClick = new Audio('/soundfont/NewDrumSamples/MP3/metronomeClick.mp3');
     
-    // Calculate expected duration
-    var expectedDuration = (60000 / bpm) * timeSig.top + 300;
+    // Preload to reduce latency
+    sound1.load();
+    soundClick.load();
     
-    // Prepare MIDI player
-    if (MIDI.Player.ctx && MIDI.Player.ctx.state === 'suspended') {
-      MIDI.Player.ctx.resume();
-    }
+    console.log('[COUNT-IN] Playing MP3 metronome');
     
-    MIDI.Player.stop();
-    MIDI.Player.clearAnimation();
-    
-    console.log('[COUNT-IN] Playing count-in...');
-    
-    var callbackCalled = false;
-    
-    MIDI.Player.loadFile(countInURL, function() {
-      // Listen for completion
-      var completionListener = function(data) {
-        if (data.message === 127 && !callbackCalled) {
-          console.log('[COUNT-IN] Complete');
-          callbackCalled = true;
-          
-          MIDI.Player.removeListener(completionListener);
-          MIDI.Player.stop();
-          MIDI.Player.clearAnimation();
-          
-          setTimeout(callback, 150);
-        }
-      };
+    function playBeat(beatNum) {
+      if (beatNum >= beats) {
+        // All beats done - start groove
+        console.log('[COUNT-IN] Complete');
+        setTimeout(callback, beatDuration);
+        return;
+      }
       
-      MIDI.Player.addListener(completionListener);
-      MIDI.Player.start();
+      // Clone and play appropriate sound
+      var sound = (beatNum === 0) ? sound1.cloneNode() : soundClick.cloneNode();
+      sound.volume = 1.0;
+      sound.play().catch(function(e) {
+        console.log('[COUNT-IN] Audio error:', e);
+      });
       
-      // Fallback
+      // Schedule next beat
       setTimeout(function() {
-        if (!callbackCalled) {
-          console.log('[COUNT-IN] Fallback timeout');
-          callbackCalled = true;
-          MIDI.Player.removeListener(completionListener);
-          MIDI.Player.stop();
-          MIDI.Player.clearAnimation();
-          setTimeout(callback, 150);
-        }
-      }, expectedDuration);
-    });
+        playBeat(beatNum + 1);
+      }, beatDuration);
+    }
+    
+    // Start immediately
+    playBeat(0);
   }
 
   function buildCountInMidi(bpm, timeSigTop, timeSigBottom) {
-    try {
-      if (typeof Midi === 'undefined') {
-        console.log('[COUNT-IN] Midi library not available');
-        return null;
-      }
-      
-      var file = new Midi.File();
-      var track = new Midi.Track();
-      file.addTrack(track);
-      
-      // Set tempo
-      track.setTempo(bpm);
-      
-      // Percussion channel (channel 10 in MIDI = index 9)
-      var channel = 9;
-      
-      // Note duration based on time signature bottom
-      var duration = 128; // Quarter notes for x/4
-      if (timeSigBottom == 8) duration = 64;
-      else if (timeSigBottom == 16) duration = 32;
-      
-      // Metronome sounds (same as GrooveScribe uses)
-      var highClick = 34; // First beat
-      var normalClick = 33; // Other beats
-      var velocity = 100;
-      
-      // Blank note for spacing (GrooveScribe does this)
-      track.addNoteOff(channel, 60, 1);
-      
-      // First beat (high click)
-      track.addNoteOn(channel, highClick, 0, velocity);
-      track.addNoteOff(channel, highClick, duration);
-      
-      // Remaining beats (normal clicks)
-      for (var i = 1; i < timeSigTop; i++) {
-        track.addNoteOn(channel, normalClick, 0, velocity);
-        track.addNoteOff(channel, normalClick, duration);
-      }
-      
-      var bytes = file.toBytes();
-      var base64 = btoa(bytes);
-      
-      console.log('[COUNT-IN] Built MIDI (' + bytes.length + ' bytes)');
-      
-      return 'data:audio/midi;base64,' + base64;
-    } catch(e) {
-      console.error('[COUNT-IN] Build error:', e);
-      return null;
-    }
+    // Not used anymore - using MP3 instead
+    return null;
   }
 
   window.GrooveCountIn = { init: init };
