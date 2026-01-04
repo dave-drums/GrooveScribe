@@ -55,16 +55,27 @@
     playBtn.onclick = function(e) {
       var needsCountIn = countInBtn.classList.contains('active');
       
-      // If already playing, currently doing count-in, or no count-in needed, use normal behavior
-      if (MIDI.Player.playing || countInInProgress[idx] || !needsCountIn) {
+      // Block all clicks during count-in
+      if (countInInProgress[idx]) {
+        console.log('[COUNT-IN] Player ' + idx + ' blocked - count-in in progress');
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+      
+      // If already playing or no count-in needed, use normal behavior
+      if (MIDI.Player.playing || !needsCountIn) {
         return originalClick.call(this, e);
       }
       
       // Do count-in then groove
       console.log('[COUNT-IN] Player ' + idx + ' starting count-in');
       
-      // Mark that we're doing count-in
+      // Mark that we're doing count-in and disable button
       countInInProgress[idx] = true;
+      playBtn.style.opacity = '0.5';
+      playBtn.style.cursor = 'not-allowed';
+      playBtn.style.pointerEvents = 'none';
       
       // Prevent default
       e.preventDefault();
@@ -75,10 +86,15 @@
       doCountIn(grooveUtils, playBtn, function() {
         console.log('[COUNT-IN] Player ' + idx + ' starting groove');
         
+        // Re-enable button
+        playBtn.style.opacity = '';
+        playBtn.style.cursor = '';
+        playBtn.style.pointerEvents = '';
+        
         // Clear flag
         countInInProgress[idx] = false;
         
-        // Call the original handler DIRECTLY - don't click which would go through our wrapper again
+        // Call the original handler DIRECTLY
         setTimeout(function() {
           if (originalClick) {
             // Create a fake event object
