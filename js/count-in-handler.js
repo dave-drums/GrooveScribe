@@ -175,9 +175,9 @@
         source.start(playTime);
       }
       
-      // Start groove when the last beat plays (not after it finishes)
-      var lastBeatTime = startTime + ((beats - 1) * beatDuration);
-      var delay = (lastBeatTime - audioContext.currentTime) * 1000 + 100; // 100ms after last beat starts
+      // Start groove AFTER all beats finish (not when last beat starts)
+      var allBeatsFinishTime = startTime + (beats * beatDuration);
+      var delay = (allBeatsFinishTime - audioContext.currentTime) * 1000 + 50; // Small buffer
       
       setTimeout(function() {
         console.log('[COUNT-IN] Complete');
