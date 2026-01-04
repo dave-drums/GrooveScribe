@@ -129,42 +129,91 @@
   }
 
   function playMetronomeMP3(bpm, beats, callback) {
-    var beatDuration = (60 / bpm) * 1000; // ms per beat
-    var currentBeat = 0;
+    var beatDuration = 60 / bpm; // seconds per beat
     
-    // Preload sounds
-    var sound1 = new Audio('/soundfont/NewDrumSamples/MP3/metronome1Count.mp3');
-    var soundClick = new Audio('/soundfont/NewDrumSamples/MP3/metronomeClick.mp3');
+    console.log('[COUNT-IN] Playing metronome with Web Audio');
     
-    // Preload to reduce latency
-    sound1.load();
-    soundClick.load();
+    var audioContext = new (window.AudioContext || window.webkitAudioContext)();
     
-    console.log('[COUNT-IN] Playing MP3 metronome');
+    // Load and decode both sounds
+    var sound1URL = '/soundfont/NewDrumSamples/MP3/metronome1Count.mp3';
+    var soundClickURL = '/soundfont/NewDrumSamples/MP3/metronomeClick.mp3';
     
-    function playBeat(beatNum) {
-      if (beatNum >= beats) {
-        // All beats done - start groove
-        console.log('[COUNT-IN] Complete');
-        setTimeout(callback, beatDuration);
-        return;
-      }
-      
-      // Clone and play appropriate sound
-      var sound = (beatNum === 0) ? sound1.cloneNode() : soundClick.cloneNode();
-      sound.volume = 1.0;
-      sound.play().catch(function(e) {
-        console.log('[COUNT-IN] Audio error:', e);
-      });
-      
-      // Schedule next beat
-      setTimeout(function() {
-        playBeat(beatNum + 1);
-      }, beatDuration);
+    var buffers = { high: null, normal: null };
+    var loadCount = 0;
+    
+    function loadSound(url, key) {
+      fetch(url)
+        .then(function(response) { return response.arrayBuffer(); })
+        .then(function(arrayBuffer) { return audioContext.decodeAudioData(arrayBuffer); })
+        .then(function(audioBuffer) {
+          buffers[key] = audioBuffer;
+          loadCount++;
+          if (loadCount === 2) {
+            playScheduledBeats();
+          }
+        })
+        .catch(function(e) {
+          console.log('[COUNT-IN] Load error:', e);
+          // Fallback to simple Audio if Web Audio fails
+          playFallbackMetronome(bpm, beats, callback);
+        });
     }
     
-    // Start immediately
-    playBeat(0);
+    function playScheduledBeats() {
+      var startTime = audioContext.currentTime + 0.05; // Small offset to ensure ready
+      
+      // Schedule all beats with precise Web Audio timing
+      for (var i = 0; i < beats; i++) {
+        var buffer = (i === 0) ? buffers.high : buffers.normal;
+        var source = audioContext.createBufferSource();
+        source.buffer = buffer;
+        source.connect(audioContext.destination);
+        
+        // Schedule this beat at exact time (no setTimeout drift!)
+        var playTime = startTime + (i * beatDuration);
+        source.start(playTime);
+      }
+      
+      // Start groove when the last beat plays (not after it finishes)
+      var lastBeatTime = startTime + ((beats - 1) * beatDuration);
+      var delay = (lastBeatTime - audioContext.currentTime) * 1000 + 100; // 100ms after last beat starts
+      
+      setTimeout(function() {
+        console.log('[COUNT-IN] Complete');
+        audioContext.close();
+        callback();
+      }, delay);
+    }
+    
+    function playFallbackMetronome(bpm, beats, callback) {
+      // Simple fallback if Web Audio fails
+      var beatDuration = (60 / bpm) * 1000;
+      var currentBeat = 0;
+      
+      function playNext() {
+        if (currentBeat >= beats) {
+          callback();
+          return;
+        }
+        
+        var sound = new Audio(currentBeat === 0 ? sound1URL : soundClickURL);
+        sound.play();
+        currentBeat++;
+        
+        if (currentBeat < beats) {
+          setTimeout(playNext, beatDuration);
+        } else {
+          setTimeout(callback, 50);
+        }
+      }
+      
+      playNext();
+    }
+    
+    // Load both sounds
+    loadSound(sound1URL, 'high');
+    loadSound(soundClickURL, 'normal');
   }
 
   function buildCountInMidi(bpm, timeSigTop, timeSigBottom) {
