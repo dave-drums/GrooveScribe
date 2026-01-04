@@ -66,22 +66,31 @@
       // Mark that we're doing count-in
       countInInProgress[idx] = true;
       
-      // Prevent default to stop normal playback from starting
+      // Prevent default
       e.preventDefault();
       e.stopPropagation();
       
       var self = this;
       
       doCountIn(grooveUtils, playBtn, function() {
-        console.log('[COUNT-IN] Player ' + idx + ' count-in complete');
+        console.log('[COUNT-IN] Player ' + idx + ' starting groove');
         
-        // Clear the flag so the next click goes through
+        // Clear flag
         countInInProgress[idx] = false;
         
-        // Trigger a new click to start the groove
-        // This time it will bypass count-in and use normal handler
+        // Call the original handler DIRECTLY - don't click which would go through our wrapper again
         setTimeout(function() {
-          self.click();
+          if (originalClick) {
+            // Create a fake event object
+            var fakeEvent = {
+              preventDefault: function() {},
+              stopPropagation: function() {},
+              target: self,
+              currentTarget: self,
+              type: 'click'
+            };
+            originalClick.call(self, fakeEvent);
+          }
         }, 50);
       });
       
