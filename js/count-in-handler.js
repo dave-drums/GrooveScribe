@@ -161,7 +161,7 @@
     }
     
     function playScheduledBeats() {
-      var startTime = audioContext.currentTime + 0.05; // Small offset to ensure ready
+      var startTime = audioContext.currentTime + 0.01; // Minimal offset
       
       // Schedule all beats with precise Web Audio timing
       for (var i = 0; i < beats; i++) {
@@ -170,17 +170,19 @@
         source.buffer = buffer;
         source.connect(audioContext.destination);
         
-        // Schedule this beat at exact time (no setTimeout drift!)
+        // Schedule this beat at exact time
         var playTime = startTime + (i * beatDuration);
         source.start(playTime);
       }
       
-      // Start groove AFTER all beats finish (not when last beat starts)
+      // Start groove slightly before last beat finishes to account for MIDI loading (~80ms)
       var allBeatsFinishTime = startTime + (beats * beatDuration);
-      var delay = (allBeatsFinishTime - audioContext.currentTime) * 1000 + 50; // Small buffer
+      var delay = (allBeatsFinishTime - audioContext.currentTime) * 1000 - 80;
+      
+      if (delay < 0) delay = 0;
       
       setTimeout(function() {
-        console.log('[COUNT-IN] Complete');
+        console.log('[COUNT-IN] Complete at ' + delay + 'ms');
         audioContext.close();
         callback();
       }, delay);
