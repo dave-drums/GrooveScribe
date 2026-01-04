@@ -75,6 +75,7 @@
     
     var midi = buildMidi(bpm, timeSig.top, timeSig.bottom);
     if (!midi) {
+      console.log('[COUNT-IN] Failed to build MIDI, skipping');
       callback();
       return;
     }
@@ -83,13 +84,28 @@
     
     playBtn.className = playBtn.className.replace(/Stopped|Paused/g, '') + ' Playing';
     
-    MIDI.Player.ctx.resume();
+    // Make sure audio context is running
+    if (MIDI.Player.ctx && MIDI.Player.ctx.state === 'suspended') {
+      console.log('[COUNT-IN] Resuming audio context');
+      MIDI.Player.ctx.resume();
+    }
+    
     MIDI.Player.stop();
     MIDI.Player.clearAnimation();
     
+    console.log('[COUNT-IN] Loading MIDI...');
     MIDI.Player.loadFile(midi, function() {
+      console.log('[COUNT-IN] MIDI loaded, playing...');
+      
+      // Set volume high
+      if (MIDI.setVolume) {
+        MIDI.setVolume(0, 127); // Channel 0, max volume
+      }
+      
       MIDI.Player.start();
+      
       setTimeout(function() {
+        console.log('[COUNT-IN] Stopping...');
         MIDI.Player.stop();
         MIDI.Player.clearAnimation();
         setTimeout(callback, 100);
@@ -124,31 +140,60 @@
 
   function buildMidi(bpm, top, bottom) {
     try {
+      // Use GrooveUtils built-in method (most reliable)
       var gu = new GrooveUtils();
-      if (gu.setTempo) gu.setTempo(bpm);
+      
+      // Set the tempo first
+      if (gu.setTempo) {
+        gu.setTempo(bpm);
+      }
+      
+      // Build count-in with GrooveUtils
       if (gu.MIDI_build_midi_url_count_in_track) {
+        console.log('[COUNT-IN] Using GrooveUtils method');
         return gu.MIDI_build_midi_url_count_in_track(top, bottom);
       }
-    } catch(e) {}
+    } catch(e) {
+      console.log('[COUNT-IN] GrooveUtils method failed:', e);
+    }
     
+    // Fallback: manual MIDI build
     try {
+      console.log('[COUNT-IN] Using manual MIDI build');
       var f = new Midi.File();
       var t = new Midi.Track();
       f.addTrack(t);
-      t.setTempo(bpm);
-      t.setInstrument(0, 0x13);
-      t.addNoteOff(9, 60, 1);
       
-      var d = 128;
+      t.setTempo(bpm);
+      
+      // Set percussion instrument
+      t.setInstrument(0, 0); // GM percussion
+      
+      // Channel 10 is standard MIDI percussion (0-indexed = channel 9)
+      var channel = 9;
+      
+      // Add blank note for spacing
+      t.addNoteOff(channel, 60, 1);
+      
+      var d = 128; // Quarter notes
       if (bottom == 8) d = 64;
       else if (bottom == 16) d = 32;
       
-      t.addNoteOn(9, 34, 0, 100);
-      t.addNoteOff(9, 34, d);
+      // Use common percussion sounds that are always loaded:
+      // 37 = Side Stick (high click)
+      // 31 = Sticks (normal click)
+      var highClick = 37;
+      var normalClick = 31;
+      var velocity = 127; // Max volume
       
+      // First beat (high)
+      t.addNoteOn(channel, highClick, 0, velocity);
+      t.addNoteOff(channel, highClick, d);
+      
+      // Remaining beats (normal)
       for (var i = 1; i < top; i++) {
-        t.addNoteOn(9, 33, 0, 100);
-        t.addNoteOff(9, 33, d);
+        t.addNoteOn(channel, normalClick, 0, velocity);
+        t.addNoteOff(channel, normalClick, d);
       }
       
       return 'data:audio/midi;base64,' + btoa(f.toBytes());
