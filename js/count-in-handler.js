@@ -8,6 +8,7 @@
   'use strict';
 
   var hookedButtons = [];
+  var countInInProgress = {}; // Track which players are doing count-in
 
   function init() {
     console.log('[COUNT-IN] Init');
@@ -49,22 +50,39 @@
     var originalClick = playBtn.onclick;
     var grooveUtils = new GrooveUtils();
     
+    countInInProgress[idx] = false;
+    
     playBtn.onclick = function(e) {
       var needsCountIn = countInBtn.classList.contains('active');
       
-      // If already playing or no count-in, use normal behavior
-      if (MIDI.Player.playing || !needsCountIn) {
+      // If already playing, currently doing count-in, or no count-in needed, use normal behavior
+      if (MIDI.Player.playing || countInInProgress[idx] || !needsCountIn) {
         return originalClick.call(this, e);
       }
       
-      // Do count-in then groove (matching groove_writer.js pattern)
-      console.log('[COUNT-IN] Starting count-in for player ' + idx);
+      // Do count-in then groove
+      console.log('[COUNT-IN] Player ' + idx + ' starting count-in');
+      
+      // Mark that we're doing count-in
+      countInInProgress[idx] = true;
+      
+      // Prevent default to stop normal playback from starting
       e.preventDefault();
+      e.stopPropagation();
+      
+      var self = this;
       
       doCountIn(grooveUtils, playBtn, function() {
-        console.log('[COUNT-IN] Count-in complete, starting groove');
-        // Trigger original play - this loads and plays the groove
-        originalClick.call(playBtn, e);
+        console.log('[COUNT-IN] Player ' + idx + ' count-in complete');
+        
+        // Clear the flag so the next click goes through
+        countInInProgress[idx] = false;
+        
+        // Trigger a new click to start the groove
+        // This time it will bypass count-in and use normal handler
+        setTimeout(function() {
+          self.click();
+        }, 50);
       });
       
       return false;
@@ -72,6 +90,20 @@
   }
 
   function doCountIn(grooveUtils, playBtn, callback) {
+    // Get BPM from the player's tempo field
+    var container = playBtn.closest('.playerControl');
+    var bpm = 120; // Default
+    
+    if (container) {
+      var tempoField = container.querySelector('.tempoTextField');
+      if (tempoField && tempoField.value) {
+        bpm = parseInt(tempoField.value, 10);
+        if (isNaN(bpm) || bpm < 30 || bpm > 300) {
+          bpm = 120;
+        }
+      }
+    }
+    
     // Get time signature
     var timeSig = { top: 4, bottom: 4 };
     try {
@@ -80,6 +112,13 @@
         timeSig.bottom = grooveUtils.myGrooveData.noteValue || 4;
       }
     } catch(e) {}
+    
+    console.log('[COUNT-IN] BPM=' + bpm + ', TimeSig=' + timeSig.top + '/' + timeSig.bottom);
+    
+    // Set the tempo in GrooveUtils BEFORE building count-in MIDI
+    if (grooveUtils.setTempo) {
+      grooveUtils.setTempo(bpm);
+    }
     
     // Build count-in MIDI using GrooveUtils method (same as groove_writer.js line 3356)
     var countInURL = grooveUtils.MIDI_build_midi_url_count_in_track(timeSig.top, timeSig.bottom);
@@ -90,35 +129,65 @@
       return;
     }
     
-    // Update button state
-    playBtn.className = playBtn.className.replace(/Stopped|Paused/g, '') + ' Playing';
+    // Calculate expected duration for fallback
+    var expectedDuration = (60000 / bpm) * timeSig.top + 300;
     
-    // Play count-in track
-    MIDI.Player.stop();
-    MIDI.Player.clearAnimation();
-    
-    if (MIDI.Player.ctx) {
+    // Make sure MIDI is ready
+    if (MIDI.Player.ctx && MIDI.Player.ctx.state === 'suspended') {
       MIDI.Player.ctx.resume();
     }
     
+    // Completely stop and clear any existing playback
+    MIDI.Player.stop();
+    MIDI.Player.clearAnimation();
+    
+    console.log('[COUNT-IN] Loading count-in MIDI...');
+    
+    var callbackCalled = false;
+    
     MIDI.Player.loadFile(countInURL, function() {
+      console.log('[COUNT-IN] MIDI loaded, starting playback...');
+      
       // Set up one-time listener for track completion
       var completionListener = function(data) {
         // MIDI event message 127 = end of track
-        if (data.message === 127) {
+        if (data.message === 127 && !callbackCalled) {
+          console.log('[COUNT-IN] Track complete (message 127)');
+          callbackCalled = true;
+          
           MIDI.Player.removeListener(completionListener);
+          
+          // Completely stop and clear before starting groove
           MIDI.Player.stop();
           MIDI.Player.clearAnimation();
           
-          // Small delay then start groove
+          console.log('[COUNT-IN] Calling callback to start groove');
+          
+          // Small delay to ensure clean state
           setTimeout(function() {
             callback();
-          }, 100);
+          }, 150);
         }
       };
       
       MIDI.Player.addListener(completionListener);
       MIDI.Player.start();
+      
+      // Fallback timeout in case MIDI event doesn't fire
+      setTimeout(function() {
+        if (!callbackCalled) {
+          console.log('[COUNT-IN] Fallback timeout triggered');
+          callbackCalled = true;
+          
+          MIDI.Player.removeListener(completionListener);
+          MIDI.Player.stop();
+          MIDI.Player.clearAnimation();
+          
+          setTimeout(function() {
+            callback();
+          }, 150);
+        }
+      }, expectedDuration);
     });
   }
 
