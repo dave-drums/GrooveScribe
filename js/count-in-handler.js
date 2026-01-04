@@ -73,114 +73,50 @@
     
     console.log('[COUNT-IN] BPM=' + bpm + ' TimeSig=' + timeSig.top + '/' + timeSig.bottom);
     
-    var midi = buildMidi(bpm, timeSig.top, timeSig.bottom);
-    
-    var duration = (60000 / bpm) * timeSig.top + 200;
-    
     playBtn.className = playBtn.className.replace(/Stopped|Paused/g, '') + ' Playing';
     
-    // Try MIDI first
-    if (midi && MIDI && MIDI.Player) {
-      tryMidiCountIn(midi, duration, bpm, timeSig, playBtn, callback);
-    } else {
-      // Fallback to Web Audio beeps
-      console.log('[COUNT-IN] Using Web Audio beeps (MIDI unavailable)');
-      playBeepCountIn(bpm, timeSig.top, callback);
-    }
+    // Use the actual metronome MP3 files from GrooveScribe
+    playMetronomeSounds(bpm, timeSig.top, callback);
   }
   
-  function tryMidiCountIn(midi, duration, bpm, timeSig, playBtn, callback) {
-    // Make sure audio context is running
-    if (MIDI.Player.ctx && MIDI.Player.ctx.state === 'suspended') {
-      console.log('[COUNT-IN] Resuming audio context');
-      MIDI.Player.ctx.resume();
-    }
-    
-    MIDI.Player.stop();
-    MIDI.Player.clearAnimation();
-    
-    console.log('[COUNT-IN] Loading MIDI...');
-    
-    var soundPlayed = false;
-    var fallbackTimer = null;
-    
-    MIDI.Player.loadFile(midi, function() {
-      console.log('[COUNT-IN] MIDI loaded, playing...');
-      
-      // Set volume high
-      if (MIDI.setVolume) {
-        MIDI.setVolume(0, 127);
-      }
-      
-      MIDI.Player.start();
-      
-      // Check if sound is actually playing
-      setTimeout(function() {
-        if (MIDI.Player.playing) {
-          soundPlayed = true;
-        } else {
-          // MIDI didn't work, fall back to beeps
-          console.log('[COUNT-IN] MIDI silent, using beeps');
-          MIDI.Player.stop();
-          playBeepCountIn(bpm, timeSig.top, function() {
-            playBtn.className = playBtn.className.replace('Playing', 'Stopped');
-            callback();
-          });
-          return;
-        }
-      }, 100);
-      
-      setTimeout(function() {
-        if (soundPlayed) {
-          console.log('[COUNT-IN] Stopping...');
-          MIDI.Player.stop();
-          MIDI.Player.clearAnimation();
-          setTimeout(callback, 100);
-        }
-      }, duration);
-    });
-  }
-  
-  function playBeepCountIn(bpm, beats, callback) {
-    var ctx = new (window.AudioContext || window.webkitAudioContext)();
-    var beatDuration = 60 / bpm; // seconds
+  function playMetronomeSounds(bpm, beats, callback) {
+    var beatDuration = (60 / bpm) * 1000; // milliseconds per beat
     var currentBeat = 0;
     
-    function playBeep(isFirst) {
-      var osc = ctx.createOscillator();
-      var gain = ctx.createGain();
-      
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      
-      // High beep for first beat, lower for others
-      osc.frequency.value = isFirst ? 1000 : 800;
-      
-      gain.gain.setValueAtTime(0.3, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-      
-      osc.start(ctx.currentTime);
-      osc.stop(ctx.currentTime + 0.1);
-    }
+    // Preload both sounds
+    var sound1 = new Audio('/soundfont/NewDrumSamples/MP3/metronome1Count.mp3');
+    var soundClick = new Audio('/soundfont/NewDrumSamples/MP3/metronomeClick.mp3');
     
-    function playNextBeep() {
+    console.log('[COUNT-IN] Playing metronome sounds');
+    
+    function playNextBeat() {
+      if (currentBeat >= beats) {
+        // Done with count-in
+        console.log('[COUNT-IN] Finished, starting groove');
+        callback();
+        return;
+      }
+      
+      // Play the appropriate sound
+      var sound = (currentBeat === 0) ? sound1.cloneNode() : soundClick.cloneNode();
+      sound.volume = 1.0;
+      sound.play().catch(function(e) {
+        console.log('[COUNT-IN] Audio play error:', e);
+      });
+      
+      currentBeat++;
+      
+      // Schedule next beat
       if (currentBeat < beats) {
-        playBeep(currentBeat === 0);
-        currentBeat++;
-        
-        if (currentBeat < beats) {
-          setTimeout(playNextBeep, beatDuration * 1000);
-        } else {
-          setTimeout(function() {
-            ctx.close();
-            callback();
-          }, beatDuration * 1000);
-        }
+        setTimeout(playNextBeat, beatDuration);
+      } else {
+        // Wait one more beat duration before starting groove
+        setTimeout(callback, beatDuration);
       }
     }
     
-    console.log('[COUNT-IN] Playing ' + beats + ' beeps');
-    playNextBeep();
+    // Start immediately
+    playNextBeat();
   }
 
   function getBPM(playBtn) {
