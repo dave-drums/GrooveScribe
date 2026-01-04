@@ -157,7 +157,7 @@
       console.log('[COUNT-IN] GrooveUtils method failed:', e);
     }
     
-    // Fallback: manual MIDI build
+    // Fallback: manual MIDI build with CORRECT timing
     try {
       console.log('[COUNT-IN] Using manual MIDI build');
       var f = new Midi.File();
@@ -165,37 +165,36 @@
       f.addTrack(t);
       
       t.setTempo(bpm);
+      t.setInstrument(0, 0);
       
-      // Set percussion instrument
-      t.setInstrument(0, 0); // GM percussion
+      var channel = 9; // Percussion
       
-      // Channel 10 is standard MIDI percussion (0-indexed = channel 9)
-      var channel = 9;
+      // Calculate note duration in MIDI ticks
+      var noteDuration = 128; // Quarter notes for x/4
+      if (bottom == 8) noteDuration = 64;   // 8th notes for x/8
+      else if (bottom == 16) noteDuration = 32; // 16th notes for x/16
       
-      // Add blank note for spacing
+      // Use the SAME percussion sounds GrooveScribe uses
+      // constant_OUR_MIDI_METRONOME_1 = 34 (high click)
+      // constant_OUR_MIDI_METRONOME_NORMAL = 33 (normal click)
+      var highClick = 34;
+      var normalClick = 33;
+      var velocity = 100; // Match GrooveScribe velocity
+      
+      // Blank note at start (GrooveScribe does this)
       t.addNoteOff(channel, 60, 1);
       
-      var d = 128; // Quarter notes
-      if (bottom == 8) d = 64;
-      else if (bottom == 16) d = 32;
-      
-      // Use common percussion sounds that are always loaded:
-      // 37 = Side Stick (high click)
-      // 31 = Sticks (normal click)
-      var highClick = 37;
-      var normalClick = 31;
-      var velocity = 127; // Max volume
-      
-      // First beat (high)
+      // First beat (high click)
       t.addNoteOn(channel, highClick, 0, velocity);
-      t.addNoteOff(channel, highClick, d);
+      t.addNoteOff(channel, highClick, noteDuration);
       
-      // Remaining beats (normal)
+      // Remaining beats (normal clicks)
       for (var i = 1; i < top; i++) {
-        t.addNoteOn(channel, normalClick, 0, velocity);
-        t.addNoteOff(channel, normalClick, d);
+        t.addNoteOn(channel, normalClick, 0, velocity); // 0 = immediately after last event
+        t.addNoteOff(channel, normalClick, noteDuration); // noteDuration = length of note
       }
       
+      console.log('[COUNT-IN] Built MIDI with ' + top + ' clicks');
       return 'data:audio/midi;base64,' + btoa(f.toBytes());
     } catch(e) {
       console.error('[COUNT-IN] MIDI build error:', e);
