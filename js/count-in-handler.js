@@ -1,18 +1,15 @@
 /**
  * count-in-handler.js - FINAL
- * Clean implementation using MIDI.Player event system
- * Matches GrooveScribe editor pattern from groove_writer.js lines 3354-3368
+ * Clean implementation using MP3 metronome sounds with Web Audio scheduling
  */
 
 (function() {
   'use strict';
 
   var hookedButtons = [];
-  var countInInProgress = {}; // Track which players are doing count-in
+  var countInInProgress = {};
 
   function init() {
-    console.log('[COUNT-IN] Init');
-    
     var attempts = 0;
     var check = setInterval(function() {
       attempts++;
@@ -39,7 +36,6 @@
       hook(plays[i], countIns[i], i);
     }
     
-    console.log('[COUNT-IN] Hooked ' + plays.length + ' players');
     return true;
   }
 
@@ -55,49 +51,35 @@
     playBtn.onclick = function(e) {
       var needsCountIn = countInBtn.classList.contains('active');
       
-      // Block all clicks during count-in
       if (countInInProgress[idx]) {
-        console.log('[COUNT-IN] Player ' + idx + ' blocked - count-in in progress');
         e.preventDefault();
         e.stopPropagation();
         return false;
       }
       
-      // If already playing or no count-in needed, use normal behavior
       if (MIDI.Player.playing || !needsCountIn) {
         return originalClick.call(this, e);
       }
       
-      // Do count-in then groove
-      console.log('[COUNT-IN] Player ' + idx + ' starting count-in');
-      
-      // Mark that we're doing count-in and disable button
       countInInProgress[idx] = true;
       playBtn.style.opacity = '0.5';
       playBtn.style.cursor = 'not-allowed';
       playBtn.style.pointerEvents = 'none';
       
-      // Prevent default
       e.preventDefault();
       e.stopPropagation();
       
       var self = this;
       
       doCountIn(grooveUtils, playBtn, function() {
-        console.log('[COUNT-IN] Player ' + idx + ' starting groove');
-        
-        // Re-enable button
         playBtn.style.opacity = '';
         playBtn.style.cursor = '';
         playBtn.style.pointerEvents = '';
         
-        // Clear flag
         countInInProgress[idx] = false;
         
-        // Call the original handler DIRECTLY
         setTimeout(function() {
           if (originalClick) {
-            // Create a fake event object
             var fakeEvent = {
               preventDefault: function() {},
               stopPropagation: function() {},
@@ -115,7 +97,6 @@
   }
 
   function doCountIn(grooveUtils, playBtn, callback) {
-    // Get BPM from the player's tempo field
     var container = playBtn.closest('.playerControl');
     var bpm = 120;
     
@@ -129,7 +110,6 @@
       }
     }
     
-    // Get time signature
     var timeSig = { top: 4, bottom: 4 };
     try {
       if (grooveUtils.myGrooveData) {
@@ -138,20 +118,13 @@
       }
     } catch(e) {}
     
-    console.log('[COUNT-IN] BPM=' + bpm + ', TimeSig=' + timeSig.top + '/' + timeSig.bottom);
-    
-    // Use MP3 metronome sounds (guaranteed to work)
     playMetronomeMP3(bpm, timeSig.top, callback);
   }
 
   function playMetronomeMP3(bpm, beats, callback) {
-    var beatDuration = 60 / bpm; // seconds per beat
-    
-    console.log('[COUNT-IN] Playing metronome with Web Audio');
-    
+    var beatDuration = 60 / bpm;
     var audioContext = new (window.AudioContext || window.webkitAudioContext)();
     
-    // Load and decode both sounds
     var sound1URL = '/soundfont/NewDrumSamples/MP3/metronome1Count.mp3';
     var soundClickURL = '/soundfont/NewDrumSamples/MP3/metronomeClick.mp3';
     
@@ -169,43 +142,36 @@
             playScheduledBeats();
           }
         })
-        .catch(function(e) {
-          console.log('[COUNT-IN] Load error:', e);
-          // Fallback to simple Audio if Web Audio fails
+        .catch(function() {
           playFallbackMetronome(bpm, beats, callback);
         });
     }
     
     function playScheduledBeats() {
-      var startTime = audioContext.currentTime + 0.01; // Minimal offset
+      var startTime = audioContext.currentTime + 0.01;
       
-      // Schedule all beats with precise Web Audio timing
       for (var i = 0; i < beats; i++) {
         var buffer = (i === 0) ? buffers.high : buffers.normal;
         var source = audioContext.createBufferSource();
         source.buffer = buffer;
         source.connect(audioContext.destination);
         
-        // Schedule this beat at exact time
         var playTime = startTime + (i * beatDuration);
         source.start(playTime);
       }
       
-      // Start groove slightly before last beat finishes to account for MIDI loading (~80ms)
       var allBeatsFinishTime = startTime + (beats * beatDuration);
       var delay = (allBeatsFinishTime - audioContext.currentTime) * 1000 - 80;
       
       if (delay < 0) delay = 0;
       
       setTimeout(function() {
-        console.log('[COUNT-IN] Complete at ' + delay + 'ms');
         audioContext.close();
         callback();
       }, delay);
     }
     
     function playFallbackMetronome(bpm, beats, callback) {
-      // Simple fallback if Web Audio fails
       var beatDuration = (60 / bpm) * 1000;
       var currentBeat = 0;
       
@@ -229,14 +195,8 @@
       playNext();
     }
     
-    // Load both sounds
     loadSound(sound1URL, 'high');
     loadSound(soundClickURL, 'normal');
-  }
-
-  function buildCountInMidi(bpm, timeSigTop, timeSigBottom) {
-    // Not used anymore - using MP3 instead
-    return null;
   }
 
   window.GrooveCountIn = { init: init };
