@@ -71,36 +71,29 @@
 
         function injectCountInButton(playerRow) {
           if (!playerRow) return;
-          if (playerRow.querySelector('.midiCountInButton')) return; // Already injected
+          if (playerRow.querySelector('.midiCountInButton')) return;
 
-          // Find the play button and time display
           var playBtn = playerRow.querySelector('.midiPlayImage');
           var timeDisplay = playerRow.querySelector('.MIDIPlayTime');
           
           if (!playBtn || !timeDisplay) return;
 
-          // Create count-in button
           var countInBtn = document.createElement('span');
           countInBtn.className = 'midiCountInButton';
           countInBtn.textContent = '+1';
           countInBtn.title = 'Count-in (1 bar before playing)';
-          // Default OFF - no active class
 
-          // Insert after time display
           if (timeDisplay.nextSibling) {
             playerRow.insertBefore(countInBtn, timeDisplay.nextSibling);
           } else {
             playerRow.appendChild(countInBtn);
           }
 
-          // Add click handler
           countInBtn.addEventListener('click', function() {
             if (countInBtn.classList.contains('active')) {
               countInBtn.classList.remove('active');
-              console.log('Count-in button: OFF');
             } else {
               countInBtn.classList.add('active');
-              console.log('Count-in button: ON');
             }
           });
         }
@@ -117,14 +110,11 @@
 
           if (!tempoRow || !tempoField) return;
 
-          // Prevent duplicate injection
           if (tempoRow.querySelector('.bpmBtns')) return;
 
-          // Make BPM field editable
           tempoField.readOnly = false;
           tempoField.style.cursor = 'text';
           
-          // Handle typed BPM changes
           tempoField.addEventListener('change', function() {
             var slider = wrap.querySelector('input[type="range"]');
             if (!slider) return;
@@ -140,7 +130,6 @@
             slider.dispatchEvent(new Event('change', { bubbles: true }));
           });
 
-          // Create +/- buttons
           var btnWrap = document.createElement('span');
           btnWrap.className = 'bpmBtns';
           btnWrap.innerHTML = 
@@ -149,7 +138,6 @@
 
           tempoRow.appendChild(btnWrap);
 
-          // Handle button clicks
           btnWrap.addEventListener('click', function(e) {
             var btn = e.target.closest('.bpmBtn');
             if (!btn) return;
@@ -174,25 +162,21 @@
         function injectAll() {
           hideGsLogoHard();
           
-          // Inject count-in button in player controls row
           document.querySelectorAll('.playerControlsRow').forEach(function(row) {
             injectCountInButton(row);
           });
           
-          // Inject BPM buttons
           document.querySelectorAll('[id^="tempoAndProgress"]').forEach(function(wrap) {
             injectBpmButtons(wrap);
           });
         }
 
-        // Retry until GrooveScribe builds UI
         var tries = 0;
         var maxTries = 120;
         var interval = setInterval(function() {
           tries++;
           injectAll();
 
-          // Check if all injections are complete
           var playerRows = document.querySelectorAll('.playerControlsRow');
           var tempoWraps = document.querySelectorAll('[id^="tempoAndProgress"]');
           
@@ -210,8 +194,6 @@
           if ((countInDone && bpmDone) || tries > maxTries) {
             clearInterval(interval);
             
-            // Wait a bit longer for GrooveScribe to attach onclick handlers
-            // Then initialize count-in handler
             setTimeout(function() {
               if (window.GrooveCountIn) {
                 window.GrooveCountIn.init();
