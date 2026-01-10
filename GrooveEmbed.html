@@ -213,7 +213,7 @@
                     container.getBoundingClientRect().height || 
                     0;
 
-        height = Math.ceil(height) + 20;
+        height = Math.ceil(height);
 
         window.parent.postMessage(
           { type: 'grooveHeight', height: height },
