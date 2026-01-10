@@ -288,7 +288,7 @@ body {
    ===================================================== */
 .tempoLabel {
   font-family: 'Inter', sans-serif;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 600;
   color: #999;
   text-transform: uppercase;
@@ -303,7 +303,7 @@ body {
    ===================================================== */
 .tempoTextField {
   font-family: 'Inter', sans-serif;
-  font-size: 22px; 
+  font-size: 20px; 
   font-weight: 700;
   color: #1a1a2e;
   background: #f8f9fa;
@@ -487,9 +487,9 @@ button {
   /* Timer - increase by 2px (was 14px, now 16px) */
   .MIDIPlayTime,
   .MIDIPlayTime.small {
-    font-size: 16px !important;
-    min-width: 34px !important;
-    width: 34px !important;
+    font-size: 18px !important;
+    min-width: 32px !important;
+    width: 32px !important;
     font-weight: 700;
   }
   
@@ -498,7 +498,7 @@ button {
   .midiMetronomeMenu {
     width: 30px;
     height: 30px;
-    font-size: 11px;
+    font-size: 12px;
     border-radius: 6px;
   }
   
@@ -516,13 +516,13 @@ button {
   
   /* BPM Label */
   .tempoLabel {
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 0;
   }
   
   /* BPM number - increase by 4px (was 15px, now 19px), match button height */
   .tempoTextField {
-    font-size: 19px !important;
+    font-size: 16px !important;
     padding: 0 5px;
     width: 38px;
     max-width: 38px;
@@ -535,7 +535,7 @@ button {
   
   /* +/- buttons - match metronome/count-in height */
   .bpmBtn {
-    width: 26px;
+    width: 30px;
     height: 30px; /* Match metronome/count-in height */
     font-size: 15px;
     border-radius: 6px;
@@ -603,7 +603,7 @@ button {
   }
   
   .bpmBtn {
-    width: 23px;
+    width: 27px;
     height: 27px;
     font-size: 13px;
   }
