@@ -146,6 +146,7 @@ body {
 .MIDIPlayTime.small {
   display: inline-block;
   font-size: 20px;
+  min-width: 70px;
 }
 
 /* =====================================================
@@ -478,10 +479,12 @@ button {
   }
   
   /* Timer */
-  .MIDIPlayTime {
-    font-size: 12px;
-    min-width: 34px;
-    width: 34px;
+  .MIDIPlayTime,
+  .MIDIPlayTime.small {
+    font-size: 11px !important;
+    min-width: 32px !important;
+    width: 32px !important;
+    font-weight: 700;
   }
   
   /* +1 and Metronome */
