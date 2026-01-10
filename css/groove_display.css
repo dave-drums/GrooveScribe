@@ -455,143 +455,142 @@ button {
   .playerControl,
   .playerControl.large,
   .playerControl.small {
-    padding: 8px 10px;
+    padding: 8px 4px; /* Tighter padding */
     border-radius: 10px;
   }
   
   .playerControlsRow {
-    gap: 6px;
+    gap: 3px; /* Very tight gaps */
+    flex-wrap: nowrap;
   }
   
-  /* Play + Timer group (mobile) */
   .playTimerGroup {
-    min-width: 95px;
-    gap: 8px;
+    min-width: 82px;
+    gap: 5px;
   }
   
+  /* Play button */
   .midiPlayImage {
-    width: 36px;
-    height: 36px;
-    font-size: 14px;
-    line-height: 36px;
-  }
-  
-  /* MOBILE TIMER SIZE - 13px font, 38px fixed width */
-  .MIDIPlayTime {
-    font-size: 10px;
-    min-width: 38px;
-    width: 38px;
-  }
-  
-  .midiCountInButton,
-  .midiMetronomeMenu {
     width: 32px;
     height: 32px;
     font-size: 12px;
+    line-height: 32px;
+  }
+  
+  /* Timer */
+  .MIDIPlayTime {
+    font-size: 12px;
+    min-width: 34px;
+    width: 34px;
+  }
+  
+  /* +1 and Metronome */
+  .midiCountInButton,
+  .midiMetronomeMenu {
+    width: 28px;
+    height: 28px;
+    font-size: 10px;
     border-radius: 6px;
   }
   
   .midiMetronomeImage {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
   }
   
+  /* BPM Label - keep but tiny */
   .tempoLabel {
-    font-size: 9px;
+    font-size: 8px;
+    letter-spacing: 0;
   }
   
-  /* MOBILE BPM NUMBER SIZE - 12px font, 38px fixed width */
+  /* BPM number */
   .tempoTextField {
     font-size: 12px;
-    padding: 4px 6px;
-    width: 38px;
-    max-width: 38px;
+    padding: 3px 4px;
+    width: 32px;
+    max-width: 32px;
     border-radius: 6px;
   }
   
+  /* +/- buttons */
   .bpmBtn {
-    width: 28px;
-    height: 28px;
-    font-size: 15px;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
     border-radius: 6px;
   }
   
   .bpmBtns {
-    gap: 6px;
+    gap: 3px;
   }
   
   .tempoRow {
-    gap: 6px;
+    gap: 3px;
+  }
+  
+  .tempoAndProgress {
+    flex: 0 0 auto;
   }
 }
 
-/* Extra small screens */
+/* Very small screens - ultra compact */
 @media (max-width: 375px) {
   .playerControl,
   .playerControl.large,
   .playerControl.small {
-    padding: 6px 8px;
+    padding: 6px 3px;
   }
   
   .playerControlsRow {
-    gap: 5px;
+    gap: 2px;
   }
   
-  /* Play + Timer group (extra small) */
   .playTimerGroup {
-    min-width: 88px;
-    gap: 6px;
+    min-width: 76px;
+    gap: 4px;
   }
   
   .midiPlayImage {
-    width: 34px;
-    height: 34px;
-    font-size: 13px;
-    line-height: 34px;
+    width: 30px;
+    height: 30px;
+    font-size: 11px;
+    line-height: 30px;
   }
   
-  /* EXTRA SMALL TIMER - 12px font, 36px fixed width */
   .MIDIPlayTime {
-    min-width: 36px;
-    width: 36px;
-    font-size: 8px;
+    min-width: 32px;
+    width: 32px;
+    font-size: 11px;
   }
   
   .midiCountInButton,
   .midiMetronomeMenu {
-    width: 30px;
-    height: 30px;
-    font-size: 11px;
-  }
-  
-  .midiMetronomeImage {
-    width: 13px;
-    height: 13px;
-  }
-  
-  /* EXTRA SMALL BPM - 11px font, 36px fixed width */
-  .tempoTextField {
-    width: 36px;
-    max-width: 36px;
-    font-size: 11px;
-    padding: 3px 5px;
-  }
-  
-  .bpmBtn {
     width: 26px;
     height: 26px;
-    font-size: 14px;
+    font-size: 9px;
   }
   
   .tempoLabel {
-    font-size: 8px;
+    font-size: 7px;
   }
   
-  .tempoRow {
-    gap: 5px;
+  .tempoTextField {
+    width: 30px;
+    max-width: 30px;
+    font-size: 11px;
+    padding: 2px 3px;
   }
   
+  .bpmBtn {
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+  }
+  
+  .tempoRow,
   .bpmBtns {
-    gap: 5px;
+    gap: 2px;
   }
+}
 }
