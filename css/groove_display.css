@@ -303,7 +303,7 @@ body {
    ===================================================== */
 .tempoTextField {
   font-family: 'Inter', sans-serif;
-  font-size: 20px; 
+  font-size: 18px; 
   font-weight: 700;
   color: #1a1a2e;
   background: #f8f9fa;
@@ -516,13 +516,13 @@ button {
   
   /* BPM Label */
   .tempoLabel {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0;
   }
   
   /* BPM number - increase by 4px (was 15px, now 19px), match button height */
   .tempoTextField {
-    font-size: 16px !important;
+    font-size: 15px !important;
     padding: 0 5px;
     width: 38px;
     max-width: 38px;
