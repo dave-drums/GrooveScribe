@@ -27,9 +27,8 @@ body {
    ===================================================== */
 .svgTarget {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 28px 24px;
+  padding: 28px 20px;
+  box-sizing: border-box;
 }
 
 .svgTarget svg {
@@ -158,15 +157,15 @@ body {
    COUNT-IN BUTTON (+1)
    ===================================================== */
 .midiCountInButton {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   cursor: pointer;
   flex: none;
   margin: 0;
   border: 2px solid #e9ecef;
   background: transparent;
   color: #1a1a2e;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   font-family: 'Inter', sans-serif;
   text-align: center;
@@ -182,6 +181,7 @@ body {
 
 .midiCountInButton:hover {
   border-color: #06b3fd;
+   color: #06b3fd;
 }
 
 .midiCountInButton.active {
@@ -194,8 +194,8 @@ body {
    METRONOME BUTTON
    ===================================================== */
 .midiMetronomeMenu {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   cursor: pointer;
   flex: none;
   margin: 0;
