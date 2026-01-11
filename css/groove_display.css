@@ -465,14 +465,14 @@ button {
   .playerControl,
   .playerControl.large,
   .playerControl.small {
-    padding: 8px 4px;
+    padding: 8px 12px;
     border-radius: 10px;
   }
   
   .playerControlsRow {
     gap: 3px;
     flex-wrap: nowrap;
-    justify-content: space-between; /* Push BPM section to right */
+    justify-content: space-between; 
   }
   
   .playTimerGroup {
