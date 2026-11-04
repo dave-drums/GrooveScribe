@@ -110,6 +110,7 @@
 		<script src="js/groove_writer.js"></script>
 		<script src="js/groove_utils.js"></script>
 		<script src="js/grooves.js"></script>
+		<script defer src="js/groove_details.js"></script>
 
 		<script type="text/javascript">
 			/*jslint browser:true evil:true on:true */
@@ -169,8 +170,9 @@
 					</span>
 				</span>
 				<span id="upperRight">
+					<span id='KeyButton'><input type="checkbox" class="legendToggle" id="showLegend" onclick="myGrooveWriter.refresh_ABC();"><label class="rightButtons" id="LegendLabel" for="showLegend"><i class="fa fa-key" aria-hidden="true"></i> Key Legend</label></span>
 					<span class="rightButtons grooveDB_hidden" id="permutationAnchor" onclick="myGrooveWriter.permutationAnchorClick(event);"><i class="fa fa-bars"></i> Permutations</span>
-					<span class="rightButtons" id="groovesAnchor" onclick="myGrooveWriter.groovesAnchorClick(event);"><i class="fa fa-bars"></i> Grooves</span>
+					<span class="rightButtons" id="groovesAnchor" role="button" tabindex="0" aria-controls="grooveListWrapper" onclick="myGrooveWriter.groovesAnchorClick(event);"><i class="fa fa-bars"></i> Grooves</span>
 					<span class="rightButtons" id="helpAnchor" onclick="myGrooveWriter.helpAnchorClick(event);"><i class="fa fa-bars"></i> Help</span>
 				</span>
 			</div>
@@ -203,12 +205,7 @@
 				<div class="warnings" id="diverr">
 				</div>
 
-				<div id="sheetMusicTextFields" class="fullWidthEle grooveDB_hidden edit-block">
-					<span class="sheetMusicTextField"><b>Title:</b> <input class="sheetMusicInputField" id="tuneTitle" onchange="myGrooveWriter.refresh_ABC();" type="text"></span>
-					<span class="sheetMusicTextField"><b>Author:</b> <input class="sheetMusicInputField" id="tuneAuthor" onchange="myGrooveWriter.refresh_ABC();"  type="text"></span>
-					<span class="sheetMusicTextField"><b>Comment:</b> <input class="sheetMusicInputField" id="tuneComments" onchange="myGrooveWriter.refresh_ABC();"  type="text"></span>
-					<span id='KeyButton'><input type="checkbox" class="hiddenCheckbox" id="showLegend" onclick="myGrooveWriter.refresh_ABC();"><label id="LegendLabel" for="showLegend"><i class="fa fa-key"></i></label></span>
-				</div>
+				<div aria-hidden="true" class="fullWidthEle" id="grooveMetadataDivider"></div>
 
 				<div id="musicalInput" class="fullWidthEle edit-block">
 					<div id="measureContainer">
@@ -451,9 +448,23 @@
 			</ul>
 		</div>
 		<div id="grooveListWrapper">
+			<button class="grooveDB_hidden" id="grooveDetailsButton" type="button" aria-haspopup="dialog" aria-controls="grooveDetailsDialog">Groove Details</button>
 			<script>
 				document.write(grooves.getGroovesAsHTML());
 			</script>
+		</div>
+
+
+		<div class="nonPrintable">
+			<dialog aria-labelledby="grooveDetailsTitle" id="grooveDetailsDialog">
+				<h2 id="grooveDetailsTitle">Groove Details</h2>
+				<div id="sheetMusicTextFields" class="fullWidthEle grooveDB_hidden">
+					<label class="sheetMusicTextField"><b>Title:</b> <input class="sheetMusicInputField" id="tuneTitle" onchange="myGrooveWriter.refresh_ABC();" type="text"></label>
+					<label class="sheetMusicTextField"><b>Author:</b> <input class="sheetMusicInputField" id="tuneAuthor" onchange="myGrooveWriter.refresh_ABC();"  type="text"></label>
+					<label class="sheetMusicTextField"><b>Comment:</b> <input class="sheetMusicInputField" id="tuneComments" onchange="myGrooveWriter.refresh_ABC();"  type="text"></label>
+				</div>
+				<button id="grooveDetailsClose" type="button">Done</button>
+			</dialog>
 		</div>
 
 		<!-- dialog for the TIME label, hidden by default -->
