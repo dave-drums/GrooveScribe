@@ -1,12 +1,19 @@
 :root {
-	--header-bg-color: #303030;
-	--bpm-bg-color: #242424;
-	--side-bg-color: #303030;
+	--header-bg-color: #202428;
+	--bpm-bg-color: #23272b;
+	--side-bg-color: #1f2327;
 	--bottom-bg-color: var(--side-bg-color);
-	--panel-bg-color: #383838;
-	--border-color: #484848;
-	--ui-text-color: #EEE;
-	--ui-muted-text-color: #BBB;
+	--panel-bg-color: #272c31;
+	--border-color: #3d454d;
+	--ui-text-color: #f4f2ed;
+	--ui-muted-text-color: #b8bbbd;
+	/* UI accents are separate from the existing notation/highlight colours. */
+	--ui-accent-color: #06b3fd;
+	--ui-accent-soft-color: #38bdf8;
+	--ui-hover-bg-color: #30383f;
+	--ui-selected-bg: linear-gradient(180deg, #16445a, #173e51);
+	--ui-control-bg: linear-gradient(180deg, #343c43, #30373e);
+	--ui-panel-bg: linear-gradient(180deg, #2a3035, #272c31);
 	--editor-header-height: 49px;
 	--side-highlight-bg-color: #2484C0;
 	--note-overlay-bg-color: #BDEBDD;
@@ -380,6 +387,118 @@ input[type=range]:active::-moz-range-thumb {
 input[type=range]:active::-webkit-slider-thumb {
 	background: #fff;
 }
+/* Paint-only playback refresh. Keep all player/slider metrics and icons intact. */
+@media screen {
+  .playerControl {
+    background-image: linear-gradient(180deg, #272c31, #23272b);
+  }
+
+  .midiPlayImage, .midiRepeatImage, .midiExpandImage {
+    border-radius: 8px;
+    color: var(--ui-text-color);
+    transition: background-color 180ms ease, color 180ms ease,
+      box-shadow 180ms ease, transform 180ms ease;
+  }
+
+  .midiPlayImage, .midiRepeatImage {
+    background: var(--ui-control-bg);
+    box-shadow: inset 0 0 0 1px var(--border-color), 0 1px 3px rgba(0, 0, 0, .12);
+  }
+
+  .midiPlayImage.Stopped, .midiPlayImage.Paused, .midiPlayImage.Playing {
+    background: var(--ui-selected-bg);
+    box-shadow: inset 0 0 0 1px var(--ui-accent-color), 0 1px 3px rgba(0, 0, 0, .12);
+  }
+
+  .midiPlayImage.Playing {
+    background: linear-gradient(180deg, #08648b, #095c80);
+  }
+
+  .midiPlayImage:hover, .midiRepeatImage:hover {
+    background: var(--ui-hover-bg-color);
+    color: #fff;
+    box-shadow: inset 0 0 0 1px var(--ui-accent-color);
+  }
+
+  .midiPlayImage.Playing:hover {
+    background: linear-gradient(180deg, #0a6d96, #0a648b);
+  }
+
+  .midiExpandImage.small:hover, .midiExpandImage.large:hover {
+    color: var(--ui-accent-soft-color);
+  }
+
+  .tempoLabel, .swingLabel, .swingOutput, .MIDIPlayTime {
+    color: var(--ui-muted-text-color);
+  }
+
+  .tempoTextField {
+    background-color: #1b1e21;
+    color: var(--ui-text-color);
+    border-radius: 6px;
+    box-shadow: inset 0 0 0 1px var(--border-color);
+  }
+
+  input[type=range] {
+    background: #3d454d;
+  }
+
+  input[type=range]:before {
+    color: var(--ui-accent-color);
+  }
+
+  input[type=range]:after {
+    color: #3d454d;
+  }
+
+  input[type=range]::-webkit-slider-runnable-track {
+    background: #3d454d;
+  }
+
+  input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #49545e;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    background: var(--ui-accent-color);
+    border-color: var(--ui-accent-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .15);
+    transition: background-color 180ms ease, border-color 180ms ease;
+  }
+
+  input[type=range]::-moz-range-track {
+    background: #3d454d;
+  }
+
+  input[type=range]::-moz-range-thumb {
+    background: var(--ui-accent-color);
+    border-color: var(--ui-accent-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .15);
+    transition: background-color 180ms ease, border-color 180ms ease;
+  }
+
+  input[type=range]::-ms-fill-lower {
+    background: var(--ui-accent-color);
+  }
+
+  input[type=range]::-ms-fill-upper {
+    background: #3d454d;
+  }
+
+  input[type=range]::-ms-thumb {
+    background: var(--ui-accent-color);
+    border-color: var(--ui-accent-color);
+  }
+
+  input[type=range]:active::-moz-range-thumb {
+    background: var(--ui-accent-soft-color);
+  }
+
+  input[type=range]:active::-webkit-slider-thumb {
+    background: var(--ui-accent-soft-color);
+  }
+}
+
 @media print {
 	/* keep at bottom so it overrides the styles above */
 	body {margin:0; padding:0; border:0; background-color: transparent}
