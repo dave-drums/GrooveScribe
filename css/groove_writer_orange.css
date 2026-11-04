@@ -129,7 +129,7 @@
 		color: var(--ui-text-color);
 	}
 	.metronomeButton, .rightButtons {
-		padding: 2px;
+		padding: 6px 10px;
 		cursor: pointer;
 		display: inline-block;
 		/background: #0071ad;
@@ -1234,7 +1234,7 @@
 	}
 	#LegendLabel {
 		border: 0;
-		padding: 2px;
+		padding: 6px 10px;
 		border-radius: 6px;
 	}
 	.legendToggle {
