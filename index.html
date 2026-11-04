@@ -5,26 +5,31 @@
 
     <head>
 				
-		<title>Groove Scribe</title>
+		<title>Groove Lab | Dave Drums</title>
+        <meta name="description" content="Groove Lab by Dave Drums. Create, play and explore drum grooves with notation editing, MIDI playback, sharing, printing and downloads.">
+        <meta name="application-name" content="Groove Lab">
+        <meta name="apple-mobile-web-app-title" content="Groove Lab">
+        <meta name="author" content="Dave Drums">
+        <meta property="og:title" content="Groove Lab | Dave Drums">
+        <meta property="og:image:alt" content="Groove Lab. By Dave Drums. Create. Play. Explore.">
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="mobile-web-app-capable" content="yes">
-		<link rel="icon" sizes="192x192" href="images/gscribe-icon-192.png">
-		<link rel="icon" sizes="96x96" href="images/gscribe-icon-96.png">
-		<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="200x200" href="images/favicon.png">
+		<link rel="apple-touch-icon" sizes="200x200" href="apple-touch-icon.png">
 		
 		<!--meta property="og:image" content="https://gs.davedrums.com.au/groove/images/GScribe_Logo_on_orange.png"> -->
-		<meta property="og:description" content="Groove Scribe allows drummers to easily create grooves, listen, share, print sheet music, and more. Use the Groove Scribe to create new grooves, figure out the groove to your favorite song, or write down the groove to your latest tune."/>
-		<meta property="og:site_name" content="GrooveScribe"/>
+		<meta property="og:description" content="Groove Lab by Dave Drums. Create. Play. Explore. Create drum grooves, listen, share, print sheet music and download your work."/>
+		<meta property="og:site_name" content="Groove Lab"/>
 
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 
 		<script>
 			document.write('<meta property="og:image" content="https://gscribe-png-image.herokuapp.com/' + window.location.search + '">');
 		</script>
-		<meta property="og:image" content="https://gs.davedrums.com.au/groove/images/GScribe_Logo_on_orange.png">
+		<meta property="og:image" content="https://groove.davedrums.com.au/images/groove-lab-social.png">
 
 		<link rel="stylesheet" type="text/css" href="font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="css/share-button.min.css">
@@ -126,7 +131,7 @@
 		<div class="nonPrintable">
 			<div id="LeftHandNav">
 				<span id="divisionButtonContainer">
-					<span id="logoInSubdivision" class="left-button-content"><img src="images/GScribe_Logo_lone_g.png"></span>
+					<span id="logoInSubdivision" class="left-button-content"></span>
 					<span class="left-button edit-block" id="timeLabel" onclick="myGrooveWriter.timeSigPopupOpen();"><span class="left-button-content"><span><span id="timeSigLabel" class="buttonFraction"><sup>4</sup>/<sub>4</sub></span><span id="timeSubLabel">TIME</span></span></span></span>
 					<span class="left-button subdivision edit-block" id="subdivision_8ths"  onclick="myGrooveWriter.changeDivision(8);"><span class="left-button-content"><span><span class="buttonFraction"><sup>1</sup>/<sub>8</sub></span>NOTES</span></span></span>
 					<span class="left-button subdivision edit-block" id="subdivision_16ths" onclick="myGrooveWriter.changeDivision(16);"><span class="left-button-content"><span><span class="buttonFraction"><sup>1</sup>/<sub>16</sub></span>NOTES</span></span></span>
@@ -152,7 +157,7 @@
 
 			</div>
 			<div id="TopNav" class="fullWidthEle">
-				<span id="logoTextUpperLeft"><img src="images/GScribe_Logo_word_stack.png"></span>
+				<span id="logoTextUpperLeft"></span>
 				<span id="upperLeft">
 					<span id="metronomeContainer">
 						<span id="metronomeLabel">METRONOME:</span>
@@ -233,8 +238,8 @@
 				</div>
 
 				<span id="hiddenDescription">
-					GrooveScribe allows drummers to easily create grooves, listen, share, print sheet music, and more.
-					Use the GrooveScribe to create new grooves, figure out the groove to your favorite song,
+					Groove Lab allows drummers to easily create grooves, listen, share, print sheet music, and more.
+					Use Groove Lab to create new grooves, figure out the groove to your favorite song,
 					or write down the groove to your latest tune.
 				</span>
 

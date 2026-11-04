@@ -3339,7 +3339,7 @@ function GrooveUtils() {
 
 		if (expandable)
 			newHTML +=
-			'       <span title="Expand full screen in GrooveScribe" class="midiGSLogo" id="midiGSLogo'  + root.grooveUtilsUniqueIndex + '">' +
+			'       <span title="Expand full screen in Groove Lab" class="midiGSLogo" id="midiGSLogo'  + root.grooveUtilsUniqueIndex + '">' +
 						addInLineGScribeLogoLoneGSVG() +
 			'       </span>' +
 			'		<span title="Expand/Retract player" class="midiExpandImage" id="midiExpandImage' + root.grooveUtilsUniqueIndex + '"></span>';

@@ -1,10 +1,13 @@
 :root {
-	--header-bg-color: #243640;
-	--header-bg-start-color: #2a404d;
-	--header-bg-end-color: #1c2b33;
-	--bpm-bg-color: #222222;
-	--side-bg-color: #393939;
-	--bottom-bg-color: #393939;
+	--header-bg-color: #303030;
+	--bpm-bg-color: #242424;
+	--side-bg-color: #303030;
+	--bottom-bg-color: var(--side-bg-color);
+	--panel-bg-color: #383838;
+	--border-color: #484848;
+	--ui-text-color: #EEE;
+	--ui-muted-text-color: #BBB;
+	--editor-header-height: 49px;
 	--side-highlight-bg-color: #2484C0;
 	--note-overlay-bg-color: #BDEBDD;
 
@@ -40,7 +43,7 @@
 	}
 	.playerControl {
 		display: inline-block;
-		background-color: #222222;
+		background-color: var(--bpm-bg-color);
 		width: 100%;  /* expand to the surounding element */
 		font-family: 'Lato', sans-serif;
 		white-space: nowrap;
@@ -178,7 +181,7 @@
 	.tempoTextField {
 		margin: 1px 6px 0 6px;
 		color: #999999;
-		background-color: #222;
+		background-color: var(--bpm-bg-color);
 		border: none;
 		width: 30px;
 		text-align: center;
@@ -277,14 +280,14 @@ input[type=range] {
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
 	input[type=range] {
 		margin-top: 0px;
-		background: #222222;
+		background: var(--bpm-bg-color);
 		height: 24px;
 	}
 }
 @supports (-ms-accelerator:true) {
 	input[type=range] {
 		margin-top: 0px;
-		background: #222222;
+		background: var(--bpm-bg-color);
 		height: 24px;
 	}
 }

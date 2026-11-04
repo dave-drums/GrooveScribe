@@ -55,7 +55,7 @@ function GrooveWriter() {
 	root.myGrooveUtils.grooveDBAuthoring = parseInt(root.myGrooveUtils.getQueryVariableFromURL("GDB_Author", "0"), 10);
 
 	// private vars in the scope of the class
-	var class_app_title = "Groove Scribe";
+	var class_app_title = "Groove Lab | Dave Drums";
 	var class_permutation_type = "none";
 	var class_advancedEditIsOn = false;
 	var class_measure_for_note_label_click = 0;
@@ -3092,9 +3092,9 @@ function GrooveWriter() {
 		updateSheetMusic();
 
 		if(class_number_of_measures === 5)
-			window.alert("Please be aware that the Groove Scribe is not designed to write an entire musical score.\n" +
+			window.alert("Please be aware that Groove Lab is not designed to write an entire musical score.\n" +
 						"You can create as many measures as you want, but your browser may slow down as more measures are added.\n" +
-						"There are also many notation features that would be useful for score writing that are not part of Groove Scribe");
+						"There are also many notation features that would be useful for score writing that are not part of Groove Lab");
 	};
 
 	function showHideCSS_ClassDisplay(className, force, showElseHide, showState) {
@@ -3916,7 +3916,7 @@ function GrooveWriter() {
 					facebook: {
 						before: function () {
 							this.url = document.getElementById("fullURLPopupTextField").value;
-							this.description = "Check out this groove.";
+							this.description = "Check out this groove in Groove Lab.";
 						},
 						//app_id : "839699029418014"    // staging id
 						// app_id : "1499163983742002"   // MLDC id, lou created
@@ -3929,19 +3929,19 @@ function GrooveWriter() {
 					twitter: {
 						before: function () {
 							this.url = encodeURIComponent(document.getElementById("fullURLPopupTextField").value);
-							this.description = "Check out this groove:  " + document.getElementById("fullURLPopupTextField").value;
+							this.description = "Groove Lab - check out this groove:  " + document.getElementById("fullURLPopupTextField").value;
 						}
 					},
 					reddit: {
 						before: function () {
 							this.url = document.getElementById("fullURLPopupTextField").value;
-							this.title = "Check out this groove: " + document.getElementById("fullURLPopupTextField").value;
+							this.title = "Groove Lab - check out this groove: " + document.getElementById("fullURLPopupTextField").value;
 						}
 					},
 					email: {
 						before : function () {
 							this.url = document.getElementById("fullURLPopupTextField").value;
-							this.description = "Check out this groove. %0A%0A " + encodeURIComponent(document.getElementById("fullURLPopupTextField").value);
+							this.description = "Check out this groove in Groove Lab. %0A%0A " + encodeURIComponent(document.getElementById("fullURLPopupTextField").value);
 						}
 					},
 					pinterest: {

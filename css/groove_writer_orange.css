@@ -8,7 +8,7 @@
 		/* Use GrooveWriter instead of body for easy embedding */
 		margin: 0px;
 		height: 100vh;
-		background-color: #393939;
+		background-color: var(--side-bg-color);
 	}
 	#GrooveWriter {
 		/* tag surrounds entire app */
@@ -19,7 +19,7 @@
 		 * Usually set the height to 100vh - (the height of the top nav)
 		 */
 		position: relative;
-		background-color: #393939;
+		background-color: var(--side-bg-color);
 		//background-color: #DDD;
 		width: 100%;
 		min-width: 800px;
@@ -44,14 +44,14 @@
 	}
 	#LeftHandNav {
 		width: 70px;
-		height: 100%;
+		height: calc(100% - var(--editor-header-height));
 		position: fixed;
 		/position: absolute;
 		#top: 111px;
-		top: 0px;
+		top: var(--editor-header-height);
 		left: 0px;
-		border-right: 2px solid #000;
-		background: #393939;
+		border-right: 2px solid var(--border-color);
+		background: var(--side-bg-color);
 		z-index: 999;
 	}
 	#TopNav {
@@ -61,25 +61,32 @@
 		top: 0px;
 		left: 0px;
 		z-index: 998;
-		width: calc(100% - 72px);
-		margin-left: 72px;
-		height: 48px;  /* total 48 */
-		border-bottom: 1px solid #000;
+		width: 100vw;
+		max-width: none;
+		box-sizing: border-box;
+		padding: 0 24px;
+		height: var(--editor-header-height);
+		border-bottom: 1px solid var(--border-color);
 		background: var(--header-bg-color);
-		background: linear-gradient(to right, var(--header-bg-start-color), var(--header-bg-end-color));
-		display: block;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+		/* Keep both control groups in the header on narrow portrait screens. */
+		overflow-x: auto;
+		scrollbar-width: none;
 	}
 	#midiPlayer {  /* more #midiPlayer css in groove_display.css */
-		background: #000;
+		background: var(--bpm-bg-color);
 		width: calc(100% - 72px);
 		height: 48px;
 		position: fixed;
 		#top: 160px;
-		top: 49px;
+		top: var(--editor-header-height);
 		/position: relative;
 		left: 72px;
 		z-index: 999;
-		border-bottom: 1px solid #000;
+		border-bottom: 1px solid var(--border-color);
 	}
 	#RightHandContent {
 		position: relative;
@@ -90,24 +97,20 @@
 		width: calc(100% - 72px);
 		overflow-y: auto;
 	}
-	#logoTextUpperLeft {
-		padding: 9px 10px 6px 5px;
-		display: inline-block;
-	}
-	#logoTextUpperLeft img {
-		height: 30px;
+	#logoTextUpperLeft, #logoInSubdivision {
+		display: none;
 	}
 	#upperLeft  {
-		margin-top: 12px;
+		flex-shrink: 0;
 		display: inline-block;
 		white-space: nowrap;
 		vertical-align: top;
 	}
 	#upperRight {
-		margin-top: 12px;
+		flex-shrink: 0;
 		display: inline-block;
-		float: right;
-		margin-right: 10px;
+		margin-left: auto;
+		margin-right: 0;
 		white-space: nowrap;
 		vertical-align: top;
 	}
@@ -121,9 +124,9 @@
 		display: inline-block;
 		height: 20px;
 		font-weight: 500;
-		margin: 0px 5px 0px 10px;
+		margin: 0px 5px 0px 0px;
 		text-align: center;
-		color: #EEF;
+		color: var(--ui-text-color);
 	}
 	.metronomeButton, .rightButtons {
 		padding: 2px;
@@ -156,12 +159,6 @@
 		/background: #68c2ff;
 	}
 
-	#logoInSubdivision {
-		background-color: #000;
-	}
-	#logoInSubdivision img {
-		height: 40px;
-	}
 	.left-button {
 		display: block;
 		color: #999999;
@@ -173,7 +170,7 @@
 		font-size: 12px;
 		font-weight: bold;
 		height: 48px;
-		border-bottom: 1px solid #000;
+		border-bottom: 1px solid var(--border-color);
 		text-align: center;
 		vertical-align: middle;
 		display: -webkit-flex;
@@ -198,7 +195,7 @@
 	}
 	.left-button.disabled, .left-button.disabled:hover {
 		color: #000;
-		background-color: #393939;
+		background-color: var(--side-bg-color);
 	}
 	.left-button.buttonSelected, .left-button.buttonSelected:hover {  /* is subdivision and is selected */
 		background: #2484C0;
@@ -234,8 +231,9 @@
 		height: 35px;
 		text-align: center;
 		padding-top: 13px;
-		border-bottom:1px solid #AAA;
-		background-color: #DDD;
+		border-bottom:1px solid var(--border-color);
+		background-color: var(--panel-bg-color);
+		color: var(--ui-text-color);
 
 	}
 	#NotationLabel {
@@ -755,7 +753,8 @@
 	#PermutationOptions.displayed {
 		padding: 3px 0px 0px 10px;
 		//margin-bottom: -20px;
-		background-color: #DDD;
+		background-color: var(--panel-bg-color);
+		color: var(--ui-text-color);
 	}
 	#PermutationOptionsHeader {
 		/margin-left: 22px;
@@ -768,10 +767,10 @@
 	}
 	.PermutationOptionGroup{
 		display: table-row;
-		border-bottom: 1px solid #999;
+		border-bottom: 1px solid var(--border-color);
 	}
 	.PermutationOptionGroup:last-child{
-		border-bottom: 0px solid #999;
+		border-bottom: 0;
 	}
 	.PermutationOption{
 		height: 20px;
@@ -858,18 +857,18 @@
 		position:fixed; left:30px; top:-30px; z-index:999;
 		width:150px;
 		margin:0; padding:0px; list-style:none;
-		background: #eeeeee;
-		color: #000;
-		border: 1px solid #393939;
+		background: var(--panel-bg-color);
+		color: var(--ui-text-color);
+		border: 1px solid var(--border-color);
 		list-style:none;
 	}
 	.noteContextMenu>ul.list li {
 		padding:10px;
-		border-bottom: solid 1px #393939;
+		border-bottom: solid 1px var(--border-color);
 		text-decoration: none;
 	}
 	.noteContextMenu>ul.list li:hover, ul.list a:hover {
-		background: #cccccc;
+		background: var(--border-color);
 	}
 	.noteContextMenu>ul.list li:last-child {
 		border:none;
@@ -883,13 +882,13 @@
 		width: 300px;
 		height: 300px;
 		overflow: auto;
-		background: #eeeeee;
-		border: 1px solid #393939;
+		background: var(--panel-bg-color);
+		border: 1px solid var(--border-color);
 	}
 	.grooveListUL {
 		margin:0; padding:0px; list-style:none;
-		background:#eeeeee;
-		color: #000;
+		background: var(--panel-bg-color);
+		color: var(--ui-text-color);
 	}
 	.grooveListHeaderLI {
 		padding:15px;
@@ -900,10 +899,10 @@
 	.grooveListLI {
 		padding: 10px;
 		padding-left: 15px;
-		border-bottom: solid 1px #393939;
+		border-bottom: solid 1px var(--border-color);
 	}
 	.grooveListLI:hover {
-		background: #cccccc;
+		background: var(--border-color);
 	}
 	hr {
 		width: 795px;
@@ -918,10 +917,11 @@
 		/visibility: hidden;
 		display: none;
 		position:absolute; left:300px; top:250px; z-index:999;
-		background-color: #FFF;
+		background-color: var(--panel-bg-color);
+		color: var(--ui-text-color);
 		width: 400px;
 		padding: 10px;
-		border: solid 2px #999;
+		border: solid 2px var(--border-color);
 		border-radius: 5px;
 	}
 	#timeSigPopup {
@@ -944,8 +944,8 @@
 	#timeSigPopupTimeSigTop, #timeSigPopupTimeSigBottom {
 		font-size: 24px;
 		font-weight: 500;
-		color: #666;
-		background-color: #EEE;
+		color: var(--ui-text-color);
+		background-color: var(--bpm-bg-color);
 		vertical-align: top;
 		padding-left: 20px;
 		width: 80px;
@@ -957,8 +957,8 @@
 	#timeSigPopupCancel {
 		font-size: 16px;
 		font-weight: 500;
-		background: #FFF;
-		color: #CCC;
+		background: var(--bpm-bg-color);
+		color: var(--ui-text-color);
 		border: 0px;
 		border-radius: 5px;
 		padding: 5px 10px;
@@ -982,7 +982,7 @@
 		cursor: pointer;
 	}
 	#fullURLPopupCloseButton:hover {
-		color: #444;
+		color: #FFF;
 	}
 	#fullURLPopupTitle {
 		font-size: 18px;
@@ -990,7 +990,7 @@
 		text-align: center;
 	}
 	#fullURLPopupSubTitle {
-		color: var(--highlight-color);
+		color: var(--ui-text-color);
 		font-size: 14px;
 		font-weight: 700;
 		text-align: center;
@@ -1020,7 +1020,8 @@
 	#fullURLPopupTextField {
 		width: 350px;
 		padding: 8px;
-		background: #ffe9b7;
+		background: var(--bpm-bg-color);
+		color: #EEE;
 		border: 0px;
 		border-radius: 5px;
 		text-align: center;
@@ -1029,7 +1030,8 @@
 		font-size: 16px;
 		font-family: Lato,sans-serif;
 		font-weight: 700;
-		color: #000;
+		color: var(--ui-text-color);
+		background: var(--bpm-bg-color);
 		border: 0px;
 		border-radius: 5px;
 		padding: 5px 10px;
@@ -1038,13 +1040,11 @@
 		text-align: center;
 	}
 	#shareButton {
+		background: var(--bpm-bg-color);
+		color: var(--ui-text-color);
 	}
-	.sharer-0::before {
-		top: 7px;
-	}
-	.sharer-0 label {
-		background: var(--highlight-color) !important;
-		color: #FFF !important;
+	#shareButton::before {
+		filter: invert(1);
 	}
 	.metronomeAutoSpeedupInputRow {
 		vertical-align: text-bottom;
@@ -1129,6 +1129,17 @@
 		color: #888;
 		cursor: pointer;
 	}
+	#PermutationOptions input[type=checkbox]:checked + label,
+	#metronomeAutoSpeedupConfiguration input[type=checkbox]:checked + label {
+		color: var(--ui-text-color);
+	}
+	#PermutationOptions input[type=checkbox]:not(:checked) + label,
+	#metronomeAutoSpeedupConfiguration input[type=checkbox]:not(:checked) + label {
+		color: var(--ui-muted-text-color);
+	}
+	#timeSigPopupCancel:hover, #fullURLPopupCopyButton:hover, #shareButton:hover {
+		background: var(--border-color);
+	}
 	#totalPlayTime {
 		z-index: 999;
 		position: fixed;
@@ -1173,9 +1184,9 @@
 	}
 	#bottomButtonRow {
 		padding: 20px 0px;
-		background: #393939;
+		background: var(--bottom-bg-color);
 		text-align: center;
-		color: #888888;
+		color: #999999;
 		display: -webkit-flex;
 		display: flex;
 		justify-content: space-around;
