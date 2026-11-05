@@ -2912,7 +2912,9 @@ function GrooveUtils() {
 			if (totalTime.getUTCHours() > 0)
 				time_string = totalTime.getUTCHours() + ":" + (totalTime.getUTCMinutes() < 10 ? "0" : "");
 			time_string += totalTime.getUTCMinutes() + ":" + (totalTime.getSeconds() < 10 ? "0" : "") + totalTime.getSeconds();
-			TotalPlayTime.innerHTML = 'Total Play Time: <span class="totalTimeNum">' + time_string + '</span> notes: <span class="totalTimeNum">' + global_total_midi_notes + '</span> repetitions: <span class="totalTimeNum">' + global_total_midi_repeats + '</span>';
+			TotalPlayTime.innerHTML = '<span>Total Play Time: <span class="totalTimeNum">' + time_string + '</span></span> ' +
+				'<span>Notes: <span class="totalTimeNum">' + global_total_midi_notes + '</span></span> ' +
+				'<span>Repetitions: <span class="totalTimeNum">' + global_total_midi_repeats + '</span></span>';
 		}
 
 		global_last_midi_update_time = time_now;
