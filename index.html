@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html unused_manifest="gscribe.manifest">
+<html class="tool-ui" lang="en" unused_manifest="gscribe.manifest">
 	<!-- HTML for the Groove Writer part of the Groove Scribe HTML application -->
 	<!--Copyright 2015-2020 Lou Montulli, Mike Johnston  GPL V2.0 Please See LICENSE.txt for more details -->
 
@@ -24,8 +24,6 @@
 		<meta property="og:description" content="Groove Lab by Dave Drums. Create. Play. Explore. Create drum grooves, listen, share, print sheet music and download your work."/>
 		<meta property="og:site_name" content="Groove Lab"/>
 
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
-
 		<script>
 			document.write('<meta property="og:image" content="https://gscribe-png-image.herokuapp.com/' + window.location.search + '">');
 		</script>
@@ -36,48 +34,7 @@
 	    <link rel="stylesheet" type="text/css" href="css/groove_writer_orange.css">
 		<link rel="stylesheet" type="text/css" href="css/groove_display_orange.css">
 
-<style>
-  /* Inter for normal UI text only (don’t force it on notation/grid symbols) */
-  #GrooveWriter,
-  #GrooveWriter input,
-  #GrooveWriter textarea,
-  #GrooveWriter select,
-  #GrooveWriter button,
-  #GrooveWriter label,
-  #GrooveWriter .TopBar,
-  #GrooveWriter .Toolbar,
-  #GrooveWriter .toolbar,
-  #GrooveWriter .nonPrintable,
-  #GrooveWriter .Printable{
-    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  }
-
-  /* Preserve FontAwesome icons */
-  #GrooveWriter #midiPlayer i,
-  #GrooveWriter #midiPlayer .fa,
-  #GrooveWriter #midiPlayer [class^="fa-"],
-  #GrooveWriter #midiPlayer [class*=" fa-"],
-  #GrooveWriter .fa,
-  #GrooveWriter i.fa,
-  #GrooveWriter [class^="fa-"],
-  #GrooveWriter [class*=" fa-"],
-  .midiPlayImage,
-  .midiPlayImage::before,
-  .midiRepeatImage,
-  .midiRepeatImage::before,
-  .midiExpandImage,
-  .midiExpandImage::before,
-  .midiGSLogo,
-  .midiGSLogo::before{
-    font-family: "FontAwesome" !important;
-  }
-
-  /* Remove Help button and its dropdown menu in the top nav */
-  #helpAnchor,
-  #helpContextMenu{
-    display:none !important;
-  }
-</style>
+<link rel="stylesheet" href="css/dave-drums-theme.css">
 
 		<!--   Other peoples JS libraries    -->
 		<!-- <script src="./MIDI.js/js/MIDI/MIDI.JS.min.js" type="text/javascript"></script> -->
@@ -171,7 +128,7 @@
 				</span>
 				<span id="totalPlayTime"></span>
 				<span id="upperRight">
-					<span id='KeyButton'><input type="checkbox" class="legendToggle" id="showLegend" onclick="myGrooveWriter.refresh_ABC();"><label class="rightButtons" id="LegendLabel" for="showLegend"><i class="fa fa-key" aria-hidden="true"></i> Key Legend</label></span>
+					<span id='KeyButton'><input type="checkbox" class="legendToggle" id="showLegend" onclick="myGrooveWriter.refresh_ABC();"><label class="rightButtons tool-control" id="LegendLabel" for="showLegend"><i class="fa fa-key" aria-hidden="true"></i> Key Legend</label></span>
 					<span class="rightButtons grooveDB_hidden" id="permutationAnchor" onclick="myGrooveWriter.permutationAnchorClick(event);"><i class="fa fa-bars"></i> Permutations</span>
 					<span class="rightButtons" id="groovesAnchor" role="button" tabindex="0" aria-controls="grooveListWrapper" onclick="myGrooveWriter.groovesAnchorClick(event);"><i class="fa fa-bars"></i> Grooves</span>
 					<span class="rightButtons" id="helpAnchor" onclick="myGrooveWriter.helpAnchorClick(event);"><i class="fa fa-bars"></i> Help</span>
@@ -224,12 +181,12 @@
 
 
 				<div id="bottomButtonRow" class="fullWidthEle">
-					<span class="pageBottomButton edit-block" id="clearAllNotesButton" onclick="event.preventDefault(); myGrooveWriter.clearAllNotes();"><span class="bottomButtonIcon"><i class="fa fa-trash fa-2x"></i></span><span class="bottomButtonLabel">CLEAR ALL</span></span>
-					<span class="pageBottomButton edit-block" id="showHideTomsButton" onclick="event.preventDefault(); myGrooveWriter.showHideToms(false, false);"><span class="bottomButtonIcon"><i id="icon-tom1" class="fa fa-circle"></i><i id="icon-tom2" class="fa fa-circle-o"></i><i id="icon-tom3" class="fa fa-circle-o"></i></span><span class="bottomButtonLabel">TOMS</span></span>
-					<span class=" grooveDB_hidden pageBottomButton" id="stickingsButton" onclick="myGrooveWriter.stickingsAnchorClick();"><span class="bottomButtonLabel">STICKINGS</span></span>
-					<span class=" grooveDB_hidden pageBottomButton" id="downloadButton" onclick="myGrooveWriter.DownloadAnchorClick();"><span class="bottomButtonIcon"><i class="fa fa-download fa-2x"></i></span><span class="bottomButtonLabel">DOWNLOAD</span></span>
-					<span class=" grooveDB_hidden pageBottomButton" id="printButton" onclick="myGrooveWriter.printMusic();"><span class="bottomButtonIcon"><i class="fa fa-print fa-2x"></i></span><span class="bottomButtonLabel">PRINT</span></span>
-					<span class=" grooveDB_hidden pageBottomButton" id="shareSaveButton" onclick="event.preventDefault(); myGrooveWriter.show_FullURLPopup();"><span class="bottomButtonIcon"><i class="fa fa-share fa-2x"></i></span><span class="bottomButtonLabel">SHARE</span></span>
+					<button type="button" class="pageBottomButton edit-block" id="clearAllNotesButton" onclick="event.preventDefault(); myGrooveWriter.clearAllNotes();"><span class="bottomButtonContents"><span class="bottomButtonIcon"><i class="fa fa-trash fa-2x"></i></span><span class="bottomButtonLabel">Clear all</span></span></button>
+					<button type="button" class="pageBottomButton edit-block" id="showHideTomsButton" aria-pressed="false" onclick="event.preventDefault(); myGrooveWriter.showHideToms(false, false);"><span class="bottomButtonContents"><span class="bottomButtonIcon"><svg class="toms-icon" viewBox="0 0 32 25" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="8" cy="6" rx="5" ry="2.5"/><path d="M3 6v6c0 3.5 10 3.5 10 0V6"/><ellipse cx="24" cy="6" rx="5" ry="2.5"/><path d="M19 6v6c0 3.5 10 3.5 10 0V6"/><ellipse cx="16" cy="15" rx="5" ry="2.5"/><path d="M11 15v5c0 3 10 3 10 0v-5"/></svg></span><span class="bottomButtonLabel">Toms</span></span></button>
+					<button type="button" class=" grooveDB_hidden pageBottomButton" id="stickingsButton" onclick="myGrooveWriter.stickingsAnchorClick();"><span class="bottomButtonContents"><span class="bottomButtonIcon stickings-icon" aria-hidden="true"></span><span class="bottomButtonLabel">Stickings</span></span></button>
+					<button type="button" class=" grooveDB_hidden pageBottomButton" id="downloadButton" onclick="myGrooveWriter.DownloadAnchorClick();"><span class="bottomButtonContents"><span class="bottomButtonIcon"><i class="fa fa-download fa-2x"></i></span><span class="bottomButtonLabel">Download</span></span></button>
+					<button type="button" class=" grooveDB_hidden pageBottomButton" id="printButton" onclick="myGrooveWriter.printMusic();"><span class="bottomButtonContents"><span class="bottomButtonIcon"><i class="fa fa-print fa-2x"></i></span><span class="bottomButtonLabel">Print</span></span></button>
+					<button type="button" class=" grooveDB_hidden pageBottomButton" id="shareSaveButton" onclick="event.preventDefault(); myGrooveWriter.show_FullURLPopup();"><span class="bottomButtonContents"><span class="bottomButtonIcon"><i class="fa fa-share fa-2x"></i></span><span class="bottomButtonLabel">Share</span></span></button>
 				</div>
 
 				<div id="midiTextOutput">
@@ -462,7 +419,7 @@
 					<label class="sheetMusicTextField"><b>Author:</b> <input class="sheetMusicInputField" id="tuneAuthor" onchange="myGrooveWriter.refresh_ABC();"  type="text"></label>
 					<label class="sheetMusicTextField"><b>Comment:</b> <input class="sheetMusicInputField" id="tuneComments" onchange="myGrooveWriter.refresh_ABC();"  type="text"></label>
 				</div>
-				<button id="grooveDetailsClose" type="button">Done</button>
+				<button class="tool-control tool-primary" id="grooveDetailsClose" type="button">Done</button>
 			</dialog>
 		</div>
 

@@ -3168,8 +3168,11 @@ function GrooveWriter() {
 	}
 
 	root.showHideToms = function (force, showElseHide, dontRefreshScreen) {
-		var OnElseOff = showHideCSS_ClassVisibility(".toms-container", force, showElseHide);
+		showHideCSS_ClassVisibility(".toms-container", force, showElseHide);
 		showHideCSS_ClassVisibility(".tom-label", force, showElseHide);
+		var OnElseOff = isTomsVisible();
+		var tomsButton = document.getElementById("showHideTomsButton");
+		if (tomsButton) tomsButton.setAttribute("aria-pressed", OnElseOff ? "true" : "false");
 		if (OnElseOff)
 			addOrRemoveKeywordFromClassById("showHideTomsButton", "ClickToHide", true);
 		else

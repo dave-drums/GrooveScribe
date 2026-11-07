@@ -1182,12 +1182,12 @@ function GrooveUtils() {
 		'%%leftmargin 0cm\n' +
 		'%%rightmargin 0cm\n' +
 		'%%topspace 10px\n' +
-		'%%titlefont calibri 20\n' +
-		'%%partsfont calibri 16\n' +
-		'%%gchordfont calibri 16\n' +
-		'%%annotationfont calibri 16\n' +
-		'%%infofont calibri 16\n' +
-		'%%textfont calibri 16\n' +
+		'%%titlefont Inter 20\n' +
+		'%%partsfont DM-Sans 16\n' +
+		'%%gchordfont DM-Sans 16\n' +
+		'%%annotationfont DM-Sans 16\n' +
+		'%%infofont DM-Sans 16\n' +
+		'%%textfont DM-Sans 16\n' +
 		'%%deco (. 0 a 5 1 1 "@-8,-3("\n' +
 		'%%deco ). 0 a 5 1 1 "@4,-3)"\n' +
 		'%%beginsvg\n' +

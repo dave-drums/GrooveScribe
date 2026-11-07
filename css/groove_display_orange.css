@@ -52,7 +52,7 @@
 		display: inline-block;
 		background-color: var(--bpm-bg-color);
 		width: 100%;  /* expand to the surounding element */
-		font-family: 'Lato', sans-serif;
+		font-family: var(--body);
 		white-space: nowrap;
 	}
 	.playerControl.large {
@@ -387,118 +387,6 @@ input[type=range]:active::-moz-range-thumb {
 input[type=range]:active::-webkit-slider-thumb {
 	background: #fff;
 }
-/* Paint-only playback refresh. Keep all player/slider metrics and icons intact. */
-@media screen {
-  .playerControl {
-    background-image: linear-gradient(180deg, #272c31, #23272b);
-  }
-
-  .midiPlayImage, .midiRepeatImage, .midiExpandImage {
-    border-radius: 8px;
-    color: var(--ui-text-color);
-    transition: background-color 180ms ease, color 180ms ease,
-      box-shadow 180ms ease, transform 180ms ease;
-  }
-
-  .midiPlayImage, .midiRepeatImage {
-    background: var(--ui-control-bg);
-    box-shadow: inset 0 0 0 1px var(--border-color), 0 1px 3px rgba(0, 0, 0, .12);
-  }
-
-  .midiPlayImage.Stopped, .midiPlayImage.Paused, .midiPlayImage.Playing {
-    background: var(--ui-selected-bg);
-    box-shadow: inset 0 0 0 1px var(--ui-accent-color), 0 1px 3px rgba(0, 0, 0, .12);
-  }
-
-  .midiPlayImage.Playing {
-    background: linear-gradient(180deg, #08648b, #095c80);
-  }
-
-  .midiPlayImage:hover, .midiRepeatImage:hover {
-    background: var(--ui-hover-bg-color);
-    color: #fff;
-    box-shadow: inset 0 0 0 1px var(--ui-accent-color);
-  }
-
-  .midiPlayImage.Playing:hover {
-    background: linear-gradient(180deg, #0a6d96, #0a648b);
-  }
-
-  .midiExpandImage.small:hover, .midiExpandImage.large:hover {
-    color: var(--ui-accent-soft-color);
-  }
-
-  .tempoLabel, .swingLabel, .swingOutput, .MIDIPlayTime {
-    color: var(--ui-muted-text-color);
-  }
-
-  .tempoTextField {
-    background-color: #1b1e21;
-    color: var(--ui-text-color);
-    border-radius: 6px;
-    box-shadow: inset 0 0 0 1px var(--border-color);
-  }
-
-  input[type=range] {
-    background: #3d454d;
-  }
-
-  input[type=range]:before {
-    color: var(--ui-accent-color);
-  }
-
-  input[type=range]:after {
-    color: #3d454d;
-  }
-
-  input[type=range]::-webkit-slider-runnable-track {
-    background: #3d454d;
-  }
-
-  input[type=range]:focus::-webkit-slider-runnable-track {
-    background: #49545e;
-  }
-
-  input[type=range]::-webkit-slider-thumb {
-    background: var(--ui-accent-color);
-    border-color: var(--ui-accent-color);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .15);
-    transition: background-color 180ms ease, border-color 180ms ease;
-  }
-
-  input[type=range]::-moz-range-track {
-    background: #3d454d;
-  }
-
-  input[type=range]::-moz-range-thumb {
-    background: var(--ui-accent-color);
-    border-color: var(--ui-accent-color);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .15);
-    transition: background-color 180ms ease, border-color 180ms ease;
-  }
-
-  input[type=range]::-ms-fill-lower {
-    background: var(--ui-accent-color);
-  }
-
-  input[type=range]::-ms-fill-upper {
-    background: #3d454d;
-  }
-
-  input[type=range]::-ms-thumb {
-    background: var(--ui-accent-color);
-    border-color: var(--ui-accent-color);
-  }
-
-  input[type=range]:active::-moz-range-thumb {
-    background: var(--ui-accent-soft-color);
-  }
-
-  input[type=range]:active::-webkit-slider-thumb {
-    background: var(--ui-accent-soft-color);
-  }
-}
-
 @media print {
 	/* keep at bottom so it overrides the styles above */
 	body {margin:0; padding:0; border:0; background-color: transparent}
@@ -508,4 +396,99 @@ input[type=range]:active::-webkit-slider-thumb {
 	.nonPrintable {
 		display: none !important;
 	}
+}
+
+/* Dave Drums: dark editor adapter for the canonical shared tool UI.
+   Screen-only: keep the notation/grid and notation-only print layout intact. */
+@media screen {
+  :root.tool-ui {
+    --header-bg-color: var(--tool-panel);
+    --bpm-bg-color: var(--tool-panel);
+    --side-bg-color: var(--tool-well);
+    --bottom-bg-color: var(--tool-panel);
+    --panel-bg-color: var(--tool-panel);
+    --border-color: var(--line);
+    --ui-text-color: var(--text);
+    --ui-muted-text-color: var(--muted);
+    --ui-accent-color: var(--link-color);
+    --ui-accent-soft-color: var(--link-color);
+    --ui-hover-bg-color: var(--tool-selected-fill);
+    --ui-selected-bg: var(--tool-selected-fill);
+    --ui-control-bg: var(--tool-control-fill);
+    --ui-panel-bg: var(--tool-panel-fill);
+    --editor-header-height: 64px;
+    --side-highlight-bg-color: var(--surface-blue);
+    --highlight-color: var(--accent);
+    --highlight-color-on-white: #00749a;
+    --note-overlay-bg-color: #d5f2fd;
+  }
+  body { margin: 0; color: var(--text); background: var(--tool-well); font-family: var(--body); }
+  #sheetMusicDiv,#musicalInput { color: #182025; color-scheme: light; }
+  #GrooveWriter { color: var(--text); font-family: var(--body); }
+  #GrooveWriter :is(input,select,textarea,button,label), .playerControl { font-family: var(--body); }
+  #GrooveWriter :is(h1,h2,h3,.tempoTextField,.MIDIPlayTime,.totalTimeNum) { font-family: var(--display); font-variant-numeric: tabular-nums; }
+  #TopNav { background: var(--tool-panel-fill); box-shadow: inset 0 1px 0 rgb(255 255 255 / .04); padding-inline: 16px; gap: 16px; }
+  .tool-ui .metronomeButton.options { width: auto; }
+  .metronomeButton:hover,.rightButtons:hover { transform: none; font-weight: var(--weight-semibold); }
+  #LeftHandNav { background: linear-gradient(180deg,#202b33,#172128); border-right: 1px solid var(--line); }
+  #midiPlayer { height: 64px; background: var(--tool-panel); }
+  #RightHandContent { top: 128px; height: calc(100% - 128px); background: var(--tool-well); }
+  .playerControl { background: linear-gradient(180deg,#26333c,#202b33); color: var(--text); }
+  .playerControlsRow { height: 64px; padding: 8px 4px; box-sizing: border-box; }
+  .midiPlayImage,.midiRepeatImage,.midiExpandImage { width: 44px; height: 44px; margin-block: 2px; line-height: 44px; border-radius: var(--control-radius); color: var(--text); background: var(--tool-control-fill); box-shadow: inset 0 0 0 1px #52636f,var(--tool-control-shadow); font-family: FontAwesome; }
+  .midiPlayImage.Stopped,.midiPlayImage.Paused,.midiPlayImage.Playing { background: var(--tool-primary-fill); color: var(--bg); box-shadow: inset 0 0 0 1px var(--accent),var(--tool-control-shadow); }
+  .midiPlayImage:before,.midiPlayImage.Stopped:before,.midiPlayImage.Paused:before,.midiPlayImage.Playing:before { color: inherit; }
+  .midiPlayImage:hover,.midiRepeatImage:hover,.midiExpandImage:hover { background: var(--tool-selected-fill); color: var(--link-color); box-shadow: inset 0 0 0 1px var(--link-color); transform: none; }
+  .midiPlayImage:is(.Stopped,.Paused,.Playing):hover { background: var(--tool-primary-hover); color: var(--bg); box-shadow: inset 0 0 0 1px var(--link-color),var(--tool-control-shadow); }
+  .midiExpandImage.small:hover,.midiExpandImage.large:hover { transform: none; color: var(--link-color); }
+  .tempoLabel,.swingLabel,.swingOutput,.MIDIPlayTime { color: var(--muted); }
+  .tempoRow,.swingRow { height: 24px; align-items: center; }
+  .tempoTextField { min-width: 44px; height: 24px; margin-block: 0; border: 1px solid var(--field-border); border-radius: 4px; background: var(--field-bg); color: var(--text); }
+  .tempoInput,.swingInput { margin-block: 0; }
+  .MIDIPlayTime { font-size: 24px; }
+  #totalPlayTime { color: var(--muted); font-size: var(--type-ui); }
+  .left-button { min-height: 56px; border-radius: var(--control-radius); color: var(--muted); }
+  .left-button:hover,.left-button.buttonSelected,.left-button:active { background: var(--tool-selected-fill); color: var(--link-color); transform: none; }
+  .left-button-content { font: var(--weight-semibold) 12px/1.25 var(--body); letter-spacing: 0; }
+  .left-button.disabled,.left-button.disabled:hover,#permutationAnchor:not(.enabled) { background: var(--field-bg); color: var(--muted); opacity: .5; }
+  #permutationAnchor.enabled { color: var(--text); }
+  #advancedEditAnchor.buttonSelected { color: var(--link-color); background: var(--surface-blue); }
+  #advancedEditAnchor.buttonSelected { font-size: var(--type-ui); }
+  .tempoSettings,.swingSettings { color: var(--text); }
+  #bottomButtonRow { width: 100%; max-width: none; background: var(--tool-panel-fill); color: var(--text); border-top: 1px solid var(--line); box-sizing: border-box; justify-content: center; flex-wrap: wrap; gap: 8px; padding: 16px; }
+  #bottomButtonRow .pageBottomButton { flex: 0 0 auto; vertical-align: middle; margin: 0; }
+  .bottomButtonContents { display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; }
+  .tool-ui .pageBottomButton.edit-block { display: none; }
+  .bottomButtonLabel { margin: 0; font: var(--weight-semibold) var(--type-ui)/var(--leading-ui) var(--body); }
+  .bottomButtonIcon { display: inline-flex; align-items: center; justify-content: center; height: 24px; color: inherit; transform: none; }
+  .bottomButtonIcon .fa { font-size: 20px; }
+  .bottomButtonIcon svg { display: block; width: 24px; height: 24px; flex: 0 0 auto; }
+  #stickingsButton:before,#stickingsButton.ClickToHide:before { content: none; }
+  #stickingsButton .stickings-icon:before { font-family: FontAwesome; content: "\f065"; font-size: 20px; line-height: 24px; }
+  #stickingsButton.ClickToHide .stickings-icon:before { content: "\f066"; }
+  #KeyButton #LegendLabel { box-sizing: border-box; min-height: 48px; padding: 10px 16px; border: 1px solid #52636f; border-radius: var(--control-radius); background: var(--tool-control-fill); box-shadow: var(--tool-control-shadow); color: var(--text); }
+  #KeyButton #LegendLabel:hover { border-color: var(--link-color); background: var(--tool-control-hover); color: var(--link-color); }
+  #showLegend:checked + #LegendLabel { border-color: var(--link-color); background: var(--tool-selected-fill); color: var(--link-color); }
+  #PermutationOptions.displayed,#grooveListWrapper,#fullURLPopup,#metronomeAutoSpeedupConfiguration,#timeSigPopup,.noteContextMenu > ul.list { background: var(--tool-panel-fill); color: var(--text); border: 1px solid var(--line); border-radius: var(--panel-radius); box-shadow: var(--tool-panel-shadow); }
+  .grooveListUL { background: transparent; }
+  .grooveListHeaderLI,.noteContextMenu > ul.list li:hover,.grooveListLI:hover { background: var(--tool-selected-fill); color: var(--link-color); }
+  .sheetMusicInputField,#fullURLPopupTextField,#timeSigPopupTimeSigTop,#timeSigPopupTimeSigBottom { border: 1px solid var(--field-border); border-radius: var(--control-radius); background: var(--field-bg); color: var(--text); font-family: var(--body); }
+  #sheetMusicTextFields .sheetMusicInputField { min-height: 44px; padding: 8px 12px; }
+  #grooveDetailsClose { min-height: 44px; padding: 10px 16px; border-color: var(--accent); background: var(--tool-primary-fill); color: var(--bg); box-shadow: var(--tool-control-shadow); }
+  #grooveDetailsClose:hover { border-color: var(--link-color); background: var(--tool-primary-hover); color: var(--bg); }
+  .sheetMusicInputField::placeholder,#fullURLPopupTextField::placeholder { color: var(--muted); }
+  #timeSigPopupOK,#timeSigPopupCancel,#fullURLPopupCopyButton,#shareButton,#metronomeAutoSpeedupConfigurationCloseButton { min-height: 44px; padding: 10px 16px; border: 1px solid var(--line); border-radius: var(--control-radius); background: var(--tool-control-fill); box-shadow: var(--tool-control-shadow); color: var(--text); font: var(--weight-semibold) var(--type-ui)/var(--leading-ui) var(--body); cursor: pointer; }
+  #timeSigPopupOK,#metronomeAutoSpeedupConfigurationCloseButton { border-color: var(--accent); background: var(--tool-primary-fill); color: var(--bg); box-shadow: var(--tool-control-shadow); }
+  #timeSigPopupOK:hover,#timeSigPopupCancel:hover,#fullURLPopupCopyButton:hover,#shareButton:hover,#metronomeAutoSpeedupConfigurationCloseButton:hover { border-color: var(--link-color); background: var(--tool-selected-fill); color: var(--link-color); }
+  #timeSigPopupOK:hover,#metronomeAutoSpeedupConfigurationCloseButton:hover { background: var(--tool-primary-hover); color: var(--bg); }
+  #fullURLPopupCloseButton:hover { color: var(--link-color); }
+  #GrooveWriter input[type=range] { background: transparent; }
+  #GrooveWriter input[type=range]:before,#GrooveWriter input[type=range]:after { content: none; }
+  #GrooveWriter input[type=range]::-webkit-slider-runnable-track { height: 4px; background: var(--line); border: 0; border-radius: 4px; }
+  #GrooveWriter input[type=range]::-webkit-slider-thumb { width: 18px; height: 18px; margin-top: -7px; border: 0; border-radius: 50%; background: var(--accent); }
+  #GrooveWriter input[type=range]::-moz-range-track { height: 4px; background: var(--line); border: 0; border-radius: 4px; }
+  #GrooveWriter input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border: 0; border-radius: 50%; background: var(--accent); }
+  #GrooveWriter :is(button,input,select,textarea,a[href],[tabindex]):focus-visible { outline: 2px solid var(--focus-color); outline-offset: 3px; }
+  #GrooveWriter input:disabled,#GrooveWriter select:disabled,#GrooveWriter button:disabled { opacity: .5; cursor: not-allowed; }
+  #helpAnchor,#helpContextMenu { display: none; }
 }
