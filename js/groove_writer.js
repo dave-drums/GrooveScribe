@@ -4432,7 +4432,7 @@ function GrooveWriter() {
 							'</svg>' +
 							'</i></div>' +
 							'<div class="snare_accent note_part" id="snare_accent' + i + '">' +
-							'  <svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#arrow-right"></use></svg>' +
+							'  <svg class="groove-accent-mark" viewBox="0 0 12 16" width="10" height="14" aria-hidden="true" focusable="false"><path d="m2 3 7 5-7 5"></path></svg>' +
 							'</div>' +
 						'</div> \n');
 

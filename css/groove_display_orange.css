@@ -503,7 +503,7 @@ input[type=range]:active::-webkit-slider-thumb {
  mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain;font-family:inherit;
 }
 .midiPlayImage:before,.midiPlayImage.Stopped:before,.midiPlayImage.Paused:before { -webkit-mask-image:url("../images/icons/play.svg"); mask-image:url("../images/icons/play.svg"); }
-.midiPlayImage.Playing:before { -webkit-mask-image:url("../images/icons/pause.svg"); mask-image:url("../images/icons/pause.svg"); }
+.midiPlayImage.Playing:before { -webkit-mask-image:url("../images/icons/stop.svg"); mask-image:url("../images/icons/stop.svg"); }
 .midiExpandImage:before,.midiExpandImage.small:before { -webkit-mask-image:url("../images/icons/maximize.svg"); mask-image:url("../images/icons/maximize.svg"); }
 .midiExpandImage.large:before { -webkit-mask-image:url("../images/icons/minimize.svg"); mask-image:url("../images/icons/minimize.svg"); }
 .midiRepeatImage:before { -webkit-mask-image:url("../images/icons/repeat.svg"); mask-image:url("../images/icons/repeat.svg"); }

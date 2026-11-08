@@ -664,6 +664,17 @@
 		color: transparent;
 		cursor: pointer;
 	}
+	.snare_accent .groove-accent-mark {
+		display: block;
+		width: 10px;
+		height: 14px;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		pointer-events: none;
+	}
 	.snare_xstick {
 		position: absolute; top: -5px; left: 3px;
 		font-size: 30px;

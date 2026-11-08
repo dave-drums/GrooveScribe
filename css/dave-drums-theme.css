@@ -222,6 +222,11 @@
   font-variant-numeric: tabular-nums;
 }
 
+.tool-ui .tool-playback :is(.icon,.tool-icon) {
+  fill: currentColor;
+  stroke: none;
+}
+
 .tool-ui .tool-tap {
   gap: 6px;
 }
