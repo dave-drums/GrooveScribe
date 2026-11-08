@@ -9,12 +9,9 @@
   --surface-blue: #19272f;
   --paper: #eeece6;
   --white: #fff;
-  --surface-light: #f6f8fa;
-  --surface-blue-light: #e1f5fc;
   --text: var(--paper);
   --muted: #b8bbbd;
   --accent: #39b8e5;
-  --rating-gold: #9a6b00;
   --muted-light: #505457;
   --link-light: #005c78;
   --link-color: var(--accent);
@@ -43,10 +40,8 @@
   --column-gap: clamp(32px,5vw,88px);
   --rule: 1px solid var(--line);
   --header-height: 92px;
-  --header-compact: 76px;
   --duration-fast: 180ms;
   --duration: 320ms;
-  --duration-reveal: 600ms;
   --ease-out: cubic-bezier(.22,1,.36,1);
   --heading-scale: 1;
   --type-feature: var(--type-h2);
@@ -113,7 +108,7 @@
   --line-light: #dbe2e8;
   --nav-panel-width: 18rem;
   --type-hero: calc(clamp(2.5rem,4.25vw,4rem) * var(--heading-scale));
-  --type-name: calc(clamp(2.75rem,7vw,6.25rem) * var(--heading-scale));
+  --type-name: clamp(1.375rem,4vw,3.5rem);
   --type-h2: calc(clamp(1.875rem,3.3vw,3rem) * var(--heading-scale));
   --type-h3: calc(clamp(1.125rem,1.6vw,1.5rem) * var(--heading-scale));
   --type-h4: calc(clamp(1rem,1.25vw,1.125rem) * var(--heading-scale));
@@ -150,8 +145,15 @@
   color-scheme: dark;
   font: var(--weight-regular) var(--type-body)/var(--leading-ui) var(--body);
 }
-.tool-ui :is(button,input,select,textarea) { font-family: var(--body); }
-.tool-ui :is(h1,h2,h3,.tool-number) { font-family: var(--display); }
+
+.tool-ui :is(button,input,select,textarea) {
+  font-family: var(--body);
+}
+
+.tool-ui :is(h1,h2,h3,.tool-number) {
+  font-family: var(--display);
+}
+
 .tool-ui :is(.tool-control,.tool-button,.metronomeButton,.rightButtons,.pageBottomButton) {
   display: inline-flex;
   align-items: center;
@@ -172,38 +174,87 @@
   cursor: pointer;
   transition: color var(--duration-fast),border-color var(--duration-fast),box-shadow var(--duration-fast);
 }
+
 .tool-ui :is(.tool-control,.tool-button,.metronomeButton,.rightButtons,.pageBottomButton):is(:hover,[aria-pressed="true"],.buttonSelected,.selected) {
   border-color: var(--link-color);
   background: var(--tool-control-hover);
   color: var(--link-color);
 }
+
 .tool-ui :is(.tool-control,.tool-button,.metronomeButton,.rightButtons,.pageBottomButton):is([aria-pressed="true"],.buttonSelected,.selected) {
   background: var(--tool-selected-fill);
   box-shadow: inset 0 1px 0 rgb(113 213 245 / .1),0 0 0 1px rgb(57 184 229 / .08);
 }
+
 .tool-ui :is(.tool-primary,.button--primary) {
   border-color: var(--accent);
   background: var(--tool-primary-fill);
   color: var(--bg);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / .3),0 4px 14px rgb(0 148 204 / .15);
 }
+
 .tool-ui :is(.tool-primary,.button--primary):is(:hover,[aria-pressed="true"]) {
   border-color: var(--link-color);
   background: var(--tool-primary-hover);
   color: var(--bg);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / .3),0 4px 18px rgb(0 148 204 / .2);
 }
+
 .tool-ui :is(.tool-control,.tool-button,.metronomeButton,.rightButtons,.pageBottomButton):active {
   box-shadow: inset 0 2px 4px rgb(0 0 0 / .25);
 }
-.tool-ui :is(.tool-control,.tool-button,.metronomeButton,.rightButtons,.pageBottomButton):disabled { opacity: .5; cursor: not-allowed; }
-.tool-ui .tool-tempo-step { width: 44px; min-width: 44px; padding: 0; font-size: var(--type-icon); touch-action: manipulation; user-select: none; }
-.tool-ui .tool-playback { font-variant-numeric: tabular-nums; }
-.tool-ui .tool-tap { gap: 6px; }
-.tool-icon,.tool-tap-icon{display:block;flex:0 0 auto;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-.tool-ui :is(button,input,select,textarea,a,[tabindex]):focus-visible { outline: 2px solid var(--focus-color); outline-offset: 3px; }
-.tool-ui input[type="range"] { accent-color: var(--accent); cursor: pointer; }
-.tool-ui .tool-number { font-weight: var(--weight-display); font-variant-numeric: tabular-nums; letter-spacing: var(--tracking-heading); }
+
+.tool-ui :is(.tool-control,.tool-button,.metronomeButton,.rightButtons,.pageBottomButton):disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.tool-ui .tool-tempo-step {
+  width: 44px;
+  min-width: 44px;
+  padding: 0;
+  font-size: var(--type-icon);
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.tool-ui .tool-playback {
+  font-variant-numeric: tabular-nums;
+}
+
+.tool-ui .tool-tap {
+  gap: 6px;
+}
+
+.tool-icon,
+.tool-tap-icon {
+  display: block;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tool-ui :is(button,input,select,textarea,a,[tabindex]):focus-visible {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 3px;
+}
+
+.tool-ui input[type="range"] {
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.tool-ui .tool-number {
+  font-weight: var(--weight-display);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tracking-heading);
+}
+
 .tool-ui .tool-tempo-display {
   padding: clamp(16px,2.4vw,24px);
   border: 1px solid #3d596a;
@@ -211,30 +262,152 @@
   background: radial-gradient(ellipse at 50% 0%,rgb(57 184 229 / .14),transparent 75%),var(--tool-well);
   box-shadow: inset 0 1px 8px rgb(0 0 0 / .18);
 }
-.tool-guide-dialog.tool-ui { border-color: var(--line); border-radius: var(--panel-radius); background: var(--tool-panel-fill); box-shadow: var(--tool-panel-shadow); }
-.tool-ui .tool-trainer { padding-top: var(--space-2); }
-.tool-trainer-heading { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); align-items: center; gap: 8px; }
-.tool-trainer-heading > .tool-trainer-toggle { grid-column: 1; grid-row: 1; justify-self: start; }
-.tool-trainer-heading > .tool-trainer-status { grid-column: 3; grid-row: 1; justify-self: end; text-align: right; }
-.tool-trainer-heading > .tool-trainer-cycle { grid-column: 2; grid-row: 1; margin: 0; text-align: center; }
-.tool-trainer-toggle { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: var(--type-ui); cursor: pointer; }
-.tool-trainer-toggle input { width: 20px; height: 20px; margin: 0; accent-color: var(--accent); }
-.tool-trainer-toggle input { flex: 0 0 20px; }
-.tool-trainer-toggle > span { min-width: 0; }
-.tool-trainer-status { margin: 0; color: var(--link-color); font-size: var(--type-caption); }
-.tool-trainer-fields { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: var(--space-2); min-width: 0; padding: 0; margin: var(--space-1) 0 0; border: 0; }
-.tool-trainer-field { display: grid; gap: var(--space-1); min-width: 0; }
-.tool-trainer-fields label { color: var(--muted); font-size: var(--type-ui); font-weight: var(--weight-semibold); }
-.tool-trainer-fields input { box-sizing: border-box; width: 100%; min-width: 0; min-height: 48px; padding: 8px 12px; border: 1px solid var(--field-border); border-radius: var(--control-radius); background: var(--field-bg); box-shadow: inset 0 2px 4px rgb(0 0 0 / .12); color: var(--text); font: inherit; }
-.tool-trainer-fields input:disabled { opacity: .5; cursor: not-allowed; }
-.tool-trainer-cycle { display: block; margin-top: var(--space-2); color: var(--text); font-size: var(--type-ui); font-weight: var(--weight-bold); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.tool-trainer-cycle[hidden] { display: none; }
-.tool-trainer-hint { margin-top: var(--space-1); color: var(--muted); font-size: var(--type-caption); }
-@media (max-width: 600px) {
-  .tool-trainer-fields { grid-template-columns: repeat(2,minmax(0,1fr)); }
-  .tool-trainer-heading .tool-trainer-toggle { gap: 6px; font-size: var(--type-caption); }
-  .tool-trainer-heading > .tool-trainer-cycle { font-size: var(--type-caption); }
+
+.tool-guide-dialog.tool-ui {
+  border-color: var(--line);
+  border-radius: var(--panel-radius);
+  background: var(--tool-panel-fill);
+  box-shadow: var(--tool-panel-shadow);
 }
+
+.tool-ui .tool-trainer {
+  padding-top: var(--space-2);
+}
+
+.tool-trainer-heading {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
+  align-items: center;
+  gap: 8px;
+}
+
+.tool-trainer-heading > .tool-trainer-toggle {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+}
+
+.tool-trainer-heading > .tool-trainer-status {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+  text-align: right;
+}
+
+.tool-trainer-heading > .tool-trainer-cycle {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  text-align: center;
+}
+
+.tool-trainer-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-size: var(--type-ui);
+  cursor: pointer;
+}
+
+.tool-trainer-toggle input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--accent);
+  flex: 0 0 20px;
+}
+
+.tool-trainer-toggle > span {
+  min-width: 0;
+}
+
+.tool-trainer-status {
+  margin: 0;
+  color: var(--link-color);
+  font-size: var(--type-caption);
+}
+
+.tool-trainer-fields {
+  display: grid;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: var(--space-2);
+  min-width: 0;
+  padding: 0;
+  margin: var(--space-1) 0 0;
+  border: 0;
+}
+
+.tool-trainer-field {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.tool-trainer-fields label {
+  color: var(--muted);
+  font-size: var(--type-ui);
+  font-weight: var(--weight-semibold);
+}
+
+.tool-trainer-fields input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 8px 12px;
+  border: 1px solid var(--field-border);
+  border-radius: var(--control-radius);
+  background: var(--field-bg);
+  box-shadow: inset 0 2px 4px rgb(0 0 0 / .12);
+  color: var(--text);
+  font: inherit;
+}
+
+.tool-trainer-fields input:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.tool-trainer-cycle {
+  display: block;
+  margin-top: var(--space-2);
+  color: var(--text);
+  font-size: var(--type-ui);
+  font-weight: var(--weight-bold);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.tool-trainer-cycle[hidden] {
+  display: none;
+}
+
+.tool-trainer-hint {
+  margin-top: var(--space-1);
+  color: var(--muted);
+  font-size: var(--type-caption);
+}
+
+@media (max-width: 600px) {
+
+  .tool-trainer-fields {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+
+  .tool-trainer-heading .tool-trainer-toggle {
+    gap: 6px;
+    font-size: var(--type-caption);
+  }
+
+  .tool-trainer-heading > .tool-trainer-cycle {
+    font-size: var(--type-caption);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .tool-ui :is(.tool-control,.tool-button,.metronomeButton,.rightButtons,.pageBottomButton) { transition: none; }
+
+  .tool-ui :is(.tool-control,.tool-button,.metronomeButton,.rightButtons,.pageBottomButton) {
+    transition: none;
+  }
 }
