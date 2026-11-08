@@ -4358,7 +4358,7 @@ function GrooveWriter() {
 				newHTML += ('<div class="space_between_note_groups"> </div> \n');
 			}
 		}
-		newHTML += '<div class="unmuteHHButton" id="unmutehhButton' + baseindex + '" onClick=\'myGrooveWriter.muteInstrument("hh", ' + baseindex + ', false)\'><span class="fa-stack unmuteHHStack"><i class="fa fa-ban fa-stack-2x" style="color:red"></i><i class="fa fa-volume-down fa-stack-1x"></i></div>';
+		newHTML += '<div class="unmuteHHButton" id="unmutehhButton' + baseindex + '" onClick=\'myGrooveWriter.muteInstrument("hh", ' + baseindex + ', false)\'><span class="fa-stack unmuteHHStack"><svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#speaker-off"></use></svg></div>';
 		newHTML += ('<div class="end_note_space"></div>\n</div>\n');
 
 		// Toms 1
@@ -4376,7 +4376,7 @@ function GrooveWriter() {
 				newHTML += ('<div class="space_between_note_groups"> </div> \n');
 			}
 		}
-		newHTML += '<span class="unmuteTom1Button" id="unmutetom1Button' + baseindex + '" onClick=\'myGrooveWriter.muteInstrument("tom1", ' + baseindex + ', false)\'><span class="fa-stack unmuteStack"><i class="fa fa-ban fa-stack-2x" style="color:red"></i><i class="fa fa-volume-down fa-stack-1x"></i></span>';
+		newHTML += '<span class="unmuteTom1Button" id="unmutetom1Button' + baseindex + '" onClick=\'myGrooveWriter.muteInstrument("tom1", ' + baseindex + ', false)\'><span class="fa-stack unmuteStack"><svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#speaker-off"></use></svg></span>';
 		newHTML += ('<div class="end_note_space"></div>\n</div>\n');
 
 		// Snare stuff
@@ -4432,7 +4432,7 @@ function GrooveWriter() {
 							'</svg>' +
 							'</i></div>' +
 							'<div class="snare_accent note_part" id="snare_accent' + i + '">' +
-							'  <i class="fa fa-chevron-right"></i>' +
+							'  <svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#arrow-right"></use></svg>' +
 							'</div>' +
 						'</div> \n');
 
@@ -4442,7 +4442,7 @@ function GrooveWriter() {
 				newHTML += ('<div class="space_between_note_groups"> </div> ');
 			}
 		}
-		newHTML += '<span class="unmuteSnareButton" id="unmutesnareButton' + baseindex + '" onClick=\'myGrooveWriter.muteInstrument("snare", ' + baseindex + ', false)\'><span class="fa-stack unmuteStack"><i class="fa fa-ban fa-stack-2x" style="color:red"></i><i class="fa fa-volume-down fa-stack-1x"></i></span>';
+		newHTML += '<span class="unmuteSnareButton" id="unmutesnareButton' + baseindex + '" onClick=\'myGrooveWriter.muteInstrument("snare", ' + baseindex + ', false)\'><span class="fa-stack unmuteStack"><svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#speaker-off"></use></svg></span>';
 		newHTML += ('<div class="end_note_space"></div>\n</div>\n');
 
 		// Toms 4
@@ -4460,7 +4460,7 @@ function GrooveWriter() {
 				newHTML += ('<div class="space_between_note_groups"> </div> \n');
 			}
 		}
-		newHTML += '<span class="unmuteTom4Button" id="unmutetom4Button' + baseindex + '" onClick=\'myGrooveWriter.muteInstrument("tom4", ' + baseindex + ', false)\'><span class="fa-stack unmuteStack"><i class="fa fa-ban fa-stack-2x" style="color:red"></i><i class="fa fa-volume-down fa-stack-1x"></i></span>';
+		newHTML += '<span class="unmuteTom4Button" id="unmutetom4Button' + baseindex + '" onClick=\'myGrooveWriter.muteInstrument("tom4", ' + baseindex + ', false)\'><span class="fa-stack unmuteStack"><svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#speaker-off"></use></svg></span>';
 		newHTML += ('<div class="end_note_space"></div>\n</div>\n');
 
 
@@ -4480,7 +4480,7 @@ function GrooveWriter() {
 				newHTML += ('<div class="space_between_note_groups"> </div> ');
 			}
 		}
-		newHTML += '<span class="unmuteKickButton" id="unmutekickButton' + baseindex + '" onClick=\'myGrooveWriter.muteInstrument("kick", ' + baseindex + ', false)\'><span class="fa-stack unmuteStack"><i class="fa fa-ban fa-stack-2x" style="color:red"></i><i class="fa fa-volume-down fa-stack-1x"></i></span>';
+		newHTML += '<span class="unmuteKickButton" id="unmutekickButton' + baseindex + '" onClick=\'myGrooveWriter.muteInstrument("kick", ' + baseindex + ', false)\'><span class="fa-stack unmuteStack"><svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#speaker-off"></use></svg></span>';
 		newHTML += ('<div class="end_note_space"></div>\n</div>\n');
 
 		newHTML += ('\
@@ -4489,13 +4489,13 @@ function GrooveWriter() {
 						</span>\n');
 
 		if (class_number_of_measures > 1)
-			newHTML += '<span title="Remove Measure" id="closeMeasureButton' + baseindex + '" onClick="myGrooveWriter.closeMeasureButtonClick(' + baseindex + ')" class="closeMeasureButton"><i class="fa fa-times-circle"></i></span>';
+			newHTML += '<span title="Remove Measure" id="closeMeasureButton' + baseindex + '" onClick="myGrooveWriter.closeMeasureButtonClick(' + baseindex + ')" class="closeMeasureButton"><svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#close"></use></svg></span>';
 		else
 			newHTML += '<span class="closeMeasureButton"><i class="fa">&nbsp;&nbsp;&nbsp;</i></span>';
 
 
 		if (baseindex == class_number_of_measures) // add new measure button
-			newHTML += '<span id="addMeasureButton" title="Add measure" onClick="myGrooveWriter.addMeasureButtonClick(event)"><i class="fa fa-plus"></i></span>';
+			newHTML += '<span id="addMeasureButton" title="Add measure" onClick="myGrooveWriter.addMeasureButtonClick(event)"><svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#plus"></use></svg></span>';
 
 		newHTML += ('</div>');
 

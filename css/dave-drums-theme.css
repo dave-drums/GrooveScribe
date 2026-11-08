@@ -16,7 +16,6 @@
   --accent: #39b8e5;
   --rating-gold: #9a6b00;
   --muted-light: #505457;
-  --line-light: #c6c5bf;
   --link-light: #005c78;
   --link-color: var(--accent);
   --focus-color: var(--accent);
@@ -41,24 +40,17 @@
   --space-4: 32px;
   --space-5: 48px;
   --space-6: 64px;
-  --section-space: clamp(72px,8vw,140px);
   --column-gap: clamp(32px,5vw,88px);
   --rule: 1px solid var(--line);
   --header-height: 92px;
   --header-compact: 76px;
-  --nav-panel-width: 16rem;
   --duration-fast: 180ms;
   --duration: 320ms;
   --duration-reveal: 600ms;
   --ease-out: cubic-bezier(.22,1,.36,1);
   --heading-scale: 1;
-  --type-hero: calc(clamp(2.5rem, 5.6vw, 5rem) * var(--heading-scale));
-  --type-name: calc(clamp(2.75rem, 8vw, 7.5rem) * var(--heading-scale));
   --type-feature: var(--type-h2);
-  --type-h2: calc(clamp(2rem, 4.5vw, 4rem) * var(--heading-scale));
-  --type-h3: calc(clamp(1.25rem, 2vw, 2rem) * var(--heading-scale));
   --type-tool-title: clamp(1.75rem, 3.2vw, 3rem);
-  --type-h4: max(1rem, calc(clamp(1.125rem, calc(1rem + .25vw), 1.375rem) * var(--heading-scale)));
   --type-card: clamp(1rem, 1.2vw, 1.125rem);
   --type-signature: clamp(1.25rem, 1.7vw, 1.5rem);
   --type-lead: clamp(1.125rem, calc(1rem + .3vw), 1.375rem);
@@ -80,14 +72,9 @@
   --weight-heading: var(--weight-semibold);
   --weight-bold: 700;
   --weight-display: var(--weight-medium);
-  --tracking-display: -.055em;
-  --tracking-heading: -.04em;
-  --tracking-subheading: -.025em;
   --tracking-label: .16em;
   --tracking-action: .055em;
-  --leading-display: 1.04;
   --leading-feature: var(--leading-heading);
-  --leading-heading: 1.15;
   --leading-subheading: 1.35;
   --leading-body: 1.75;
   --leading-lead: 1.5;
@@ -101,6 +88,40 @@
   --reading-max: 45rem;
   --app-frame-min-height: 40rem;
   --app-frame-height: calc(100svh - var(--header-height) - 11rem);
+  --control-radius: 10px;
+  --panel-radius: 20px;
+  --control-border: #52636f;
+  --control-fill: linear-gradient(180deg,#35434e 0%,#293640 100%);
+  --control-hover: linear-gradient(180deg,#405360 0%,#30424f 100%);
+  --control-ink-hover: #b7ecff;
+  --primary-fill: linear-gradient(180deg,#57cef3 0%,#27afd9 100%);
+  --primary-hover: linear-gradient(180deg,#7bdcf8 0%,#40bfe8 100%);
+  --primary-ink: var(--bg);
+  --primary-border: var(--accent);
+  --primary-border-hover: var(--accent);
+  --primary-shadow: inset 0 1px 0 rgb(255 255 255 / .3),0 4px 14px rgb(0 148 204 / .15);
+  --control-shadow: inset 0 1px 0 rgb(255 255 255 / .09),0 2px 3px rgb(0 0 0 / .16);
+  --panel-shadow: inset 0 1px 0 rgb(255 255 255 / .05),0 16px 40px rgb(0 0 0 / .16);
+  --section-space: clamp(48px,5vw,80px);
+  --surface-inset: clamp(16px,2.5vw,48px);
+  --surface-padding: clamp(20px,4vw,64px);
+  --surface-gap: clamp(24px,3vw,48px);
+  --surface-radius: 12px;
+  --surface-medium: #19272b;
+  --frame-width: calc(100% - 2 * var(--surface-inset));
+  --frame-max: calc(var(--content-max) + 2 * var(--surface-padding));
+  --line-light: #dbe2e8;
+  --nav-panel-width: 18rem;
+  --type-hero: calc(clamp(2.5rem,4.25vw,4rem) * var(--heading-scale));
+  --type-name: calc(clamp(2.75rem,7vw,6.25rem) * var(--heading-scale));
+  --type-h2: calc(clamp(1.875rem,3.3vw,3rem) * var(--heading-scale));
+  --type-h3: calc(clamp(1.125rem,1.6vw,1.5rem) * var(--heading-scale));
+  --type-h4: calc(clamp(1rem,1.25vw,1.125rem) * var(--heading-scale));
+  --tracking-display: -.04em;
+  --tracking-heading: -.035em;
+  --tracking-subheading: -.02em;
+  --leading-display: 1.12;
+  --leading-heading: 1.2;
 }
 
 .tool-ui {
@@ -179,7 +200,7 @@
 .tool-ui .tool-tempo-step { width: 44px; min-width: 44px; padding: 0; font-size: var(--type-icon); touch-action: manipulation; user-select: none; }
 .tool-ui .tool-playback { font-variant-numeric: tabular-nums; }
 .tool-ui .tool-tap { gap: 6px; }
-.tool-tap-icon { display: block; flex: 0 0 auto; width: 20px; height: 20px; fill: currentColor; stroke: none; }
+.tool-icon,.tool-tap-icon{display:block;flex:0 0 auto;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
 .tool-ui :is(button,input,select,textarea,a,[tabindex]):focus-visible { outline: 2px solid var(--focus-color); outline-offset: 3px; }
 .tool-ui input[type="range"] { accent-color: var(--accent); cursor: pointer; }
 .tool-ui .tool-number { font-weight: var(--weight-display); font-variant-numeric: tabular-nums; letter-spacing: var(--tracking-heading); }

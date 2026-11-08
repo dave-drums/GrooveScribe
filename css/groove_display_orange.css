@@ -491,4 +491,26 @@ input[type=range]:active::-webkit-slider-thumb {
   #GrooveWriter :is(button,input,select,textarea,a[href],[tabindex]):focus-visible { outline: 2px solid var(--focus-color); outline-offset: 3px; }
   #GrooveWriter input:disabled,#GrooveWriter select:disabled,#GrooveWriter button:disabled { opacity: .5; cursor: not-allowed; }
   #helpAnchor,#helpContextMenu { display: none; }
+/* Shared SVG controls replace the old icon-font interface glyphs. */
+.bottomButtonIcon .tool-icon { width:22px;height:22px; }
+.bottomButtonIcon .toms-icon { width:24px;height:24px; }
+.midiPlayImage,.midiRepeatImage,.midiExpandImage { display:inline-flex;align-items:center;justify-content:center;font-family:inherit;letter-spacing:0; }
+.midiPlayImage:before,.midiPlayImage.Stopped:before,.midiPlayImage.Paused:before,.midiPlayImage.Playing:before,
+.midiExpandImage:before,.midiExpandImage.small:before,.midiExpandImage.large:before,.midiRepeatImage:before,
+#stickingsButton .stickings-icon:before,#stickingsButton.ClickToHide .stickings-icon:before {
+ content:"";display:inline-block;width:22px;height:22px;line-height:0;letter-spacing:0;background:currentColor;
+ -webkit-mask-repeat:no-repeat;
+ mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain;font-family:inherit;
+}
+.midiPlayImage:before,.midiPlayImage.Stopped:before,.midiPlayImage.Paused:before { -webkit-mask-image:url("../images/icons/play.svg"); mask-image:url("../images/icons/play.svg"); }
+.midiPlayImage.Playing:before { -webkit-mask-image:url("../images/icons/pause.svg"); mask-image:url("../images/icons/pause.svg"); }
+.midiExpandImage:before,.midiExpandImage.small:before { -webkit-mask-image:url("../images/icons/maximize.svg"); mask-image:url("../images/icons/maximize.svg"); }
+.midiExpandImage.large:before { -webkit-mask-image:url("../images/icons/minimize.svg"); mask-image:url("../images/icons/minimize.svg"); }
+.midiRepeatImage:before { -webkit-mask-image:url("../images/icons/repeat.svg"); mask-image:url("../images/icons/repeat.svg"); }
+#stickingsButton .stickings-icon:before,#stickingsButton.ClickToHide .stickings-icon:before { -webkit-mask-image:url("../images/icons/sticks.svg"); mask-image:url("../images/icons/sticks.svg"); }
+.unmuteStack,.unmuteHHStack { display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px; }
+.closeMeasureButton .tool-icon,#addMeasureButton .tool-icon,#fullURLPopupCloseButton .tool-icon { width:20px;height:20px; }
+.menuChecked:before { content:"";display:inline-block;width:16px;height:16px;vertical-align:middle;margin-right:8px;letter-spacing:0;background:currentColor;-webkit-mask:url("../images/icons/check.svg") no-repeat center / contain;mask:url("../images/icons/check.svg") no-repeat center / contain;font-family:inherit; }
+.myCheckbox+label:before { font-family:inherit; }
+.myCheckbox:checked+label:before { content:"";width:16px;height:16px;vertical-align:middle;margin-right:8px;letter-spacing:0;background:currentColor;-webkit-mask:url("../images/icons/check.svg") no-repeat center / contain;mask:url("../images/icons/check.svg") no-repeat center / contain; }
 }
